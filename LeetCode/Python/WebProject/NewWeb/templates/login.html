@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <body>
+
+    
+        <p>Hello Word</p>
+
+        <form id = "formdata_login" action= "/login/" method = "post">
+        {% csrf_token %}
+        <input type="text" name="username" >
+        <input type="text" name = "password">
+        <input id="login" type = "submit" value="登陆">
+        </form>
+
+        <br>
+        <br>
+
+        <form id = "formdata_signin" action= "/signin/" method = "post">
+        {% csrf_token %}
+        <input type="text" name="username" >
+        <input type="text" name = "password">
+        <input id="signin" type = "submit" value="注册">
+        </form>
+
+        <form id = "formdata_changepassword" action= "/changepassword/" method = "post">
+        {% csrf_token %}
+        <input type="text" name="username" >
+        <input type="text" name = "password">
+        <input id="signin" type = "submit" value="更改密码">
+        </form>
+        
+
+        <button type = "button" id = "signin1" onclick="signin('qwasdasdasdasdasdasde' , '123')" >注册1</button>
+        <button type = "button" id = "signin2" onclick="signin_get('qwe' , '123')" >注册2</button>
+        <a href="javascript:;" id="signin3" >注册3</a>
+
+
+
+    </body>
+
+<script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+
+        {% comment %} window.onload = function(){
+               alert(1);
+        }; {% endcomment %}
+
+        $(document).ready(function(){
+              
+        });
+
+        $("#signin3").click(function () {
+            
+            var username = "3333333333333new3";
+            var password = "3333333333331new3";
+            alert(username);
+            var jsonndata = {"username": username, "password" : password};
+
+
+            $.ajax({
+                method: 'get',
+                url: "/signin_get/",
+                dataType: 'json',
+                data: {username: username, password : password},
+                success: function (result) {  
+                alert(result);
+            },
+            })
+            {% comment %} .done(function (data) {
+                console.log(data);
+            }).always(function () {
+                console.log(data);
+            }) {% endcomment %}
+        });
+
+
+    function signin(name , password) {
+        var data = {  
+         "username": name,  
+         "password": password,  
+        }  
+        alert(data.username);
+        $.ajax({
+            type: "POST",
+            url: "/signin/",    
+            data: data,
+            success: function (result) {  
+                alert(result);
+            },
+        });
+    }
+    function signin_get(name , password) {
+           alert(1);
+        $.ajax({
+            method: 'get',
+            url: "signin/？username="+name+"$password="+password,    //后台处理函数的url和数据
+            success: function (result) {  //获取后台处理后传过来的result 
+                alert(result);
+            },
+        });
+    }
+</script>
+
+</html>
