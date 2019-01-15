@@ -8,6 +8,7 @@ public class T1_test {
 		double v1 = Double.POSITIVE_INFINITY;
 		double v2 = Double.MAX_VALUE;
 		System.out.println(v1 > v2 ? 1 : 2);
+		
 
 	}
 

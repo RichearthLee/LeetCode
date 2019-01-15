@@ -123,5 +123,27 @@ public class T1_Solution {
 		}
 		return N == 0 ? max : -1;
 	}
+	
+    /**
+     * @author yukunlee
+     * @Description TODO
+     * @date 2019年1月15日
+     * @param s
+     * @return
+     */
+    public int lengthOfLongestSubstring(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        int len = s.length();
+        int max = 0;
+        for(int i = 0 , j = 0; i < len ; ++i) {
+        	char c = s.charAt(i);
+        	if(map.containsKey(c)) {
+        		j = Math.max(j, map.get(c)+1); 
+        	}
+        	map.put(c, i);
+        	max = Math.max(max, i-j+1);
+        }
+    	return max;
+    }
 
 }
