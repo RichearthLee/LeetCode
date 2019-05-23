@@ -2,8 +2,6 @@ package t38;
 
 import java.util.ArrayList;
 
-import net.sf.json.JSONArray;
-
 public class T38_test {
 
 	public static void main(String[] args) {
@@ -19,8 +17,6 @@ public class T38_test {
 		
 		arr3.add(2);arr3.add(3);
 		arr1.add(arr3);
-		JSONArray json = JSONArray.fromObject(arr1);
-		System.out.println(json.toString());
 		T38_Solution t = new T38_Solution();
 		System.out.println(t.minimumTotal_1(arr1));
 

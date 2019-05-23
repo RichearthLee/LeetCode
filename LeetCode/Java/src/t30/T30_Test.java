@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Vector;
 
-import net.sf.json.JSONArray;  
 
 public class T30_Test {
 
@@ -32,9 +31,7 @@ public class T30_Test {
 			}
 			System.out.print("|");
 		}*/
-		JSONArray js = JSONArray.fromObject(result);
-		System.out.println(js.toString());
-		
+
 		Vector<String> v = new Vector<>();
 		Stack<String> st = new Stack<>();
 		
