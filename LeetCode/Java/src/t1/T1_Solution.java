@@ -146,5 +146,35 @@ public class T1_Solution {
         }
     	return max;
     }
+    
+	public void matrix(int n) {
+		int[][] mtx = new int[n][n];
+		int a = 0;
+		int b = n - 1;
+		for (int i = 1; i <= n * n; ++i) {
+			mtx[a][b] = i;
+			System.out.print(a + " ");
+			System.out.println(b);
+			if ((b == n - 1 || mtx[a][b+1] != 0) && (a < n-1 && mtx[a+1][b] == 0)) {
+				++a;
+				continue;
+			} else if ((a == n - 1 || mtx[a+1][b] != 0) && (b > 0 && mtx[a][b-1] == 0)) {
+				--b;
+				continue;
+			} else if ((b == 0 || mtx[a][b-1] != 0) && (a > 0 && mtx[a-1][b] == 0)) {
+				--a;
+				continue;
+			} else if ((a == 0 || mtx[a-1][b] != 0) && (b < n-1 && mtx[a][b+1] == 0)) {
+				++b;
+				continue;
+			}
+		}
+		for (int i = 0; i < n; ++i) {
+			for (int j = 0; j < n; ++j) {
+				System.out.print(mtx[i][j]+"\t");
+			}
+			System.out.println();
+		}
+	}
 
 }
