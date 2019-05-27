@@ -146,5 +146,52 @@ public class T1_Solution {
         }
     	return max;
     }
+    
+	public void matrix(int n) {
+		int[][] mtx = new int[n][n];
+		int a = 0;
+		int b = n - 1;
+		for (int i = 1; i <= n * n; ++i) {
+			mtx[a][b] = i;
+			System.out.print(a + " ");
+			System.out.println(b);
+			if ((b == n - 1 || mtx[a][b+1] != 0) && (a < n-1 && mtx[a+1][b] == 0)) {
+				++a;
+				continue;
+			} else if ((a == n - 1 || mtx[a+1][b] != 0) && (b > 0 && mtx[a][b-1] == 0)) {
+				--b;
+				continue;
+			} else if ((b == 0 || mtx[a][b-1] != 0) && (a > 0 && mtx[a-1][b] == 0)) {
+				--a;
+				continue;
+			} else if ((a == 0 || mtx[a-1][b] != 0) && (b < n-1 && mtx[a][b+1] == 0)) {
+				++b;
+				continue;
+			}
+		}
+		for (int i = 0; i < n; ++i) {
+			for (int j = 0; j < n; ++j) {
+				System.out.print(mtx[i][j]+"\t");
+			}
+			System.out.println();
+		}
+	}
+
+	//leetcode 7
+	public int reverse(int x) {
+		int res = 0;
+		while(x != 0){
+			int pop = x%10;
+			x = x/10;
+			int mid = res * 10 + pop;
+			if((mid - pop)/10 != res){
+				return 0;
+			}
+//			if(res > Integer.MAX_VALUE / 10 ||(res == Integer.MAX_VALUE / 10 && pop > 7))return 0;
+//			if(res < Integer.MIN_VALUE / 10 ||(res == Integer.MIN_VALUE / 10 && pop < -8)) return 0;
+			res = mid;
+		}
+    	return res;
+	}
 
 }

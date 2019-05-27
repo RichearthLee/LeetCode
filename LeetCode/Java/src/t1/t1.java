@@ -2,7 +2,7 @@ package t1;
 
 /**
  * @author yukunlee
- * @Description TODO
+ * @description TODO
  * @date 2018年10月11日
  */
 public class t1 {
