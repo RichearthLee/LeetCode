@@ -33,7 +33,7 @@ public class Sol_1 {
 
     /**
      * @description: problem 5, Given a string s, find the longest palindromic substring in s.
-     * @param: [s]
+     * @param: s
      * @return: java.lang.String
      * @author: Yukun Lee
      * @date: 2019-05-23
@@ -57,6 +57,24 @@ public class Sol_1 {
     }
 
     public void printMatrix(int[][] matrix){
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                System.out.print(matrix[i][j]+"\t");
+            }
+            System.out.println();
+        }
+    }
+
+    public void printMatrix(char[][] matrix){
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                System.out.print(matrix[i][j]+"\t");
+            }
+            System.out.println();
+        }
+    }
+
+    public void printMatrix(String[][] matrix){
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
                 System.out.print(matrix[i][j]+"\t");

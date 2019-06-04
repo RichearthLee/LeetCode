@@ -1,7 +1,4 @@
-#from module1 import Solution
-from module.module1 import Solution
+from module import module1
 
-s = Solution()
-grid = [[0] * 4 for i in range(4)]
-s.minPathSum(grid)
-print ("test")
+dp = [[1,2,3,4],[1,2,3,5],[1,2,3,4],[1,2,3,4]]
+print(module1.Solution().longestPalindrome("ABBB"))

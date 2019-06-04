@@ -1,44 +1,43 @@
 <!DOCTYPE html>
 <html>
-    <body>
-
-    
-        <p>Hello Word</p>
-
-        <form id = "formdata_login" action= "/login/" method = "post">
-        {% csrf_token %}
-        <input type="text" name="username" >
-        <input type="text" name = "password">
-        <input id="login" type = "submit" value="登陆">
-        </form>
-
-        <br>
-        <br>
-
-        <form id = "formdata_signin" action= "/signin/" method = "post">
-        {% csrf_token %}
-        <input type="text" name="username" >
-        <input type="text" name = "password">
-        <input id="signin" type = "submit" value="注册">
-        </form>
-
-        <form id = "formdata_changepassword" action= "/changepassword/" method = "post">
-        {% csrf_token %}
-        <input type="text" name="username" >
-        <input type="text" name = "password">
-        <input id="signin" type = "submit" value="更改密码">
-        </form>
-        
-
-        <button type = "button" id = "signin1" onclick="signin('qwasdasdasdasdasdasde' , '123')" >注册1</button>
-        <button type = "button" id = "signin2" onclick="signin_get('qwe' , '123')" >注册2</button>
-        <a href="javascript:;" id="signin3" >注册3</a>
+<body>
 
 
+<p>Hello Word</p>
 
-    </body>
+<form action="/login/" id="formdata_login" method="post">
+    {% csrf_token %}
+    <input name="username" type="text">
+    <input name="password" type="text">
+    <input id="login" type="submit" value="登陆">
+</form>
 
-<script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+<br>
+<br>
+
+<form action="/signin/" id="formdata_signin" method="post">
+    {% csrf_token %}
+    <input name="username" type="text">
+    <input name="password" type="text">
+    <input id="signin" type="submit" value="注册">
+</form>
+
+<form action="/changepassword/" id="formdata_changepassword" method="post">
+    {% csrf_token %}
+    <input name="username" type="text">
+    <input name="password" type="text">
+    <input id="signin" type="submit" value="更改密码">
+</form>
+
+
+<button id="signin1" onclick="signin('qwasdasdasdasdasdasde' , '123')" type="button">注册1</button>
+<button id="signin2" onclick="signin_get('qwe' , '123')" type="button">注册2</button>
+<a href="javascript:;" id="signin3">注册3</a>
+
+
+</body>
+
+<script src="/static/js/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 
         {% comment %} window.onload = function(){
@@ -99,6 +98,7 @@
             },
         });
     }
+
 </script>
 
 </html>

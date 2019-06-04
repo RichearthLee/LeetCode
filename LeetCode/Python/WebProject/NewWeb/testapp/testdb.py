@@ -1,8 +1,8 @@
 from django.http import HttpResponse
- 
+
 from testapp.models import Test
-from Login.models import Login
- 
+
+
 # 数据库操作
 
 def testdb(request):

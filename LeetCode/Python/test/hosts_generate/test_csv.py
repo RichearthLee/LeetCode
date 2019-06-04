@@ -1,5 +1,3 @@
-import csv
-import os
 # stu1 = ['marry',26]
 # stu2 = ['bob',23]
 # #打开文件，追加a
@@ -26,7 +24,7 @@ import os
 #   print(hosts_predict_dict)
 #  # f.close()
 
- #!/usr/bin/python
+# !/usr/bin/python
 
 
 # print("input source portal hosts file path:" )
@@ -81,9 +79,7 @@ import os
 #   f.close()
 
 
-
-
-  #!/usr/bin/python
+# !/usr/bin/python
 # import csv
 # import os
 
@@ -111,7 +107,6 @@ import os
 #     hosts_predict_dict.append([texts[0].strip(),"predict"])
 
 
-
 # hosts_recall_dict=[[]]
 # with open(file_path_predict, 'r') as f:
 #   texts = f.readlines()
@@ -119,7 +114,6 @@ import os
 #     # "host"
 #     texts[i] = texts[i].strip('\n')
 #     hosts_recall_dict.append([texts[0].strip(),"recall"])
-
 
 
 # #csv_data = hosts_predict_dict + hosts_recall_dict
@@ -142,8 +136,6 @@ import os
 #     print(rows)
 #     csv_write.writerow(rows)
 # out2.close()
-
-
 
 
 # file_path_portal = csv_file+"data1"

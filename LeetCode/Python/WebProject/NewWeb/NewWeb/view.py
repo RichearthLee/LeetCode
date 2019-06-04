@@ -1,7 +1,6 @@
-from django.http import HttpResponse,HttpResponseRedirect
-from django.template import RequestContext, loader
 from django.shortcuts import render, redirect
- 
+
+
 # def hello(request):
 #     return HttpResponse()
 
@@ -11,7 +10,7 @@ from django.shortcuts import render, redirect
 #     return HttpResponse(t1.render(context))
 
 def index(request):
-    return render(request,'login.html')
+    return render(request, 'login.html')
 
 # def login(Request):
 #     return render(request,'login.html')

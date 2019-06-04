@@ -1,10 +1,9 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.contrib import auth
-# Create your views here.
-
 from Login.models import Login
-import templates
+from django.http import HttpResponse
+from django.shortcuts import render
+
+
+# Create your views here.
 
 
 def Signin_post(request):
@@ -17,10 +16,10 @@ def Signin_post(request):
 
     # username1 = "qwe"
     # password1 = "123"
-    #user = auth.authenticate(request , username = username , password = password)
+    # user = auth.authenticate(request , username = username , password = password)
     do_login = Login(username=username1, password=password1)
     do_login.save()
-    return render(request,'success.html')
+    return render(request, 'success.html')
 
 
 def Signin_get(request):
@@ -28,10 +27,10 @@ def Signin_get(request):
     #     return render(request, 'login.html')
     username1 = request.GET.get('username')
     password1 = request.GET.get('password')
-    print("--------------------"+username1)
+    print("--------------------" + username1)
     # username1 = "qwe"
     # password1 = "123"
-    #user = auth.authenticate(request , username = username , password = password)
+    # user = auth.authenticate(request , username = username , password = password)
     do_login = Login(username=username1, password=password1)
 
     do_login.save()
@@ -41,19 +40,19 @@ def Signin_get(request):
 def Login_post(request):
     username1 = request.POST.get('username')
     password1 = request.POST.get('password')
-    #user = auth.authenticate(request , username = username , password = password)
-    print("+++++++++++++++++"+username1)
-    print("+++++++++++++++++"+password1)
-    do_login = Login.objects.filter(username = username1, password = password1)
-    #do_login = Login.objects.filter(username = username1)
+    # user = auth.authenticate(request , username = username , password = password)
+    print("+++++++++++++++++" + username1)
+    print("+++++++++++++++++" + password1)
+    do_login = Login.objects.filter(username=username1, password=password1)
+    # do_login = Login.objects.filter(username = username1)
     for res in do_login:
-        print("username:"+res.username)
-        print("password:"+res.password)
+        print("username:" + res.username)
+        print("password:" + res.password)
 
     if do_login:
-        return render(request , 'success.html')
+        return render(request, 'success.html')
     else:
-        return render(request , 'failed.html')
+        return render(request, 'failed.html')
 
 
 def change_password(request):
@@ -62,5 +61,4 @@ def change_password(request):
     l = Login.objects.filter(username=new_username).first()
     l.password = new_password
     l.save()
-    return render(request , 'success.html')
-   
+    return render(request, 'success.html')

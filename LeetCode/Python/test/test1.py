@@ -1,5 +1,3 @@
-import ujson as json
-
 if None:
     print("none")
 
@@ -16,11 +14,11 @@ class A:
 
 
 def func(self):
-        """
+    """
 
-        :param self:
-        """
-        print("func")
+    :param self:
+    """
+    print("func")
 
 
 a = A(2)
@@ -32,4 +30,3 @@ print(a1.a_class_val)
 
 print(a.a_num_val)
 print(a1.a_num_val)
-
