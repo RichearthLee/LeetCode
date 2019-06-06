@@ -1,6 +1,12 @@
 package main;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import solutions.Sol_1;
+import t1.T1_Solution;
 
 /**
  * @program: LeetCode
@@ -12,7 +18,9 @@ import solutions.Sol_1;
 public class test {
     public static void main(String[] args) {
         Sol_1 s = new Sol_1();
-        String str = s.longestPalindrome("abbaa");
-        System.out.println(str);
+        System.out.println(s.isMatch("aaa",".*"));
+        System.out.println(s.isMatch("aaa","ab*a"));
+        System.out.println(s.isMatch("ab",".*"));
+
     }
 }

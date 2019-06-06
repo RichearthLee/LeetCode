@@ -1,5 +1,13 @@
 package solutions;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+
 public class Sol_1 {
     /**
      * @Description: problem 4, Find the median of the two sorted arrays.
@@ -82,5 +90,95 @@ public class Sol_1 {
             System.out.println();
         }
     }
+
+    /**
+     * SimpleDateFormat：
+     * G 年代标志符
+     * y 年
+     * M 月
+     * d 日
+     * h 时 在上午或下午 (1~12)
+     * H 时 在一天中 (0~23)
+     * m 分
+     * s 秒
+     * S 毫秒
+     * E 星期
+     * D 一年中的第几天
+     * F 一月中第几个星期几
+     * w 一年中第几个星期
+     * W 一月中第几个星期
+     * a 上午 / 下午 标记符
+     * k 时 在一天中 (1~24)
+     * K 时 在上午或下午 (0~11)
+     * z 时区
+     */
+    public void getTime() {
+        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.ENGLISH);
+        String year = df.format(new java.util.Date());
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat();
+        sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+        System.out.println(sdf.format(date));
+    }
+
+    /**
+     * @description: leetcode 9
+     * @param: [x]
+     * @return: boolean
+     * @author: Yukun Lee
+     * @date: 2019-06-05
+     */
+    public boolean isPalindrome(int x) {
+        if (x < 0) return false;
+        ArrayList<Integer> li = new ArrayList<>();
+        while (x != 0) {
+            int n = x % 10;
+            x = x / 10;
+            li.add(n);
+            System.out.println(n);
+        }
+        int length = li.size();
+        for (int i = 0; i < length / 2; ++i) {
+            if (li.get(i) != li.get(length - i - 1)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    /** 
+     * @description: leetcode 10
+     * @param: [s, p] 
+     * @return: boolean 
+     * @author: Yukun Lee 
+     * @date: 2019-06-06 
+     */ 
+    public boolean isMatch( String s, String p) {
+        int s_len = s.length();
+        int p_len = p.length();
+        int[][] dp = new int[s_len + 1][p_len + 1];
+        dp[0][0] = 1;
+        s = " " + s;
+        p = " " + p;
+        for (int i = 0; i <= s_len; ++i) {
+            for (int j = 0; j <= p_len; ++j) {
+                if ((s.charAt(i) == p.charAt(j) || p.charAt(j) == '.')) {
+                    if ((i == 0 && j == 0)) dp[i][j] = 1;
+                    if ((i > 0 && j > 0) && dp[i - 1][j - 1] == 1) dp[i][j] = 1;
+                }
+                if (j > 0 && p.charAt(j) == '*') {
+                    if ((j >= 2 && dp[i][j - 2] == 1) || (dp[i][j - 1] == 1) ||
+                            (i > 0 && dp[i - 1][j] == 1 &&
+                                    (((s.charAt(i) == s.charAt(i - 1) && s.charAt(i) == p.charAt(j - 1))
+                                            || p.charAt(j - 1) == '.')))) {
+                        dp[i][j] = 1;
+                    }
+                }
+            }
+        }
+        printMatrix(dp);
+        return dp[s_len][p_len] == 1;
+    }
+
 
 }//class
