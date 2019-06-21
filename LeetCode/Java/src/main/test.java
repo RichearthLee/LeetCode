@@ -18,9 +18,12 @@ import t1.T1_Solution;
 public class test {
     public static void main(String[] args) {
         Sol_1 s = new Sol_1();
-        System.out.println(s.isMatch("aaa",".*"));
-        System.out.println(s.isMatch("aaa","ab*a"));
-        System.out.println(s.isMatch("ab",".*"));
+//        String[] str = {"flower","flow","flight"};
+//        String[] str1 = {"dog","racecar","car"};
+//        String[] str2 = {"a"};
+//        String[] str3 = {"aa","aa"};
+        System.out.println();
+        s.testDate();
 
     }
 }

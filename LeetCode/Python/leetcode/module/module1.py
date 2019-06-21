@@ -4,7 +4,6 @@ import numpy as np
 from structure.data_structure import ListNode
 
 
-
 class Solution(object):
     num = 0
 
@@ -96,7 +95,3 @@ class Solution(object):
                     res = str[j:i+1]
         Solution.printMatrix(dp)
         return res
-                
-
-
-        

@@ -1,11 +1,10 @@
 package solutions;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class Sol_1 {
@@ -178,6 +177,264 @@ public class Sol_1 {
         }
         printMatrix(dp);
         return dp[s_len][p_len] == 1;
+    }
+
+    public void testForeach() {
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 0; i < 10; ++i) {
+            list.add(i);
+        }
+
+//        for(Integer i : list){
+//            System.out.println(i);
+//            list.remove(i);
+//        }
+        for (int i = 0; i < list.size(); ++i) {
+            System.out.println(list.get(i));
+            list.remove(i);
+            --i;
+        }
+    }
+
+    public void testArrayList() {
+        ArrayList arr1;
+        ArrayList<Integer> arr2 = new ArrayList<>();
+        arr2.add(1);
+        if (1 < 2) {
+            arr1 = arr2;
+        }
+        System.out.println(arr1.get(0));
+    }
+
+    /**
+     * @description: leetcode 11
+     * @param: [height]
+     * @return: int
+     * @author: Yukun Lee
+     * @date: 2019-06-13
+     */
+    public int maxArea(int[] height) {
+        int maxArea = 0;
+        for (int i = 0; i < height.length; ++i) {
+            for (int j = i; j < height.length; ++j) {
+                maxArea = Math.max(maxArea, Math.min(height[i], height[j]) * (j - i));
+            }
+        }
+        return maxArea;
+    }
+
+    /**
+     * @description: leetcode 12 Integer to Roman
+     * @param: [num]
+     * @return: java.lang.String
+     * @author: Yukun Lee
+     * @date: 2019-06-13
+     */
+    public String intToRoman(int num) {
+        int lastnode;
+        String c1;
+        String c2 = "";
+        String c3 = "";
+        String res = "";
+        for (int i = 0; num != 0; ++i) {
+            lastnode = num % 10;
+            num = num / 10;
+            if (i == 0) {
+                c1 = "I";
+                c2 = "V";
+                c3 = "X";
+            } else if (i == 1) {
+                c1 = "X";
+                c2 = "L";
+                c3 = "C";
+            } else if (i == 2) {
+                c1 = "C";
+                c2 = "D";
+                c3 = "M";
+            } else {
+                c1 = "M";
+            }
+            switch (lastnode) {
+                case 0:
+                    continue;
+                case 1:
+                    res = c1 + res;
+                    continue;
+                case 2:
+                    res = c1 + c1 + res;
+                    continue;
+                case 3:
+                    res = c1 + c1 + c1 + res;
+                    continue;
+                case 4:
+                    res = c1 + c2 + res;
+                    continue;
+                case 5:
+                    res = c2 + res;
+                    continue;
+                case 6:
+                    res = c2 + c1 + res;
+                    continue;
+                case 7:
+                    res = c2 + c1 + c1 + res;
+                    continue;
+                case 8:
+                    res = c2 + c1 + c1 + c1 + res;
+                    continue;
+                case 9:
+                    res = c1 + c3 + res;
+                    continue;
+            }
+        }
+        return res;
+    }
+
+    public void testHashMap() {
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("M", 1000);
+        map.put("D", 500);
+        map.put("C", 100);
+        map.put("L", 50);
+        map.put("X", 10);
+        map.put("V", 5);
+        map.put("I", 1);
+        for (String key : map.keySet()) {
+            System.out.println(map.get(key));
+        }
+//        HashMap<String, Integer> map = new HashMap<>();
+//        map.put("M", 1000);
+//        map.put("D", 500);
+//        map.put("C", 100);
+//        String[] match = {"M", "D", "C", "L", "X" ,"V" ,"I"};
+//        StringBuffer sb= new StringBuffer(s);
+
+    }
+
+    /**
+     * @description: leetcode 13
+     * @param: [s]
+     * @return: int
+     * @author: Yukun Lee
+     * @date: 2019-06-13
+     */
+    public int romanToInt(String s) {
+        int res = 0;
+        int len = s.length();
+        for (int i = len - 1; i >= 0; --i) {
+            switch (s.charAt(i)) {
+                case 'I':
+                    if (i < len - 1 && (s.charAt(i + 1) == 'V' || s.charAt(i + 1) == 'X')) {
+                        res--;
+                    } else {
+                        res++;
+                    }
+                    continue;
+                case 'V':
+                    res = res + 5;
+                    continue;
+                case 'X':
+                    if (i < len - 1 && (s.charAt(i + 1) == 'L' || s.charAt(i + 1) == 'C')) {
+                        res = res - 10;
+                    } else {
+                        res = res + 10;
+                    }
+                    continue;
+                case 'L':
+                    res = res + 50;
+                    continue;
+                case 'C':
+                    if (i < len - 1 && (s.charAt(i + 1) == 'D' || s.charAt(i + 1) == 'M')) {
+                        res = res - 100;
+                    } else {
+                        res = res + 100;
+                    }
+                    continue;
+                case 'D':
+                    res = res + 500;
+                    continue;
+                case 'M':
+                    res = res + 1000;
+                    continue;
+
+            }
+        }
+        return res;
+    }
+
+    /**
+     * @description:
+     * @param: [strs]
+     * @return: java.lang.String
+     * @author: Yukun Lee
+     * @date: 2019-06-13
+     */
+    public String longestCommonSubstr(String[] strs) {
+        if (strs.length < 1) return "";
+        int len = strs[0].length();
+        String sub = "";
+        boolean f = true;
+        String res = "";
+        for (int i = 0; i < len; ++i) {
+            if (res.length() + i >= len) break;
+            for (int j = i + 1; j <= len; ++j) {
+                sub = strs[0].substring(i, j);
+                f = true;
+                for (String v : strs) {
+                    if (v.contains(sub) == false) {
+                        f = false;
+                        break;
+                    }
+                }
+                if (f) {
+                    res = res.length() < sub.length() ? sub : res;
+                }
+            }
+        }
+        return res;
+    }
+
+    /**
+     * @description: leetcode 14
+     * @param: [strs]
+     * @return: java.lang.String
+     * @author: Yukun Lee
+     * @date: 2019-06-13
+     */
+    public String longestCommonPrefix(String[] strs) {
+        if (strs.length < 1) return "";
+        int len = strs[0].length();
+        String sub;
+        String res = "";
+        for (int i = 1; i <= len; ++i) {
+            if (res.length() + i > len) break;
+            sub = strs[0].substring(0, i);
+            for (String v : strs) {
+                if (i>v.length() || !v.substring(0,i).equals(sub)) {
+                    return res;
+                }
+            }
+            res = res.length() < sub.length() ? sub : res;
+        }
+        return res;
+    }
+
+    /**
+     * @description: leetcode 15
+     * @param: [nums]
+     * @return: List<List<Integer>>
+     * @author: Yukun Lee
+     * @date: 2019-06-14
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+
+        return null;
+    }
+
+    public void testFilePath(){
+    }
+
+    public void testDate(){
+        System.out.println(new Date());
     }
 
 
