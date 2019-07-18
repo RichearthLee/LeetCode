@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import utility.ListNode;
+
 public class Sol_1 {
     /**
      * @Description: problem 4, Find the median of the two sorted arrays.
@@ -436,6 +438,75 @@ public class Sol_1 {
     public void testDate(){
         System.out.println(new Date());
     }
+
+    /**
+     * @description: leetcode 20
+     * @param: [s]
+     * @return: boolean
+     * @author: Yukun Lee
+     * @date: 2019-06-26
+     */
+    public boolean isValid(String s) {
+        if(s.length()==0){
+            return true;
+        }
+        Stack<Character> st = new Stack<>();
+        for(int i = 0 ; i< s.length() ; ++i){
+            if(s.charAt(i)== '{' || s.charAt(i)== '[' || s.charAt(i)=='(' || st.empty()){
+                st.push(s.charAt(i));
+            }else {
+                if(s.charAt(i)== ')' && st.peek()== '('||
+                        s.charAt(i)== ']' && st.peek()== '['||
+                        s.charAt(i)== '}' && st.peek()== '{'){
+                    st.pop();
+                }else{
+                    return false;
+                }
+            }
+        }
+        return st.empty() ? true : false;
+    }
+
+    public  void testInsertArray(){
+        System.out.println("------");
+        ArrayList<Integer> ts = new ArrayList<>();
+        for(int i = 0 ; i < 10 ; ++i){
+            ts.add(i);
+        }
+        for(int i = 0 ; i < ts.size() ; ++i){
+            if(i == 5){
+                ts.add(i,100);
+            }
+        }
+        for(int i = 0 ; i < ts.size() ; ++i){
+            System.out.println(ts.get(i));
+        }
+    }
+
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode res = new ListNode(0);
+        ListNode c1 = l1;
+        ListNode c2 = l2;
+        ListNode current = res;
+        while (c1 != null && c2 != null){
+            if (c1.val < c2.val){
+                current.next = c1;
+                current = c1;
+                c1 = c1.next;
+            }else {
+                current.next = c2;
+                current = c2;
+                c2 = c2.next;
+            }
+        }
+        if(c1 != null){
+            current.next = c1;
+        }else {
+            current.next = c2;
+        }
+        return res.next;
+    }
+
 
 
 }//class
