@@ -1,7 +1,7 @@
 # coding=utf-8
 import numpy as np
 
-from structure.data_structure import ListNode
+from utility.data_structure import ListNode
 
 
 class Solution(object):
