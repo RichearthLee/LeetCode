@@ -95,3 +95,23 @@ class Solution(object):
                     res = str[j:i+1]
         Solution.printMatrix(dp)
         return res
+
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        current = res = ListNode(0)
+        while l1 and l2:
+            if(l1.val < l2.val):
+                current.next = l1
+                current = l1
+                l1 = l1.next
+            else:
+                current.next = l2
+                current = l2
+                l2 = l2.next
+
+        # if l1:
+        #     current.next = l1
+        # else:
+        #     current.next = l2
+        current.next = l1 or l2
+
+        return res.next
