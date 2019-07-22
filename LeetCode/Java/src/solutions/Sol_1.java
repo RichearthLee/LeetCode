@@ -427,9 +427,51 @@ public class Sol_1 {
      * @author: Yukun Lee
      * @date: 2019-06-14
      */
-    public List<List<Integer>> threeSum(int[] nums) {
+    public List<List<Integer>> threeSum_v1(int[] nums) {
+        if(nums.length < 3) return null;
+        int a , b = 1, c = 2;
+        List<List<Integer>> res = new ArrayList<>();
+        for(a = 0 ; a < b ; ++a){
+            for(b = a + 1 ; b < c ; ++b){
+                for(c = b + 1 ; c < nums.length ; ++c){
+                    if(nums[a] + nums[b] + nums[c] == 0){
+                        res.add(new ArrayList<>(Arrays.asList(nums[a], nums[b], nums[c])));
+                    }
+                }
+            }
+        }
+        return res;
+    }
 
-        return null;
+    /**
+     * @description: leetcode 15
+     * @param: [nums]
+     * @return: List<List<Integer>>
+     * @author: Yukun Lee
+     * @date: 2019-06-14
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> res = new ArrayList<>();
+        for(int i = 0 ; i < nums.length - 2 ; ++i){
+            if(i == 0 || nums[i] != nums[i-1]){
+                int head = i + 1, tail = nums.length - 1, val =0 -nums[i];
+                while (head < tail){
+                    if(nums[head] + nums[tail] == val){
+                        res.add(Arrays.asList(nums[i], nums[head], nums[tail]));
+                        while (head < tail && nums[head] == nums[head+1]) head++;
+                        while (head < tail && nums[tail] == nums[tail-1]) tail--;
+                        head++;
+                        tail--;
+                    }else if(nums[head] + nums[tail] < val){
+                        head++;
+                    }else {
+                        tail--;
+                    }
+                }
+            }
+        }
+        return res;
     }
 
     public void testFilePath(){
@@ -505,6 +547,23 @@ public class Sol_1 {
             current.next = c2;
         }
         return res.next;
+    }
+
+    /** 
+     * @description: 26. Remove Duplicates from Sorted Array
+     * @param: [nums] 
+     * @return: int 
+     * @author: Yukun Lee 
+     * @date: 2019-07-22 
+     */ 
+    public int removeDuplicates(int[] nums) {
+        int res = 0;
+        for(int i = 0 ; i < nums.length ; ++i){
+            if(i == nums.length - 1 || nums[i] != nums[i+1]){
+                nums[res++] = nums[i];
+            }
+        }
+        return res;
     }
 
 

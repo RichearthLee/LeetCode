@@ -107,11 +107,71 @@ class Solution(object):
                 current.next = l2
                 current = l2
                 l2 = l2.next
-
         # if l1:
         #     current.next = l1
         # else:
         #     current.next = l2
         current.next = l1 or l2
-
         return res.next
+
+    # def removeDuplicates(self, nums: List[int]) -> int:
+    #     res = 0
+    #     for i in range(len(nums)):
+    #         if i == len(nums)-1 or nums[i] == nums[i+1]:
+    #             nums[res] = nums[i]
+    #             res = res + 1
+    #     return res
+
+    def removeDuplicates(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        res = 0
+        for i in range(len(nums)):
+            if i == len(nums) - 1 or nums[i] != nums[i + 1]:
+                nums[res] = nums[i]
+                res = res + 1
+        return res
+
+    def testparam(self, arr: list) -> int:
+        return "sss"
+
+    def removeElement(self, nums, val):
+        """
+        :type nums: List[int]
+        :type val: int
+        :rtype: int
+        """
+        for i in range(nums.count(val)):
+            nums.remove(val)
+        return len(nums)
+
+    def strStr(self, haystack: str, needle: str) -> int:
+        return haystack.find(needle)
+
+    def threeSum(self, nums):
+        """
+        15. 3Sum
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        res = []
+        nums.sort()
+        for i in range(len(nums)-2):
+            if i == 0 or nums[i] != nums[i-1]:
+                head, tail = i+1, len(nums) - 1
+                while head < tail:
+                    if nums[head] + nums[tail] == -nums[i]:
+                        res.append([nums[i], nums[head], nums[tail]])
+                        while head < tail and nums[head] == nums[head+1]:
+                            head = head + 1
+                        while head < tail and nums[tail] == nums[tail-1]:
+                            tail = tail - 1
+                        head = head + 1
+                        tail = tail - 1
+                    elif nums[head] + nums[tail] < -nums[i]:
+                        head = head + 1
+                    else:
+                        tail = tail - 1
+        return res
