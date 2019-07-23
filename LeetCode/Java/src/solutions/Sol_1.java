@@ -565,6 +565,30 @@ public class Sol_1 {
         }
         return res;
     }
+    
+    /** 
+     * @description: 16. 3Sum Closest
+     * @param: [nums, target] 
+     * @return: int 
+     * @author: Yukun Lee 
+     * @date: 2019-07-23 
+     */ 
+    public int threeSumClosest(int[] nums, int target) {
+        int a , b = 1, c = 2;
+        int  len = Integer.MAX_VALUE;
+        int  res = 0;
+        for(a = 0 ; a < b ; ++a){
+            for(b = a + 1 ; b < c ; ++b){
+                for(c = b + 1 ; c < nums.length ; ++c){
+                    if(Math.abs(nums[a] + nums[b] + nums[c] - target) < len){
+                        len = Math.abs(nums[a] + nums[b] + nums[c] - target);
+                        res = nums[a] + nums[b] + nums[c];
+                    }
+                }
+            }
+        }
+        return res;
+    }
 
 
 
