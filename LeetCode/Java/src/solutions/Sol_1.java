@@ -589,6 +589,38 @@ public class Sol_1 {
         }
         return res;
     }
+    
+    /** 
+     * @description: 17. Letter Combinations of a Phone Number
+     * @param: [digits] 
+     * @return: java.util.List<java.lang.String> 
+     * @author: Yukun Lee 
+     * @date: 2019-07-23 
+     */ 
+    public List<String> letterCombinations(String digits) {
+        LinkedList<String> res = new LinkedList<>();
+        if (digits.length() == 0)return res;
+        String[] mapping = new String[]{"0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        int len = digits.length();
+        res.add("");
+        for(int i = 0 ; i < len ; ++i){
+            int index = Character.getNumericValue(digits.charAt(i));
+            char[] arr = mapping[index].toCharArray();
+            while (res.peek().length() == i){
+                String mid = res.remove();
+                for (char n : arr){
+                    res.add(mid+n);
+                }
+            }
+        }
+        return res;
+    }
+
+    public void testChar2Int(){
+        String str = "123";
+        System.out.println(str.charAt(0)-'0');
+        System.out.println(Character.getNumericValue(str.charAt(0)));
+    }
 
 
 

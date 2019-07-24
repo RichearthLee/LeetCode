@@ -23,7 +23,7 @@ public class test {
 //        String[] str2 = {"a"};
 //        String[] str3 = {"aa","aa"};
         //System.out.println(s.isValid("{[]}"));
-        s.mergeTwoLists(null, null);
+        s.letterCombinations("23");
 
     }
 }
