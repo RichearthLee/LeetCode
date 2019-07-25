@@ -621,7 +621,67 @@ public class Sol_1 {
         System.out.println(str.charAt(0)-'0');
         System.out.println(Character.getNumericValue(str.charAt(0)));
     }
+    
+    /** 
+     * @description: 18. 4Sum
+     * @param: [nums, target] 
+     * @return: java.util.List<java.util.List<java.lang.Integer>> 
+     * @author: Yukun Lee 
+     * @date: 2019-07-25 
+     */ 
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> res= new ArrayList<>();
 
+        return null;
+    }
+
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode block = new ListNode(0);
+        block.next = head;
+        ListNode fast = block;
+        ListNode slow = block;
+        for(int i = 0 ; i <= n ; ++i){
+            fast = fast.next;
+        }
+        while(fast != null){
+            fast = fast.next;
+            slow = slow.next;
+        }
+        slow.next = slow.next.next;
+        return block.next;
+    }
+    
+    /** 
+     * @description: 22. Generate Parentheses
+     * @param: [n] 
+     * @return: java.util.List<java.lang.String> 
+     * @author: Yukun Lee 
+     * @date: 2019-07-25 
+     */ 
+    public List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<>();
+        backtrack(res,"", 0,0,n);
+        return res;
+    }
+
+    public void backtrack(List<String> list,String str, int open, int close, int n){
+        if(str.length() == n*2){
+            list.add(str);
+            return;
+        }
+        if(open < n ){
+            backtrack(list, str+"(", open+1, close, n);
+        }
+        if(close < open){
+            backtrack(list, str+")", open, close+1, n);
+        }
+    }
+
+    public void testParam(List<String> list, int n, String str){
+        list.add("test");
+        n = n+1;
+        str = str + "test";
+    }
 
 
 }//class

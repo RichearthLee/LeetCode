@@ -2,11 +2,12 @@ package main;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import solutions.Sol_1;
-import t1.T1_Solution;
 
 /**
  * @program: LeetCode
@@ -23,7 +24,16 @@ public class test {
 //        String[] str2 = {"a"};
 //        String[] str3 = {"aa","aa"};
         //System.out.println(s.isValid("{[]}"));
-        s.letterCombinations("23");
+        List<String> list = new ArrayList<>();
+        list.add("init");
+        int n = 0;
+        String s1 = "init ";
+        s.testParam(list, n, s1);
+        for(String str: list){
+            System.out.println(str);
+        }
+        System.out.println(n);
+        System.out.println(s1);
 
     }
 }
