@@ -4,12 +4,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 
 import utility.ListNode;
 
-public class Sol_1 {
+public class Solution1 {
     /**
      * @Description: problem 4, Find the median of the two sorted arrays.
      * The overall run time complexity should be O(log (m+n)).
@@ -181,32 +180,6 @@ public class Sol_1 {
         return dp[s_len][p_len] == 1;
     }
 
-    public void testForeach() {
-        ArrayList<Integer> list = new ArrayList<>();
-        for (int i = 0; i < 10; ++i) {
-            list.add(i);
-        }
-
-//        for(Integer i : list){
-//            System.out.println(i);
-//            list.remove(i);
-//        }
-        for (int i = 0; i < list.size(); ++i) {
-            System.out.println(list.get(i));
-            list.remove(i);
-            --i;
-        }
-    }
-
-    public void testArrayList() {
-        ArrayList arr1;
-        ArrayList<Integer> arr2 = new ArrayList<>();
-        arr2.add(1);
-        if (1 < 2) {
-            arr1 = arr2;
-        }
-        System.out.println(arr1.get(0));
-    }
 
     /**
      * @description: leetcode 11
@@ -291,26 +264,6 @@ public class Sol_1 {
         return res;
     }
 
-    public void testHashMap() {
-        HashMap<String, Integer> map = new HashMap<>();
-        map.put("M", 1000);
-        map.put("D", 500);
-        map.put("C", 100);
-        map.put("L", 50);
-        map.put("X", 10);
-        map.put("V", 5);
-        map.put("I", 1);
-        for (String key : map.keySet()) {
-            System.out.println(map.get(key));
-        }
-//        HashMap<String, Integer> map = new HashMap<>();
-//        map.put("M", 1000);
-//        map.put("D", 500);
-//        map.put("C", 100);
-//        String[] match = {"M", "D", "C", "L", "X" ,"V" ,"I"};
-//        StringBuffer sb= new StringBuffer(s);
-
-    }
 
     /**
      * @description: leetcode 13
@@ -474,12 +427,6 @@ public class Sol_1 {
         return res;
     }
 
-    public void testFilePath(){
-    }
-
-    public void testDate(){
-        System.out.println(new Date());
-    }
 
     /**
      * @description: leetcode 20
@@ -509,21 +456,6 @@ public class Sol_1 {
         return st.empty() ? true : false;
     }
 
-    public  void testInsertArray(){
-        System.out.println("------");
-        ArrayList<Integer> ts = new ArrayList<>();
-        for(int i = 0 ; i < 10 ; ++i){
-            ts.add(i);
-        }
-        for(int i = 0 ; i < ts.size() ; ++i){
-            if(i == 5){
-                ts.add(i,100);
-            }
-        }
-        for(int i = 0 ; i < ts.size() ; ++i){
-            System.out.println(ts.get(i));
-        }
-    }
 
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         ListNode res = new ListNode(0);
@@ -616,11 +548,6 @@ public class Sol_1 {
         return res;
     }
 
-    public void testChar2Int(){
-        String str = "123";
-        System.out.println(str.charAt(0)-'0');
-        System.out.println(Character.getNumericValue(str.charAt(0)));
-    }
     
     /** 
      * @description: 18. 4Sum
@@ -677,10 +604,54 @@ public class Sol_1 {
         }
     }
 
-    public void testParam(List<String> list, int n, String str){
-        list.add("test");
-        n = n+1;
-        str = str + "test";
+    
+    /** 
+     * @description: 24. Swap Nodes in Pairs
+     * @param: [head] 
+     * @return: utility.ListNode 
+     * @author: Yukun Lee 
+     * @date: 2019-07-26 
+     */ 
+    public ListNode swapPairs_v1(ListNode head) {
+        if(head == null || head.next == null){
+            return head;
+        }
+        ListNode block;
+        ListNode pre = head.next;
+        ListNode post = head;
+        while (pre != null && post != null){
+            post.next = pre.next;
+            pre.next = post;
+
+            block = pre;
+            pre = post;
+            post = block;
+
+            if(pre.next != null){
+                post = pre.next;
+                pre = post.next;
+            }else {
+                break;
+            }
+        }
+        return head;
+    }
+
+    public ListNode swapPairs(ListNode head) {
+        ListNode block = new ListNode(0);
+        block.next = head;
+        ListNode cur = block;
+        ListNode post;
+        ListNode pre;
+        while (cur.next != null && cur.next.next != null){
+           post = cur.next;
+           pre = cur.next.next;
+           post.next = pre.next;
+           pre.next = post;
+           cur.next = pre;
+           cur = cur.next.next;
+        }
+        return block.next;
     }
 
 

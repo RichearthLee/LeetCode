@@ -1,9 +1,8 @@
 package test;
 
 import java.io.IOException;
-import java.util.Scanner;
 
-public class t1 implements Runnable {
+public class TestThread implements Runnable {
 	private static boolean n=true;
 	private static boolean flag=false;
 
@@ -64,7 +63,7 @@ public class t1 implements Runnable {
 		int ss=System.in.read();
 		System.out.println(ss);
 		sc.close();*/
-		t1 b=new t1();
+		TestThread b=new TestThread();
 		Thread b1=new Thread(b);
 		Thread b2=new Thread(b);
 		
