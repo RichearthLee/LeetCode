@@ -29,6 +29,9 @@ public class Test {
 //        }
 //        System.out.println(n);
 //        System.out.println(s1);
+        int[] arr = {1,2,4};
+        int[] arr2 = {2,3,5};
+        s.findMedianSortedArrays_v1(arr, arr2);
 
 
     }

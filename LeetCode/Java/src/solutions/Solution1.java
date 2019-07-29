@@ -22,7 +22,7 @@ public class Solution1 {
             return (double) Math.round((nums1[0] + nums2[0]) * 10 / 2) / 10;
         }
         int s1 = 0, s2 = 0, e1 = nums1.length - 1, e2 = nums2.length - 1;
-        int mid1 = (s1 + e2) / 2, mid2 = (s2 + e2) / 2;
+        int mid1 = (s1 + e1) / 2, mid2 = (s2 + e2) / 2;
         while (mid1 == s1 && mid2 == s2) {
             if (nums1[mid1] > nums2[mid2]) {
                 s2 = mid2 + 1;
@@ -37,6 +37,31 @@ public class Solution1 {
             mid2 = (s2 + e2) / 2;
         }
         return (double) Math.round((nums1[mid1] + nums2[mid2]) * 10 / 2) / 10;
+    }
+
+    public double findMedianSortedArrays_v1(int[] nums1, int[] nums2) {
+        int index = 0 ,n1 = 0, n2 = 0;
+        int[] res = new int[nums1.length + nums2.length];
+        while (index < nums1.length + nums2.length){
+            if(n1 == nums1.length){
+                while(n2 != nums2.length){
+                    res[index++] = nums2[n2++];
+                }
+                break;
+            }
+            if(n2 == nums2.length){
+                while (n1 != nums1.length){
+                    res[index++] = nums1[n1++];
+                }
+                break;
+            }
+            if (nums1[n1] <= nums2[n2]){
+                res[index++] = nums1[n1++];
+            }else {
+                res[index++] = nums2[n2++];
+            }
+        }
+        return res.length%2==0?(double)(res[res.length/2-1]+res[res.length/2])/2:(double)res[res.length/2];
     }
 
     /**
@@ -652,6 +677,57 @@ public class Solution1 {
            cur = cur.next.next;
         }
         return block.next;
+    }
+
+    /** 
+     * @description: 23. Merge k Sorted Lists
+     * @param: [lists] 
+     * @return: utility.ListNode 
+     * @author: Yukun Lee 
+     * @date: 2019-07-29 
+     */ 
+    public ListNode mergeKLists(ListNode[] lists) {
+        ListNode res = new ListNode(0);
+        ListNode cur = res;
+        while (true){
+            ListNode node = minNode(lists);
+            if(node == null){
+                break;
+            }
+            cur.next = node;
+            cur = node;
+        }
+        return res.next;
+    }
+
+    public ListNode minNode(ListNode[] lists){
+        int index = -1;
+        ListNode cur = null;
+        for(int i = 0 ; i < lists.length ; ++i){
+            if(cur == null){
+                if (lists[i] == null){
+                    continue;
+                }else {
+                    cur = lists[i];
+                    index = i;
+                }
+            }else {
+                if(lists[i] == null){
+                    continue;
+                }else {
+                    if(lists[i].val < cur.val){
+                        cur = lists[i];
+                        index = i;
+                    }else {
+                        continue;
+                    }
+                }
+            }
+        }
+        if(index>=0){
+            lists[index] = lists[index].next;
+        }
+        return cur;
     }
 
 
