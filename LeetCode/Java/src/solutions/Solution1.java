@@ -729,6 +729,42 @@ public class Solution1 {
         }
         return cur;
     }
+    
+    /**
+     * @description: 33. Search in Rotated Sorted Array
+     * @param: [nums, target] 
+     * @return: int 
+     * @author: Yukun Lee 
+     * @date: 2019-07-30 
+     */ 
+    public int search(int[] nums, int target) {
+        if (nums.length == 0) return -1;
+        int left = 0, right = nums.length-1;
+        int mid;
+        while(left < right){
+            mid = (left + right)/2;
+            if(nums[mid]>nums[right]){
+                left = mid + 1;
+            }else {
+                right = mid;
+            }
+        }
+        int rotate = left;
+        int realmid;
+        left = 0; right = nums.length-1;
+        while(left <= right){
+            mid = (left + right)/2;
+            realmid = (mid + rotate)%nums.length;
+            if(nums[realmid]<target){
+                left = mid + 1;
+            }else if(nums[realmid]> target){
+                right = mid - 1;
+            }else {
+                return realmid;
+            }
+        }
+        return -1;
+    }
 
 
 }//class
