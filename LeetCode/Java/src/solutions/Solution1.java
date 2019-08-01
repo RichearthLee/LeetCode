@@ -1,12 +1,10 @@
 package solutions;
 
+import utility.ListNode;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Date;
-import java.util.Locale;
-
-import utility.ListNode;
 
 public class Solution1 {
     /**
@@ -765,6 +763,100 @@ public class Solution1 {
         }
         return -1;
     }
+    
+    /** 
+     * @description: 34. Find First and Last Position of Element in Sorted Array
+     * @param: [nums, target] 
+     * @return: int[] 
+     * @author: Yukun Lee 
+     * @date: 2019-08-01 
+     */ 
+    public int[] searchRange_v1(int[] nums, int target) {
+        int[] res = new int[2];
+        res[0] = -1;
+        int head = 0, tail = nums.length - 1;
+        while (head <= tail) {
+            int mid = (head + tail) / 2;
+            if (nums[mid] < target) {
+                head = mid + 1;
+            } else if (nums[mid] > target) {
+                tail = mid - 1;
+            } else {
+                res[0] = mid;
+                break;
+            }
+        }
+        if (res[0] == -1) {
+            res[1] = -1;
+            return res;
+        }
+        res[1] = res[0];
+        while (res[0] > 0) {
+            if (nums[res[0] - 1] == nums[res[0]]) {
+                res[0]--;
+            } else {
+                break;
+            }
+        }
+        while (res[1] < nums.length - 1) {
+            if (nums[res[1] + 1] == nums[res[1]]) {
+                res[1]++;
+            } else {
+                break;
+            }
+        }
+        return res;
+    }
 
+    public int[] searchRange(int[] nums, int target) {
+        int[] res = {-1,-1};
+        if(nums.length == 0) return res;
+        int head = 0, tail = nums.length-1;
+        while(head < tail){
+            int mid = (head + tail)/2;
+            if(nums[mid] < target){
+                head = mid + 1;
+            }else {
+                tail = mid;
+            }
+        }
+        if(nums[head] != target){
+            return res;
+        }
+        res[0] = head;
+        tail = nums.length-1;
+        while(head < tail){
+            int mid = (head + tail)/2+1;
+            if(nums[mid] > target){
+                tail = mid - 1;
+            }else {
+                head = mid;
+            }
+        }
+        res[1] = tail;
+        return res;
+    }
+    
+    /** 
+     * @description: 35. Search Insert Position
+     * @param: [nums, target] 
+     * @return: int 
+     * @author: Yukun Lee 
+     * @date: 2019-08-01 
+     */ 
+    public int searchInsert(int[] nums, int target) {
+        int head = 0, tail = nums.length - 1;
+        while (head <= tail) {
+            int mid = (head + tail) / 2;
+            if (nums[mid] < target) {
+                head = mid + 1;
+            } else if (nums[mid] > target) {
+                tail = mid - 1;
+            } else {
+                return mid;
+            }
+        }
+        return head;
+    }
 
 }//class
