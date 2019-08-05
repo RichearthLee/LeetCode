@@ -859,4 +859,17 @@ public class Solution1 {
         return head;
     }
 
+    /**
+     * @description:  36. Valid Sudoku
+     * @param: [board]
+     * @return: boolean
+     * @author: Yukun Lee
+     * @create: 2019-08-02
+     */
+    public boolean isValidSudoku(char[][] board) {
+        boolean res = false;
+        
+        return res;
+    }
+
 }//class
