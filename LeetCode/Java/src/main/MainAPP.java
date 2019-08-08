@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import solutions.Solution1;
+import test.TestMethod;
 
 /**
  * @program: LeetCode
@@ -12,9 +13,10 @@ import solutions.Solution1;
  * @create: 2019-05-27 09:48
  */
 
-public class Test {
+public class MainAPP {
     public static void main(String[] args) {
         Solution1 s = new Solution1();
+        TestMethod tm = new TestMethod();
 //        String[] str = {"flower","flow","flight"};
 //        String[] str1 = {"dog","racecar","car"};
 //        String[] str2 = {"a"};
@@ -29,9 +31,14 @@ public class Test {
 //        }
 //        System.out.println(n);
 //        System.out.println(s1);
-        int[] arr = {1,2,4};
-        int[] arr2 = {2,3,5};
-        s.findMedianSortedArrays_v1(arr, arr2);
+//        int[] arr = {1,2,4};
+//        int[] arr2 = {2,3,5};
+//        s.findMedianSortedArrays_v1(arr, arr2);
+        String str = "wordgoodgoodgoodbestword";
+        String[] words = {"word","good","best","good"};
+
+        System.out.println(s.findSubstring(str, words));
+
 
 
     }

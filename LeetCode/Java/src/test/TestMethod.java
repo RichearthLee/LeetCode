@@ -1,9 +1,6 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class TestMethod {
 
@@ -118,6 +115,11 @@ public class TestMethod {
 			arr1 = arr2;
 		}
 		System.out.println(arr1.get(0));
+	}
+
+	public void testMap(){
+		Map<String, Integer> map = new HashMap<>();
+		System.out.println(map.get("a"));
 	}
 
 }

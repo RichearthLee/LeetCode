@@ -858,6 +858,46 @@ public class Solution1 {
         }
         return head;
     }
+    
+    /** 
+     * @description: 30. Substring with Concatenation of All Words
+     * @param: [s, words] 
+     * @return: java.util.List<java.lang.Integer> 
+     * @author: Yukun Lee 
+     * @date: 2019-08-07 
+     */ 
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> res = new ArrayList<>();
+        if(words.length == 0 || s.length() == 0 || words[0].length()*words.length>s.length()){
+            return res;
+        }
+        int wordlen = words[0].length();
+        int sumlen = words[0].length()*words.length;
+        final Map<String, Integer> map = new HashMap<>();
+        for(String str : words){
+            map.put(str,map.containsKey(str)?map.get(str)+1:1);
+        }
+        for (int i = 0 ; i <= s.length() - sumlen ; ++i){
+            if(isSuitable(s.substring(i,i+sumlen), wordlen, new HashMap<>(map))){
+                res.add(i);
+            }
+
+        }
+        return res;
+    }
+
+    public boolean isSuitable(String str, int wordlen ,Map<String, Integer> map){
+        for(int j = 0 ; j < str.length() ; ){
+            String s = str.substring(j, j+wordlen);
+            if(map.containsKey(s) && map.get(s)>0){
+                map.put(s,map.get(s)-1);
+            }else {
+                return false;
+            }
+            j = j + wordlen;
+        }
+        return true;
+    }
 
     /**
      * @description:  36. Valid Sudoku
