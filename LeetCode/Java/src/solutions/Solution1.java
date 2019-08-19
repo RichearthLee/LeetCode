@@ -6,6 +6,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * @program: LeetCode
+ * @description: 1-50
+ * @author: Yukun Lee
+ * @create: 2019-08-19 11:20
+ */
 public class Solution1 {
     /**
      * @Description: problem 4, Find the median of the two sorted arrays.

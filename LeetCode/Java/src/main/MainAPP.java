@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import solutions.Solution1;
+import solutions.Solution2;
+import utility.TreeNode;
 import test.TestMethod;
 
 /**
@@ -15,7 +17,8 @@ import test.TestMethod;
 
 public class MainAPP {
     public static void main(String[] args) {
-        Solution1 s = new Solution1();
+        Solution1 s1 = new Solution1();
+        Solution2 s2 = new Solution2();
         TestMethod tm = new TestMethod();
 //        String[] str = {"flower","flow","flight"};
 //        String[] str1 = {"dog","racecar","car"};
@@ -34,10 +37,17 @@ public class MainAPP {
 //        int[] arr = {1,2,4};
 //        int[] arr2 = {2,3,5};
 //        s.findMedianSortedArrays_v1(arr, arr2);
-        String str = "wordgoodgoodgoodbestword";
-        String[] words = {"word","good","best","good"};
+//        String str = "wordgoodgoodgoodbestword";
+//        String[] words = {"word","good","best","good"};
+        TreeNode root1 = new TreeNode(0);
+        TreeNode root2 = new TreeNode(0);
+        root1.left = new TreeNode(1);
+        root1.right = new TreeNode(1);
+        root2.right = new TreeNode(1);
+        root2.left = new TreeNode(1);
 
-        System.out.println(s.findSubstring(str, words));
+        System.out.println(s2.isSameTree(root1, root2));
+
 
 
 

@@ -6,8 +6,10 @@ public class TestMethod {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		int[][] arr={{1,2,8,9},{2,4,9,12},{4,7,10,13},{6,8,11,15}};
-		System.out.println(Find(16,arr));
+//		int[][] arr={{1,2,8,9},{2,4,9,12},{4,7,10,13},{6,8,11,15}};
+//		System.out.println(Find(16,arr));
+		TestMethod tm = new TestMethod();
+		tm.testLinkedList();
          
 	}
 	 public static boolean Find(int target, int [][] array) {
@@ -120,6 +122,13 @@ public class TestMethod {
 	public void testMap(){
 		Map<String, Integer> map = new HashMap<>();
 		System.out.println(map.get("a"));
+	}
+
+	public void testLinkedList(){
+		LinkedList<String> ll = new LinkedList<>();
+		ll.add(null);
+		ll.add(null);
+		System.out.println(ll.size());
 	}
 
 }
