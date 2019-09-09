@@ -9,7 +9,7 @@ public class TestMethod {
 //		int[][] arr={{1,2,8,9},{2,4,9,12},{4,7,10,13},{6,8,11,15}};
 //		System.out.println(Find(16,arr));
 		TestMethod tm = new TestMethod();
-		tm.testLinkedList();
+		tm.testClass();
          
 	}
 	 public static boolean Find(int target, int [][] array) {
@@ -129,6 +129,15 @@ public class TestMethod {
 		ll.add(null);
 		ll.add(null);
 		System.out.println(ll.size());
+	}
+
+	public void testClass(){
+		Map<String, String> map1 = new HashMap<>();
+		Map<String, Object> map2 = new HashMap<>();
+
+		Set<String> set1 = new HashSet<>();
+
+		System.out.println(map1.getClass().equals(set1.getClass()));
 	}
 
 }

@@ -39,14 +39,18 @@ public class MainAPP {
 //        s.findMedianSortedArrays_v1(arr, arr2);
 //        String str = "wordgoodgoodgoodbestword";
 //        String[] words = {"word","good","best","good"};
-        TreeNode root1 = new TreeNode(0);
-        TreeNode root2 = new TreeNode(0);
-        root1.left = new TreeNode(1);
-        root1.right = new TreeNode(1);
-        root2.right = new TreeNode(1);
-        root2.left = new TreeNode(1);
+//        TreeNode root1 = new TreeNode(0);
+//        TreeNode root2 = new TreeNode(0);
+//        root1.left = new TreeNode(1);
+//        root1.right = new TreeNode(1);
+//        root2.right = new TreeNode(1);
+//        root2.left = new TreeNode(1);
+        int[][] matrix = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+        //int[][] matrix = {{1}};
+        //int[][] matrix = {{1,2,3},{4,5,6},{7,8,9}};
+        List<Integer> res = s2.spiralOrder(matrix);
 
-        System.out.println(s2.isSameTree(root1, root2));
+        System.out.println(res);
 
 
 
