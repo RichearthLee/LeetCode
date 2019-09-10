@@ -239,4 +239,68 @@ public class Solution2 {
         return res;
     }
 
+    public boolean canJump_v1(int[] nums) {
+        if(nums.length == 0){
+            return true;
+        }
+        int[] path = new int[nums.length];
+        path[0] = 1;
+        int cur = 0;
+        for(int i = 0; i < nums.length ; ++i){
+            if(path[i] == 0){
+                return false;
+            }
+            int maxStep = nums[i];
+            for(int j = 1 ; j <= maxStep ; ++j){
+                if(i+j >= path.length){
+                    return true;
+                }
+                path[i+j] = 1;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 45. Jump Game
+     * @param nums
+     * @return
+     */
+    public boolean canJump(int[] nums) {
+        int max = 0;
+        for(int i = 0 ; i < nums.length && max < nums.length; ++i){
+            if(i > max){
+                return false;
+            }
+            max = Math.max(i + nums[i], max);
+        }
+        return true;
+    }
+
+    /**
+     * 45. Jump Game II
+     * @param nums
+     * @return
+     */
+    public int jump_v1(int[] nums) {
+        if(nums.length == 0){
+            return 0;
+        }
+        int[] res = new int[nums.length];
+        res[0] = 0;
+        int cur = 0;
+        for(int i = 0; i < nums.length ; ++i) {
+            for (int j = 1; j <= nums[i]; ++j) {
+                if(i + j >= nums.length){
+                    return res[nums.length-1];
+                }
+                if (res[i + j] == 0) {
+                    res[i + j] = res[i] + 1;
+                }
+            }
+        }
+        return res[nums.length-1];
+    }
+    
+
 }
