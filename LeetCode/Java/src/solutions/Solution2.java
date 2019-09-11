@@ -2,10 +2,8 @@ package solutions;
 
 import utility.TreeNode;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * @program: LeetCode
@@ -301,6 +299,51 @@ public class Solution2 {
         }
         return res[nums.length-1];
     }
-    
+
+    /**
+     * 56. Merge Intervals
+     * @param intervals
+     * @return
+     */
+    public int[][] merge_v1(int[][] intervals) {
+        if(intervals.length < 1){
+            return intervals;
+        }
+        List<int[]> res = new ArrayList<>();
+        Arrays.sort(intervals,(i1, i2) -> Integer.compare(i1[0], i2[0]));
+
+        for(int i = 0 ; i < intervals.length; ++i){
+            if(i == intervals.length-1 || intervals[i][1] < intervals[i+1][0]){
+                res.add(intervals[i]);
+            }else {
+                int[] node = new int[2];
+                node[0] = intervals[i][0];
+                node[1] = Math.max(intervals[i][1], intervals[i+1][1]);
+                res.add(node);
+                ++i;
+            }
+        }
+        return res.toArray(new int[res.size()][]);
+    }
+
+    public int[][] merge(int[][] intervals) {
+        if(intervals.length < 1){
+            return intervals;
+        }
+        List<int[]> res = new ArrayList<>();
+        Arrays.sort(intervals, (i1, i2) -> Integer.compare(i1[0], i2[0]));
+        int[] node = intervals[0];
+        for(int i = 1; i < intervals.length; ++i){
+            if(node[1] < intervals[i][0]){
+                res.add(node);
+                node = intervals[i];
+            }else {
+                node[1] = Math.max(node[1], intervals[i][1]);
+            }
+        }
+        res.add(node);
+        return res.toArray(new int[res.size()][]);
+    }
+
 
 }
