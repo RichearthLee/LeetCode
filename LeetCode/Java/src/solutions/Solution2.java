@@ -345,5 +345,55 @@ public class Solution2 {
         return res.toArray(new int[res.size()][]);
     }
 
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        List<int []> res = new ArrayList<>();
+        if(intervals.length < 1){
+            res.add(newInterval);
+            return res.toArray(new int[res.size()][]);
+        }
+        int[] node = new int[2];
+        boolean flag = false;
+        node[0] = Integer.MAX_VALUE;
+        node[1] = Integer.MIN_VALUE;
+        for(int i = 0 ; i < intervals.length ; ++i){
+            if(intervals[i][1] < newInterval[0]) {
+                res.add(intervals[i]);
+            }else if(intervals[i][0] > newInterval[1]){
+                if(flag){
+                    res.add(node);
+                    flag = false;
+                }
+                res.add(intervals[i]);
+            }else {
+//                if(intervals[i][0] > newInterval[0]) {
+////                    node[0] = newInterval[0];
+////                }else if(intervals[i][0] < newInterval[0]){
+////                    node[0] = intervals[i][0];
+////                }else if(intervals[i][1] > newInterval[1]){
+////                    node[1] = intervals[i][1];
+////                }else if(intervals[i][1] < newInterval[1]){
+////                    node[1] = newInterval[1];
+////                }
+                node[0] = Math.min(newInterval[0], intervals[i][0]) < node[0]
+                        ? Math.min(newInterval[0], intervals[i][0]) : node[0];
+                node[1] = Math.max(newInterval[1], intervals[i][1]) > node[1]
+                        ? Math.max(newInterval[1], intervals[i][1]) : node[1];
+                flag = true;
+            }
+        }
+        if(flag){
+            res.add(node);
+        }
+        if(node[0] == Integer.MAX_VALUE){
+            for(int i = 0; i <= intervals.length ; ++i){
+                if(i == intervals.length || newInterval[0] < intervals[i][1]){
+                    res.add(i,newInterval);
+                    break;
+                }
+            }
+        }
+        return res.toArray(new int[res.size()][]);
+    }
+
 
 }

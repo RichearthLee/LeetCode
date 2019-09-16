@@ -45,12 +45,21 @@ public class MainAPP {
 //        root1.right = new TreeNode(1);
 //        root2.right = new TreeNode(1);
 //        root2.left = new TreeNode(1);
-        int[][] matrix = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+        //int[][] matrix = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
         //int[][] matrix = {{1}};
         //int[][] matrix = {{1,2,3},{4,5,6},{7,8,9}};
-        List<Integer> res = s2.spiralOrder(matrix);
+//        int[][] a1 = {1,5};
+//        int[] a2 = {2,3};
+        int[][] a1 = {{1,5}};
+        int[] a2 = {6,8};
+        int[][] res = s2.insert(a1, a2);
 
-        System.out.println(res);
+        for (int[] l : res) {
+            for (int a : l) {
+                System.out.print(a+"\t");
+            }
+            System.out.println();
+        }
 
 
 

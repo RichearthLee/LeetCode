@@ -146,8 +146,10 @@ public class TestMethod {
 		res[0] = a;
 		System.out.println(res[0][0]);
 
-		List<Integer> li = new ArrayList<>();
-		li.toArray();
+		int[][] t1 = new int[0][0];
+		System.out.println(t1.toString());
+		t1[0][0] = 1;
+		System.out.println(t1[0][0]);
 	}
 
 }
