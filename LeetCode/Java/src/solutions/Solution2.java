@@ -395,5 +395,28 @@ public class Solution2 {
         return res.toArray(new int[res.size()][]);
     }
 
+    /**
+     * 58. Length of Last Word
+     * @param s
+     * @return
+     */
+    public int lengthOfLastWord_v1(String s) {
+
+
+        String[] res = s.split(" ");
+        if (res.length == 0){
+            return 0;
+        }
+        String word = res[res.length-1];
+        int len = word.length();
+        //return s.split(" ")[s.split(" ").length == 0 ? 0 : s.split(" ").length-1].length();
+        return len;
+    }
+
+    public int lengthOfLastWord(String s) {
+        return s.trim().length()-s.trim().lastIndexOf(" ")-1;
+    }
+
+
 
 }

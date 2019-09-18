@@ -49,17 +49,18 @@ public class MainAPP {
         //int[][] matrix = {{1}};
         //int[][] matrix = {{1,2,3},{4,5,6},{7,8,9}};
 //        int[][] a1 = {1,5};
-//        int[] a2 = {2,3};
-        int[][] a1 = {{1,5}};
-        int[] a2 = {6,8};
-        int[][] res = s2.insert(a1, a2);
-
-        for (int[] l : res) {
-            for (int a : l) {
-                System.out.print(a+"\t");
-            }
-            System.out.println();
-        }
+////        int[] a2 = {2,3};
+//        int[][] a1 = {{1,5}};
+//        int[] a2 = {6,8};
+//        int[][] res = s2.insert(a1, a2);
+//
+//        for (int[] l : res) {
+//            for (int a : l) {
+//                System.out.print(a+"\t");
+//            }
+//            System.out.println();
+//        }
+        s2.lengthOfLastWord("a ");
 
 
 
