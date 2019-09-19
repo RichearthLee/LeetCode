@@ -469,5 +469,70 @@ public class Solution2 {
         return res;
     }
 
+    /**
+     * 60. Permutation Sequence
+     * @param n
+     * @param k
+     * @return
+     */
+    public String getPermutation_v1(int n, int k) {
+        ArrayList<String> res = new ArrayList<>();
+        LinkedList<Integer> num = new LinkedList<>();
+        for (int i = 1 ; i <= n ; i++){
+            num.add(i);
+        }
+        recursionPermute(res, num , "");
+        return res.get(k-1);
+    }
+
+    private void recursionPermute(ArrayList<String> res, LinkedList<Integer> num, String s){
+        if (num.size() == 0){
+            res.add(s);
+            return;
+        }
+        for(int i = 0 ; i < num.size() ; ++i){
+            int n  = num.remove(i);
+            recursionPermute(res, num, s+""+n);
+            num.add(i, n);
+        }
+
+    }
+
+    public String getPermutation(int n, int k) {
+        String res = "";
+        LinkedList<Integer> num = new LinkedList<>();
+        for (int i = 1 ; i <= n ; i++){
+            num.add(i);
+        }
+        //k--;
+        for(int i = 1 ; i <= n ; ++i){
+            int fa = factorial(n-i);
+//            int fa = new Integer()->{
+//                int r = 1;
+//                for (int j = 1 ; j <= n ; ++j){
+//                    r = r * j;
+//                }
+//                return r;
+//            };
+            int m = k / fa;
+            if(k % fa == 0){
+                k = fa;
+                m = m - 1;
+            }else {
+                k = k % fa;
+            }
+            res += num.remove(m);
+        }
+        return res;
+    }
+
+    private int factorial(int n){
+        int res = 1;
+        for (int i = 1 ; i <= n ; ++i){
+            res = res * i;
+        }
+        return res;
+    }
+
 
 }

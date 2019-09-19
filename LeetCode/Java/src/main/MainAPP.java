@@ -61,13 +61,15 @@ public class MainAPP {
 //            System.out.println();
 //        }
         //s2.lengthOfLastWord("a ");
-        int[][] res = s2.generateMatrix(3);
-        for (int[] arr : res) {
-            for (int n : arr) {
-                System.out.print(n);
-            }
-            System.out.println();
-        }
+//        int[][] res = s2.generateMatrix(3);
+//        for (int[] arr : res) {
+//            for (int n : arr) {
+//                System.out.print(n);
+//            }
+//            System.out.println();
+//        }
+        //System.out.println(s2.getPermutation(9,62716));
+        System.out.println(s2.getPermutation(4,9));
 
 
     }
