@@ -417,6 +417,57 @@ public class Solution2 {
         return s.trim().length()-s.trim().lastIndexOf(" ")-1;
     }
 
+    /**
+     * 59. Spiral Matrix II
+     * @param n
+     * @return int[][]
+     */
+    public int[][] generateMatrix(int n) {
+        int[][] res = new int[n][n];
+        int cur = 1;
+        int i = 0;
+        int j = 0;
+        int f = 0;
+        while (cur <= n*n){
+            res[i][j] = cur;
+            cur++;
+            switch (f){
+                case 0:
+                    if(j < n -1 && res[i][j+1] == 0){
+                        j++;
+                    }else {
+                        f = 1;
+                        i++;
+                    }
+                    break;
+                case 1:
+                    if(i < n-1 && res[i+1][j] == 0){
+                        i++;
+                    }else {
+                        f = 2;
+                        j--;
+                    }
+                    break;
+                case 2:
+                    if(j > 0 && res[i][j-1] == 0){
+                        j--;
+                    }else {
+                        f = 3;
+                        i--;
+                    }
+                    break;
+                case 3:
+                    if(i > 0 && res[i-1][j] == 0){
+                        i--;
+                    }else {
+                        f = 0;
+                        j++;
+                    }
+                    break;
+            }
+        }
+        return res;
+    }
 
 
 }

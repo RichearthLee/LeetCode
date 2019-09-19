@@ -60,9 +60,14 @@ public class MainAPP {
 //            }
 //            System.out.println();
 //        }
-        s2.lengthOfLastWord("a ");
-
-
+        //s2.lengthOfLastWord("a ");
+        int[][] res = s2.generateMatrix(3);
+        for (int[] arr : res) {
+            for (int n : arr) {
+                System.out.print(n);
+            }
+            System.out.println();
+        }
 
 
     }
