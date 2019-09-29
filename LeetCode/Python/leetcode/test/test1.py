@@ -22,18 +22,38 @@ def addone(n: int):
 import time
 
 
-def printnums(n):
-    while True:
-        print(n)
-        # time.sleep(1)
+# def printnums(n):
+#     while True:
+#         print(n)
+#         # time.sleep(1)
+#
+# from concurrent.futures import ThreadPoolExecutor
+#
+# t = ThreadPoolExecutor(max_workers=4)
+# for i in range(2):
+#     t.submit(printnums, (i))
 
-from concurrent.futures import ThreadPoolExecutor
 
-t = ThreadPoolExecutor(max_workers=4)
-for i in range(2):
-    t.submit(printnums, (i))
+# import re
+# s = "www.123.com?nuW=1"
+# index = re.search("www", s)
+# index.span()
+# print(index.span()[0])
+# try:
+#     print(s[0:index.span()[0]])
+# except Exception as e:
+#     print("error")
 
+#生成一个字典
+# d = {'name': 'Tom', 'age': 10, 'Tel': 110}
+# # print(d['name'])
+# # print('name' in d.keys())
 
+# from redis import Redis
+#
+# conn = Redis(host="9.110.84.27", port="6379", password="dbadmin", db=0)
+# res = conn.hget("ai.baidu.com", "title")
+# print(res.decode(encoding="utf-8"))
 
 
 
