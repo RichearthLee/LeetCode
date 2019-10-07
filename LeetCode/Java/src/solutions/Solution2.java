@@ -1,5 +1,6 @@
 package solutions;
 
+import utility.ListNode;
 import utility.TreeNode;
 
 import java.lang.reflect.Array;
@@ -533,6 +534,19 @@ public class Solution2 {
         }
         return res;
     }
+
+    /**
+     *
+     */
+    public ListNode rotateRight(ListNode head, int k) {
+        ListNode cur = head;
+        while (cur.next != null){
+            
+        }
+        return null;
+    }
+
+
 
 
 }
