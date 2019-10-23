@@ -2,7 +2,6 @@ package t1;
 
 import java.util.ArrayList;
 
-import T19_Solution_1;
 
 /**
  * @author yukunlee

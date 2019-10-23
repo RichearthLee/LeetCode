@@ -1,6 +1,5 @@
 package t1;
 
-import T23_Solution;
 
 import java.util.ArrayList;
 import java.util.HashSet;

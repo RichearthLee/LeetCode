@@ -1,6 +1,5 @@
 package t1;
 
-import T21_Solution_1;
 
 
 /**

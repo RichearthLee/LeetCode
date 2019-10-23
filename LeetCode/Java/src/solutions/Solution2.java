@@ -545,6 +545,148 @@ public class Solution2 {
         }
         return null;
     }
+    
+    /** 
+     * @description: Unique Paths II
+     * @param: [obstacleGrid] 
+     * @return: int 
+     * @author: Yukun Lee 
+     * @date: 2019-10-15 
+     */ 
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        if(obstacleGrid == null || obstacleGrid.length == 0 || obstacleGrid[0].length==0){
+            return 0;
+        }
+        int[] res = new int[obstacleGrid[0].length];
+        res[0]=1;
+        for(int i = 0 ; i < obstacleGrid.length ; i++){
+            for(int j = 0 ; j < obstacleGrid[0].length ; ++j){
+                if(obstacleGrid[i][j] != 1){
+                    res[j] = (j > 0 ? res[j-1]:0) + res[j];
+                }else {
+                    res[j] = 0;
+                }
+            }
+        }
+        return res[obstacleGrid[0].length-1];
+    }
+
+    /**
+     * 64. Minimum Path Sum
+     * @param grid
+     * @return
+     */
+    public int minPathSum(int[][] grid) {
+        for(int i = 0 ; i < grid.length ; ++i){
+            for(int j = 0 ; j < grid[0].length ; ++j){
+                if(i==0 && j ==0) continue;
+                grid[i][j] =
+                        Math.min(j>0?grid[i][j-1]:Integer.MAX_VALUE, i>0?grid[i-1][j]:Integer.MAX_VALUE)
+                                + grid[i][j];
+            }
+        }
+        return grid[grid.length-1][grid[0].length-1];
+    }
+
+    /**
+     * 66. Plus One
+     * @param digits
+     * @return
+     */
+    public int[] plusOne(int[] digits) {
+        if(digits == null||digits.length <= 0){
+            return digits;
+        }
+        for(int i = digits.length-1 ; i >= 0 ; --i){
+            if(digits[i]<9){
+                digits[i]++;
+                return digits;
+            }
+            else {
+                digits[i]=0;
+            }
+        }
+        int[] res = new int[digits.length+1];
+        res[0] = 1;
+        return res;
+    }
+
+    public String addBinary(String a, String b) {
+        if(a == null||a.length() <= 0){
+            return b;
+        }
+        if(b == null||b.length() <= 0){
+            return a;
+        }
+
+        char[] c1 = a.toCharArray();
+        char[] c2 = b.toCharArray();
+        int n1 = 0;
+        int n2 = 0;
+        for (int i = 0 ; i < c1.length ; ++i){
+            n1 += Math.pow(2,c1.length-i-1) * (c1[i]-'0');
+        }
+        for (int i = 0 ; i < c2.length ; ++i){
+            n2 += Math.pow(2,c2.length-i-1) * (c2[i]-'0');
+        }
+        return Integer.toBinaryString(n1+n2);
+    }
+
+    public String addBinary_1(String a, String b){
+        if(a == null||a.length() <= 0){
+            return b;
+        }
+        if(b == null||b.length() <= 0){
+            return a;
+        }
+        char[] n1;
+        char[] n2;
+        boolean f = false;
+        if(a.length() >= b.length()){
+            n1 = a.toCharArray();
+            n2 = b.toCharArray();
+        }else {
+            n2 = a.toCharArray();
+            n1 = b.toCharArray();
+        }
+        for(int i = n2.length-1 ; i >= 0; --i){
+            if(n2[i] == '1'){
+                for(int j = n1.length - (n2.length-i); j >= 0 ; --j){
+                    if(n1[j] == '0'){
+                        n1[j] = '1';
+                        break;
+                    }else {
+                        n1[j] = '0';
+                        if(j == 0){
+                            f = true;
+                        }
+                    }
+                }
+            }
+        }
+        return f ? "1"+new String(n1) : new String(n1);
+    }
+
+    /**
+     * 69. Sqrt(x)
+     * Y = f(x0) + f'(x0)(x-x0)
+     * Y = f(x0)-f'(x0)x0 +f'(x0)x
+     * x = (f(x0)-f'(x0)x0) /f'(x0)
+     * X = (x0^2 - 2*x0*x0)/2x0
+     * x = -x0 / 2
+     * @param x
+     * @return
+     */
+    public int mySqrt(int x) {
+        int res = 0;
+        double mid = x;
+        while(res != (int) mid){
+            res = (int)mid;
+            mid = mid -(mid*mid - x)/(2*mid);
+            System.out.println(mid);
+        }
+        return res;
+    }
 
 
 

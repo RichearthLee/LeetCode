@@ -1,6 +1,5 @@
 package t1;
 
-import T24_Solution;
 
 import java.util.HashSet;
 import java.util.Set;

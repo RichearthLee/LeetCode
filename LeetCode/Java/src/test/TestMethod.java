@@ -9,7 +9,7 @@ public class TestMethod {
 //		int[][] arr={{1,2,8,9},{2,4,9,12},{4,7,10,13},{6,8,11,15}};
 //		System.out.println(Find(16,arr));
 		TestMethod tm = new TestMethod();
-		tm.testIntArray();
+		tm.mySqrt(11);
          
 	}
 	 public static boolean Find(int target, int [][] array) {
@@ -144,5 +144,25 @@ public class TestMethod {
 		String[] a = new String[0];
 		a[-1].length();
 	}
+
+	public void intdouble(){
+		int a = 1;
+		double b = 1.0;
+		double c = 1.5;
+		System.out.println(a);
+		System.out.println(b);
+		System.out.println(a==b);
+		System.out.println(1==Math.floor(c));
+	}
+
+	public double mySqrt(int x) {
+		double mid = x;
+		while(mid*mid > x){
+			mid = mid -(mid*mid - x)/(2*mid);
+			System.out.println(mid);
+		}
+		return mid;
+	}
+
 
 }

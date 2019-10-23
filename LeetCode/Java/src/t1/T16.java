@@ -1,6 +1,5 @@
 package t1;
 
-import T16_Solution;
 
 public class T16 {
 /*

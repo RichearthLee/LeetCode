@@ -1,7 +1,5 @@
 package t1;
 
-import T49_Solution;
-import T50_Solution;
 
 public class T48_test {
 

@@ -1,6 +1,5 @@
 package t1;
 
-import T18_Solution;
 
 /**
  * @author heave
