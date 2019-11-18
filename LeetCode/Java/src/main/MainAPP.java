@@ -69,7 +69,9 @@ public class MainAPP {
 //            System.out.println();
 //        }
         //System.out.println(s2.getPermutation(9,62716));
-        System.out.println(s2.mySqrt(4));
+//        System.out.println();
+//        s2.equation(3,2,8);
+        s2.simplifyPath("/////./////.");
 
 
     }

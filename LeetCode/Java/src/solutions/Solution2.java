@@ -688,6 +688,102 @@ public class Solution2 {
         return res;
     }
 
+    /**
+     * 北交考试题
+     * @param n
+     * @return
+     */
+    public long getScore(int n) {
+        long res = 0;
+        List<Integer> arr = new LinkedList<>();
+        for(int i = 1; i <= n ; ++i){
+            arr.add(i);
+        }
+        for(int i = 1 ; i <= n ; ++i){
+            if(arr.isEmpty()){
+                break;
+            }else {
+                res += arr.remove(0) % i;
+            }
+            if(arr.isEmpty()){
+                break;
+            }else {
+                arr.add(arr.remove(0));
+            }
+        }
+        return res;
+    }
+
+    public void equation(int a, int b, int c){
+        List<Integer> res = new ArrayList<>();
+        for(int x = c ; x < 99999999 ; x++){
+            int num = 0;
+            int m = x;
+            while (m > 0){
+                num += m % 10;
+                m = m/10;
+            }
+//            if(x == (b*Math.pow(num,a)+c)){
+//                res.add(x);
+//            }
+            m = x - c;
+            if(m % b == 0){
+                m = m / b;
+                if(Math.pow(num,a) == m){
+                    res.add(x);
+                }
+            }
+        }
+        System.out.println(res.size());
+        for(int i = 0 ; i < res.size() ;++i){
+            System.out.print(res.get(i)+" ");
+        }
+    }
+    private int getSum(int x){
+        int res = 0;
+        while (x > 0){
+            res += x % 10;
+            x = x/10;
+        }
+        return res;
+    }
+
+    public int climbStairs(int n) {
+        if(n <= 0)return 0;
+        int n1 = 1, n2 = 2, n3;
+        if(n == 1)return 1;
+        for(int i = 2 ; i < n ; i++){
+            n3 = n1 + n2;
+            n1 = n2;
+            n2 = n3;
+        }
+        return n2;
+    }
+
+    public String simplifyPath_v1(String path) {
+        String res = "";
+        //Stack<String> st = new Stack<>();
+        String[] arr = path.split("/");
+        int f = 0;
+        for(int i = arr.length-1 ; i >= 0 ; --i){
+            if(arr[i].equals("..")){
+                f += 1;
+            }else if(!arr[i].equals(".") && !arr[i].equals("")){
+                if(f == 0){
+                    res = "/"+ arr[i] + res;
+                }else {
+                    f -= 1;
+                }
+            }
+        }
+        if(res.equals(""))return "/";
+        return res;
+    }
+
+    
+
+
+
 
 
 
