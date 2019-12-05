@@ -828,6 +828,49 @@ public class Solution2 {
 
     }
 
+    public boolean searchMatrix_v1(int[][] matrix, int target) {
+        if(matrix.length <= 0 || matrix[0].length <= 0) return false;
+        int start = 0,end = matrix.length -1;
+        while (start <= end){
+            int mid = (start + end)/2;
+            if(matrix[mid][0] == target)return true;
+            else if(matrix[mid][0] > target) {
+                end = mid - 1;
+            }else {
+                start = mid + 1;
+            }
+        }
+        if(end < 0) return false;
+        int i = end;
+        start = 0; end = matrix[0].length -1;
+        while (start <= end){
+            int mid = (start + end)/2;
+            if(matrix[i][mid] == target)return true;
+            else if (matrix[i][mid] > target){
+                end = mid - 1;
+            }else {
+                start = mid + 1;
+            }
+        }
+        return false;
+    }
+
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if(matrix.length <= 0 || matrix[0].length <= 0) return false;
+        int start = 0,end = matrix.length * matrix[0].length -1;
+        while(start <= end){
+            int mid = (start + end) >> 1;
+            if(matrix[mid / matrix[0].length][mid % matrix[0].length] == target){
+                return true;
+            }else if(matrix[mid / matrix[0].length][mid % matrix[0].length] > target){
+                    end = mid - 1;
+            }else {
+                start = mid + 1;
+            }
+        }
+        return false;
+    }
+
 
 
 
