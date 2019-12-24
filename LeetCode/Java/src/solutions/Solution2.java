@@ -1160,6 +1160,26 @@ public class Solution2 {
         return false;
     }
 
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) return null;
+        ListNode dump = new ListNode(Integer.MIN_VALUE);
+        dump.next = head;
+        ListNode cur = dump, post = head;
+        while(post != null){
+                while(post != null && cur.next.val == post.val) {
+                    post = post.next;
+                }
+                if(cur.next == post){
+                    cur = cur.next;
+                }else {
+                    cur.next = post;
+                }
+                if(post!=null)
+                post = post.next;
+            }
+        return dump.next;
+    }
+
 
 
 
