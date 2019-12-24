@@ -871,6 +871,299 @@ public class Solution2 {
         return false;
     }
 
+    public void sortColors_v1(int[] nums) {
+        int l = 0, r = nums.length-1,flag = 1;
+        while(l < r){
+            if(nums[l] == 0){
+                l++;
+            }else if(nums[r] == 2){
+                r--;
+            }else if(nums[l] > nums[r]){
+                int mid = nums[l];
+                nums[l] = nums[r];
+                nums[r] = mid;
+            }else if(nums[l] == 1 && nums[r] == 1){
+                flag = 1;
+                for(int i = l ; i < r ; ++i){
+                    int mid = nums[i];
+                    if(nums[i] == 0){
+                        nums[i] = nums[l];
+                        nums[l] = mid;
+                        flag = 0;
+                        break;
+                    }else if(nums[i] == 2){
+                        nums[i] = nums[r];
+                        nums[r] = mid;
+                        flag = 0;
+                        break;
+                    }
+                }
+                if(flag == 1){
+                    return;
+                }
+            }
+        }
+    }
+
+
+    public void sortColors(int[] nums) {
+        int l = 0, r = nums.length-1;
+        for(int i = 0 ; i <= r ; i++){
+
+            if(nums[i] == 2){
+                int mid = nums[i];
+                if(nums[r] == 2) r--;
+                nums[i] = nums[r];
+                nums[r] = mid;
+                r--;
+            }
+            if(nums[i] == 0){
+                int mid = nums[i];
+                if(nums[l] == 0) l++;
+                nums[i] = nums[l];
+                nums[l] = mid;
+                l++;
+            }
+        }
+    }
+
+    public void sortColors(int A[], int n){
+        int n0 = -1, n1 = -1, n2 = -1;
+        for (int i = 0; i < n; ++i) {
+            if (A[i] == 0)
+            {
+                A[++n2] = 2; A[++n1] = 1; A[++n0] = 0;
+            }
+            else if (A[i] == 1)
+            {
+                A[++n2] = 2; A[++n1] = 1;
+            }
+            else if (A[i] == 2)
+            {
+                A[++n2] = 2;
+            }
+        }
+    }
+
+    /**
+     * Given two integers n and k, return all possible combinations of k numbers out of 1 ... n.
+     * @param n
+     * @param k
+     * @return
+     */
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> result = new LinkedList<>();
+        recursion(1, n ,k, new LinkedList<>(), result);
+        return result;
+    }
+
+    public void recursion(int s, int n, int k, LinkedList<Integer> mid, List<List<Integer>> result){
+        if(k == 0){
+            result.add(new LinkedList<>(mid));
+            return;
+        }
+        for(int i = s ; i <= n ; ++i){
+            mid.add(i);
+            recursion(i+1, n ,k-1, mid,result);
+            mid.pollLast();
+        }
+    }
+
+
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        for(int i = 0 ; i <= nums.length ; i++){
+            subsets_insert(nums,0, i, new LinkedList<>(), result);
+        }
+        return result;
+    }
+
+    public void subsets_insert(int[] nums,int s, int k, LinkedList<Integer> mid, List<List<Integer>> result){
+        if(k == 0){
+            result.add(new ArrayList<>(mid));
+            return;
+        }
+        for(int i = s ; i < nums.length ;++i){
+            mid.add(nums[i]);
+            subsets_insert(nums, i+1,k-1, mid, result);
+            mid.pollLast();
+        }
+
+    }
+    
+    /** 
+     * @description:  
+     * @param: [board, word] 
+     * @return: boolean
+     * @author: Yukun Lee 
+     * @date: 2019-12-17 
+     */ 
+    public boolean exist_v1(char[][] board, String word) {
+        char[] arr = word.toCharArray();
+        Map<Character, Integer> map = new HashMap<>();
+        for(char c: arr){
+            if(map.containsKey(c)){
+                map.put(c,map.get(c)+1);
+            }else {
+                map.put(c,1);
+            }
+        }
+        for (int i = 0 ; i < board.length ; ++i){
+            for(int j = 0 ; j < board[0].length ; ++j){
+                if(map.containsKey(board[i][j])){
+                    Map<Character, Integer> mid = new HashMap<>(map);
+                    mid.put(board[i][j], mid.get(board[i][j])-1);
+                    while(mid.containsKey(board[i+1][j])){
+                        if (mid.containsKey(board[i+1][j])){
+                        }else if (mid.containsKey(board[i][j+1])){
+
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean exist(char[][] board, String word) {
+        List<Character> w = new LinkedList<>();
+        for(int i = 0 ; i < word.length() ; ++i){
+            w.add(word.charAt(i));
+        }
+        for(int i = 0 ; i < board.length ; ++i){
+            for(int j = 0 ; j < board[0].length ; ++j){
+                if(w.get(0) == board[i][j]){
+                    char a = board[i][j];
+                    w.remove(0);
+                    board[i][j] = 0;
+                    if(exist_recursion(board,w,i,j)) return true;
+                    w.add(0,a);
+                    board[i][j] = a;
+                }
+            }
+        }
+
+        return false;
+    }
+    private boolean exist_recursion(char[][] board, List<Character> w, int i, int j){
+        if(w.size() == 0){
+            return true;
+        }
+        if(j > 0 && w.get(0)==board[i][j-1]){
+            char a = board[i][j-1];
+            w.remove(0);
+            board[i][j-1] = 0;
+            if (exist_recursion(board,w,i,j-1)) return true;
+            w.add(0,a);
+            board[i][j-1] = a;
+        }
+        if(j < board[0].length-1 && w.get(0)==board[i][j+1]){
+            char a = board[i][j+1];
+            w.remove(0);
+            board[i][j+1] = 0;
+            if(exist_recursion(board,w,i,j+1)) return true;
+            w.add(0,a);
+            board[i][j+1] = a;
+        }
+        if(i < board.length -1 && w.get(0)==board[i+1][j]){
+            char a = board[i+1][j];
+            board[i+1][j] = 0;
+            w.remove(0);
+            if(exist_recursion(board,w,i+1,j)) return true;
+            w.add(0,a);
+            board[i+1][j] = a;
+        }
+        if(i > 0 && w.get(0) == board[i-1][j]){
+            char a = board[i-1][j];
+            board[i-1][j] = 0;
+            w.remove(0);
+            if (exist_recursion(board,w,i-1,j)) return true;
+            w.add(0,a);
+            board[i-1][j] = a;
+        }
+        return false;
+    }
+
+    public int removeDuplicates_v1(int[] nums) {
+        int len = 0;
+        Map<Integer,Integer> map = new HashMap<>();
+        for(int i = 0 ; i < nums.length ; i++){
+            if(map.containsKey(nums[i])){
+                if(map.get(nums[i]) > 2) continue;
+                map.put(nums[i],map.get(nums[i])+1);
+                len++;
+            }else {
+                map.put(nums[i],1);
+                len++;
+            }
+        }
+        return len;
+    }
+
+    public int removeDuplicates(int[] nums) {
+        int i = 0;
+        for(int n : nums){
+            if(i < 2 || n > nums[i-2]){
+                nums[i++] = n;
+            }
+        }
+        return i;
+    }
+    
+    /** 
+     * @description:  
+     * @param: [nums, target] 
+     * @return: boolean 
+     * @author: Yukun Lee 
+     * @date: 2019-12-24 
+     */ 
+    public boolean search_v1(int[] nums, int target) {
+        int left = 0 , right = nums.length-1;
+        while(left < right){
+            int mid = (right + left) >> 1;
+            if(nums[mid] >= nums[right]){
+                left = mid + 1;
+            }else{
+                right = mid;
+            }
+        }
+        int offset = left;
+        left = 0 ;right = nums.length-1;
+        while (left <= right){
+            int mid = (left + right)>>1;
+            int realmid = (mid + offset)%nums.length;
+            if(nums[realmid] > target){
+                right = mid - 1;
+            }else if(nums[realmid] < target){
+                left = mid + 1;
+            }else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean search(int[] nums, int target) {
+        int left = 0 , right = nums.length-1;
+        while(left <= right){
+            int mid = (left + right)>>1;
+            if(nums[mid] == target) return true;
+            if(nums[mid] == nums[left] && nums[right] == nums[mid]){ left++; right--;}
+            else if(nums[left] <= nums[mid]){
+                if(target < nums[mid] && target >= nums[left]) right = mid - 1;
+                else left = mid + 1;
+            }else {
+                if(target > nums[mid] && nums[right] >= target) left = mid + 1;
+                else right = mid -1;
+            }
+        }
+        return false;
+    }
+
+
+
+
+
 
 
 

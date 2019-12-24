@@ -71,7 +71,16 @@ public class MainAPP {
         //System.out.println(s2.getPermutation(9,62716));
 //        System.out.println();
 //        s2.equation(3,2,8);
-        s2.simplifyPath("/////./////.");
+        //char[][] c = {{'a','a'}};
+//        char[][] c = {{'a','b'},{'c','d'}};
+//        s2.exist(c,"abcd");
+
+        int[] arr = {1,1,1,2,2,3};
+        s2.removeDuplicates(arr);
+        for(int n : arr){
+            System.out.println(n);
+        }
+
 
 
     }
