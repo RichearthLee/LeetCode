@@ -794,6 +794,503 @@ public class Solution2 {
         return dp[0][0];
     }
 
+     * 北交考试题
+     * @param n
+     * @return
+     */
+    public long getScore(int n) {
+        long res = 0;
+        List<Integer> arr = new LinkedList<>();
+        for(int i = 1; i <= n ; ++i){
+            arr.add(i);
+        }
+        for(int i = 1 ; i <= n ; ++i){
+            if(arr.isEmpty()){
+                break;
+            }else {
+                res += arr.remove(0) % i;
+            }
+            if(arr.isEmpty()){
+                break;
+            }else {
+                arr.add(arr.remove(0));
+            }
+        }
+        return res;
+    }
+
+    public void equation(int a, int b, int c){
+        List<Integer> res = new ArrayList<>();
+        for(int x = c ; x < 99999999 ; x++){
+            int num = 0;
+            int m = x;
+            while (m > 0){
+                num += m % 10;
+                m = m/10;
+            }
+//            if(x == (b*Math.pow(num,a)+c)){
+//                res.add(x);
+//            }
+            m = x - c;
+            if(m % b == 0){
+                m = m / b;
+                if(Math.pow(num,a) == m){
+                    res.add(x);
+                }
+            }
+        }
+        System.out.println(res.size());
+        for(int i = 0 ; i < res.size() ;++i){
+            System.out.print(res.get(i)+" ");
+        }
+    }
+    private int getSum(int x){
+        int res = 0;
+        while (x > 0){
+            res += x % 10;
+            x = x/10;
+        }
+        return res;
+    }
+
+    public int climbStairs(int n) {
+        if(n <= 0)return 0;
+        int n1 = 1, n2 = 2, n3;
+        if(n == 1)return 1;
+        for(int i = 2 ; i < n ; i++){
+            n3 = n1 + n2;
+            n1 = n2;
+            n2 = n3;
+        }
+        return n2;
+    }
+
+    public String simplifyPath_v1(String path) {
+        String res = "";
+        //Stack<String> st = new Stack<>();
+        String[] arr = path.split("/");
+        int f = 0;
+        for(int i = arr.length-1 ; i >= 0 ; --i){
+            if(arr[i].equals("..")){
+                f += 1;
+            }else if(!arr[i].equals(".") && !arr[i].equals("")){
+                if(f == 0){
+                    res = "/"+ arr[i] + res;
+                }else {
+                    f -= 1;
+                }
+            }
+        }
+        if(res.equals(""))return "/";
+        return res;
+    }
+
+    /**
+     * 73. Set Matrix Zeroes
+     * @param matrix
+     */
+    public void setZeroes_v1(int[][] matrix) {
+        int[] row = new int[matrix.length];
+        int[] col = new int[matrix[0].length];
+        for(int i = 0 ; i < matrix.length ; ++i){
+            for(int j = 0 ; j < matrix[0].length ; ++j){
+                if(matrix[i][j] == 0){
+                    row[i] = 1;
+                    col[j] = 1;
+                }
+            }
+        }
+        for(int i = 0 ; i < matrix.length ; ++i){
+            for(int j = 0 ; j < matrix[0].length ; ++j){
+                if(row[i] == 1){
+                    matrix[i][j] = 0;
+                }
+                if(col[j] == 1){
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+    }
+
+    public void setZeroes(int[][] matrix) {
+        boolean col0 = false;
+        for(int i = 0 ; i < matrix.length ; ++i){
+            if(matrix[i][0]==0) col0 = true;
+            for(int j = 1 ; j < matrix[0].length ; ++j){
+                if(matrix[i][j] == 0){
+                    matrix[i][0] = matrix[0][j] = 0;
+                }
+            }
+        }
+        for(int i = matrix.length - 1 ; i >=0 ; --i){
+            for(int j = matrix[0].length - 1 ; j > 0; --j){
+                if(matrix[i][0] == 0 || matrix[0][j] == 0){
+                    matrix[i][j] = 0;
+                }
+            }
+            if(col0) matrix[i][0] = 0;
+        }
+
+    }
+
+    public boolean searchMatrix_v1(int[][] matrix, int target) {
+        if(matrix.length <= 0 || matrix[0].length <= 0) return false;
+        int start = 0,end = matrix.length -1;
+        while (start <= end){
+            int mid = (start + end)/2;
+            if(matrix[mid][0] == target)return true;
+            else if(matrix[mid][0] > target) {
+                end = mid - 1;
+            }else {
+                start = mid + 1;
+            }
+        }
+        if(end < 0) return false;
+        int i = end;
+        start = 0; end = matrix[0].length -1;
+        while (start <= end){
+            int mid = (start + end)/2;
+            if(matrix[i][mid] == target)return true;
+            else if (matrix[i][mid] > target){
+                end = mid - 1;
+            }else {
+                start = mid + 1;
+            }
+        }
+        return false;
+    }
+
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if(matrix.length <= 0 || matrix[0].length <= 0) return false;
+        int start = 0,end = matrix.length * matrix[0].length -1;
+        while(start <= end){
+            int mid = (start + end) >> 1;
+            if(matrix[mid / matrix[0].length][mid % matrix[0].length] == target){
+                return true;
+            }else if(matrix[mid / matrix[0].length][mid % matrix[0].length] > target){
+                    end = mid - 1;
+            }else {
+                start = mid + 1;
+            }
+        }
+        return false;
+    }
+
+    public void sortColors_v1(int[] nums) {
+        int l = 0, r = nums.length-1,flag = 1;
+        while(l < r){
+            if(nums[l] == 0){
+                l++;
+            }else if(nums[r] == 2){
+                r--;
+            }else if(nums[l] > nums[r]){
+                int mid = nums[l];
+                nums[l] = nums[r];
+                nums[r] = mid;
+            }else if(nums[l] == 1 && nums[r] == 1){
+                flag = 1;
+                for(int i = l ; i < r ; ++i){
+                    int mid = nums[i];
+                    if(nums[i] == 0){
+                        nums[i] = nums[l];
+                        nums[l] = mid;
+                        flag = 0;
+                        break;
+                    }else if(nums[i] == 2){
+                        nums[i] = nums[r];
+                        nums[r] = mid;
+                        flag = 0;
+                        break;
+                    }
+                }
+                if(flag == 1){
+                    return;
+                }
+            }
+        }
+    }
+
+
+    public void sortColors(int[] nums) {
+        int l = 0, r = nums.length-1;
+        for(int i = 0 ; i <= r ; i++){
+
+            if(nums[i] == 2){
+                int mid = nums[i];
+                if(nums[r] == 2) r--;
+                nums[i] = nums[r];
+                nums[r] = mid;
+                r--;
+            }
+            if(nums[i] == 0){
+                int mid = nums[i];
+                if(nums[l] == 0) l++;
+                nums[i] = nums[l];
+                nums[l] = mid;
+                l++;
+            }
+        }
+    }
+
+    public void sortColors(int A[], int n){
+        int n0 = -1, n1 = -1, n2 = -1;
+        for (int i = 0; i < n; ++i) {
+            if (A[i] == 0)
+            {
+                A[++n2] = 2; A[++n1] = 1; A[++n0] = 0;
+            }
+            else if (A[i] == 1)
+            {
+                A[++n2] = 2; A[++n1] = 1;
+            }
+            else if (A[i] == 2)
+            {
+                A[++n2] = 2;
+            }
+        }
+    }
+
+    /**
+     * Given two integers n and k, return all possible combinations of k numbers out of 1 ... n.
+     * @param n
+     * @param k
+     * @return
+     */
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> result = new LinkedList<>();
+        recursion(1, n ,k, new LinkedList<>(), result);
+        return result;
+    }
+
+    public void recursion(int s, int n, int k, LinkedList<Integer> mid, List<List<Integer>> result){
+        if(k == 0){
+            result.add(new LinkedList<>(mid));
+            return;
+        }
+        for(int i = s ; i <= n ; ++i){
+            mid.add(i);
+            recursion(i+1, n ,k-1, mid,result);
+            mid.pollLast();
+        }
+    }
+
+
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        for(int i = 0 ; i <= nums.length ; i++){
+            subsets_insert(nums,0, i, new LinkedList<>(), result);
+        }
+        return result;
+    }
+
+    public void subsets_insert(int[] nums,int s, int k, LinkedList<Integer> mid, List<List<Integer>> result){
+        if(k == 0){
+            result.add(new ArrayList<>(mid));
+            return;
+        }
+        for(int i = s ; i < nums.length ;++i){
+            mid.add(nums[i]);
+            subsets_insert(nums, i+1,k-1, mid, result);
+            mid.pollLast();
+        }
+
+    }
+    
+    /** 
+     * @description:  
+     * @param: [board, word] 
+     * @return: boolean
+     * @author: Yukun Lee 
+     * @date: 2019-12-17 
+     */ 
+    public boolean exist_v1(char[][] board, String word) {
+        char[] arr = word.toCharArray();
+        Map<Character, Integer> map = new HashMap<>();
+        for(char c: arr){
+            if(map.containsKey(c)){
+                map.put(c,map.get(c)+1);
+            }else {
+                map.put(c,1);
+            }
+        }
+        for (int i = 0 ; i < board.length ; ++i){
+            for(int j = 0 ; j < board[0].length ; ++j){
+                if(map.containsKey(board[i][j])){
+                    Map<Character, Integer> mid = new HashMap<>(map);
+                    mid.put(board[i][j], mid.get(board[i][j])-1);
+                    while(mid.containsKey(board[i+1][j])){
+                        if (mid.containsKey(board[i+1][j])){
+                        }else if (mid.containsKey(board[i][j+1])){
+
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean exist(char[][] board, String word) {
+        List<Character> w = new LinkedList<>();
+        for(int i = 0 ; i < word.length() ; ++i){
+            w.add(word.charAt(i));
+        }
+        for(int i = 0 ; i < board.length ; ++i){
+            for(int j = 0 ; j < board[0].length ; ++j){
+                if(w.get(0) == board[i][j]){
+                    char a = board[i][j];
+                    w.remove(0);
+                    board[i][j] = 0;
+                    if(exist_recursion(board,w,i,j)) return true;
+                    w.add(0,a);
+                    board[i][j] = a;
+                }
+            }
+        }
+
+        return false;
+    }
+    private boolean exist_recursion(char[][] board, List<Character> w, int i, int j){
+        if(w.size() == 0){
+            return true;
+        }
+        if(j > 0 && w.get(0)==board[i][j-1]){
+            char a = board[i][j-1];
+            w.remove(0);
+            board[i][j-1] = 0;
+            if (exist_recursion(board,w,i,j-1)) return true;
+            w.add(0,a);
+            board[i][j-1] = a;
+        }
+        if(j < board[0].length-1 && w.get(0)==board[i][j+1]){
+            char a = board[i][j+1];
+            w.remove(0);
+            board[i][j+1] = 0;
+            if(exist_recursion(board,w,i,j+1)) return true;
+            w.add(0,a);
+            board[i][j+1] = a;
+        }
+        if(i < board.length -1 && w.get(0)==board[i+1][j]){
+            char a = board[i+1][j];
+            board[i+1][j] = 0;
+            w.remove(0);
+            if(exist_recursion(board,w,i+1,j)) return true;
+            w.add(0,a);
+            board[i+1][j] = a;
+        }
+        if(i > 0 && w.get(0) == board[i-1][j]){
+            char a = board[i-1][j];
+            board[i-1][j] = 0;
+            w.remove(0);
+            if (exist_recursion(board,w,i-1,j)) return true;
+            w.add(0,a);
+            board[i-1][j] = a;
+        }
+        return false;
+    }
+
+    public int removeDuplicates_v1(int[] nums) {
+        int len = 0;
+        Map<Integer,Integer> map = new HashMap<>();
+        for(int i = 0 ; i < nums.length ; i++){
+            if(map.containsKey(nums[i])){
+                if(map.get(nums[i]) > 2) continue;
+                map.put(nums[i],map.get(nums[i])+1);
+                len++;
+            }else {
+                map.put(nums[i],1);
+                len++;
+            }
+        }
+        return len;
+    }
+
+    public int removeDuplicates(int[] nums) {
+        int i = 0;
+        for(int n : nums){
+            if(i < 2 || n > nums[i-2]){
+                nums[i++] = n;
+            }
+        }
+        return i;
+    }
+    
+    /** 
+     * @description:  
+     * @param: [nums, target] 
+     * @return: boolean 
+     * @author: Yukun Lee 
+     * @date: 2019-12-24 
+     */ 
+    public boolean search_v1(int[] nums, int target) {
+        int left = 0 , right = nums.length-1;
+        while(left < right){
+            int mid = (right + left) >> 1;
+            if(nums[mid] >= nums[right]){
+                left = mid + 1;
+            }else{
+                right = mid;
+            }
+        }
+        int offset = left;
+        left = 0 ;right = nums.length-1;
+        while (left <= right){
+            int mid = (left + right)>>1;
+            int realmid = (mid + offset)%nums.length;
+            if(nums[realmid] > target){
+                right = mid - 1;
+            }else if(nums[realmid] < target){
+                left = mid + 1;
+            }else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean search(int[] nums, int target) {
+        int left = 0 , right = nums.length-1;
+        while(left <= right){
+            int mid = (left + right)>>1;
+            if(nums[mid] == target) return true;
+            if(nums[mid] == nums[left] && nums[right] == nums[mid]){ left++; right--;}
+            else if(nums[left] <= nums[mid]){
+                if(target < nums[mid] && target >= nums[left]) right = mid - 1;
+                else left = mid + 1;
+            }else {
+                if(target > nums[mid] && nums[right] >= target) left = mid + 1;
+                else right = mid -1;
+            }
+        }
+        return false;
+    }
+
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) return null;
+        ListNode dump = new ListNode(Integer.MIN_VALUE);
+        dump.next = head;
+        ListNode cur = dump, post = head;
+        while(post != null){
+                while(post != null && cur.next.val == post.val) {
+                    post = post.next;
+                }
+                if(cur.next == post){
+                    cur = cur.next;
+                }else {
+                    cur.next = post;
+                }
+                if(post!=null)
+                post = post.next;
+            }
+        return dump.next;
+    }
+
+
+
+
+
+
+
 
 
 

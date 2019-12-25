@@ -9,7 +9,7 @@ public class TestMethod {
 //		int[][] arr={{1,2,8,9},{2,4,9,12},{4,7,10,13},{6,8,11,15}};
 //		System.out.println(Find(16,arr));
 		TestMethod tm = new TestMethod();
-		tm.mySqrt(11);
+		tm.divide();
          
 	}
 	 public static boolean Find(int target, int [][] array) {
@@ -162,6 +162,19 @@ public class TestMethod {
 			System.out.println(mid);
 		}
 		return mid;
+	}
+
+	public void split() {
+		String str1 =  "a/b/c";
+		String str2 = "a";
+		str1.split("/");
+		str2.split("/");
+	}
+
+	public void divide() {
+		int a = 0;
+		int b = 0;
+		System.out.println(a/b);
 	}
 
 
