@@ -688,6 +688,114 @@ public class Solution2 {
         return res;
     }
 
+    /**
+     * Problem A. 晴天小猪历险记之Hill
+     * 这一天，他来到了一座深山的山脚下，因为只有这座深山中的一位隐者才知道这种药草的所在。
+     * 但是上山的路错综复杂，由于小小猪的病情，晴天小猪想找一条需时最少的路到达山顶，
+     * 但现在它一头雾水，所以向你求助。
+     * 山用一个三角形表示，从山顶依次向下有1段、2段、3段等山路，
+     * 每一段用一个数字T（1< =T< =100）表示，代表晴天小猪在这一段山路上需要爬的时间，
+     * 每一次它都可以朝左、右、左上、右上四个方向走（注意：在任意一层的第一段也可以走到本层的最后一段或上一层的最后一段）。
+     * 晴天小猪从山的左下角出发，目的地为山顶，即隐者的小屋。
+     * 输入数据
+     * 　　第一行有一个数 n
+     * （ 2≤ n≤ 1000 ），表示山的高度。
+     * 　　从第二行至第 n+1 行，第 i+1 行有 i
+     * 个数，每个数表示晴天小猪在这一段山路上需要爬的时间。
+     * 输出数据
+     * 　　一个数，即晴天小猪所需要的最短时间。
+     * @param
+     * @return
+     */
+    public int hill_v1(int h, int[][] num) {
+        int[][] dp = num;
+        for(int i = num.length-1; i >= 0 ; i--){
+            for(int j = 0 ; j <= i ; ++j){
+                int mindown = 0;
+                int mineq;
+                if(i == num.length-1){
+                    mineq = dp[i][j] = dp[i][j] + j>0?dp[i][j-1]:0;
+                }else {
+
+                    int mineq_ri;
+                    if(j+1>i){
+                        mineq_ri = Math.min(dp[i+1][j+1],dp[i+1][j+2]);
+                        mineq_ri = Math.min(mineq_ri, dp[i+1][i]);
+                    }else if(j+1==i){
+                        mineq_ri = Math.min(dp[i+1][j+1],dp[i+1][j+2]);
+                        mineq_ri = Math.min(mineq_ri, dp[i+1][0]);
+                    }else {
+                        mineq_ri = Math.min(dp[i+1][j+1],dp[i+1][j+2]);
+                    }
+                    mineq = Math.min(j==0?dp[i][i]:dp[i][j-1],mineq_ri);
+                    if(j==0){
+                        mindown = Math.min(dp[i+1][j],dp[i+1][j+1]);
+                        mindown = Math.min(mindown, dp[i+1][i]);
+                    }else if(j==i){
+                        mindown = Math.min(dp[i+1][j],dp[i+1][j+1]);
+                        mindown = Math.min(mindown, dp[i+1][0]);
+                    }else {
+                        mindown = Math.min(dp[i+1][j],dp[i+1][j+1]);
+                    }
+                }
+                dp[i][j] = Math.min(mindown,mineq)+ dp[i][j];
+            }
+        }
+        return dp[0][0];
+    }
+
+
+    public int hill(int h, int[][] num) {
+        int[][] dp = num.clone();
+        for(int i = num.length-1; i >= 0 ; i--){
+            //int left = Integer.MAX_VALUE;
+            for(int j = 0 ; j <= i ; ++j){
+                if(i < num.length-1){
+                    if(j==0){
+                        int n = Math.min(dp[i+1][i],dp[i+1][j+1]);
+                        dp[i][j] = Math.min(n,dp[i+1][j])+dp[i][j];
+                    }else if (j==i){
+                        int n = Math.min(dp[i+1][0],dp[i+1][j]);
+                        dp[i][j] = Math.min(dp[i+1][j+1],n)+dp[i][j];
+                    }else {
+                        dp[i][j] = Math.min(dp[i+1][j],dp[i+1][j+1]) + dp[i][j];
+                    }
+                }
+            }
+            int[] mid = new int[i+1];
+            for(int j = 0 ; j <= i ; ++j){
+                //dp[i][j] = num[i][j] + (j <= 0?0:num[i][j-1]);
+                mid[j] = dp[i][j];
+                if(j <= 0){
+                    dp[i][j] = dp[i][j];
+                }else {
+                    dp[i][j] = dp[i][j] + dp[i][j-1];
+                }
+            }
+            for(int j = i ; j > 0  ; --j){
+                //dp[i][j] = ((num[i][j] + (j>=i?num[i][0]:num[i][j+1])) < dp[i][j] ? num[i][j] + j>i?num[i][0]: num[i][j+1] : dp[i][j]);
+                //dp[i][j] = Math.min((num[i][j] + (j==i?num[i][0]:num[i][j+1])),dp[i][j]);
+                if(j==i){
+                    dp[i][j] = Math.min(mid[j] + mid[0],dp[i][j]);
+                    System.out.println(Math.min(dp[i][j] + dp[i][0],dp[i][j]));
+                }else{
+                    dp[i][j] = Math.min((mid[j] + mid[j+1]),dp[i][j]);
+                }
+
+            }
+        }
+
+        for(int i = 0 ; i <= num.length-1;++i){
+            System.out.println();
+            for (int j = 0 ; j<= num.length-1 ; ++j){
+                System.out.print(dp[i][j]+"\t");
+            }
+        }
+        return dp[0][0];
+    }
+
+
+
 
 
 

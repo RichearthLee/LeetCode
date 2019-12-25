@@ -69,7 +69,13 @@ public class MainAPP {
 //            System.out.println();
 //        }
         //System.out.println(s2.getPermutation(9,62716));
-        System.out.println(s2.mySqrt(4));
+        int[][] num = new int[5][5];
+        num[0][0]=1;
+        num[1][0]=2;num[1][1]=3;
+        num[2][0]=4;num[2][1]=5;num[2][2]=6;
+        num[3][0]=10;num[3][1]=1;num[3][2]=7;num[3][3]=8;
+        num[4][0]=1;num[4][1]=1;num[4][2]=4;num[4][3]=5;num[4][4]=6;
+        s2.hill(5,num);
 
 
     }
