@@ -793,6 +793,7 @@ public class Solution2 {
         return dp[0][0];
     }
 
+    /**
      * 北交考试题
      * @param n
      * @return
@@ -1529,6 +1530,45 @@ public class Solution2 {
         }
         return letf;
     }
+
+    /**
+     * quickSort
+     * @param nums
+     * @param start
+     * @param end
+     * @return
+     */
+    public int[] quickSort(int[] nums, int start, int end){
+        //if(nums == null || nums.length <= 0) return nums;
+        if(start >= end) return nums;
+        int cur = start, left = start, right = end;
+        boolean f = true;
+        while(left < right){
+            if(f){
+                if(nums[cur]>nums[right]){
+                    int mid = nums[right];
+                    nums[right] = nums[cur];
+                    nums[cur] = mid;
+                    cur = right;
+                    f = false;
+                }
+                    right--;
+            }else {
+                if(nums[cur]<nums[left]){
+                    int mid = nums[left];
+                    nums[left] = nums[cur];
+                    nums[cur] = mid;
+                    cur = left;
+                    f = true;
+                }
+                    left++;
+            }
+        }
+        quickSort(nums,start,cur-1);
+        quickSort(nums,cur+1, end);
+        return nums;
+    }
+
 
 
 

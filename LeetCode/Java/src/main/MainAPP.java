@@ -75,8 +75,8 @@ public class MainAPP {
 //        char[][] c = {{'a','b'},{'c','d'}};
 //        s2.exist(c,"abcd");
 
-        int[] arr = {1,1,1,2,2,3};
-        s2.removeDuplicates(arr);
+        int[] arr = {6 ,9, 4, 3, 2, 8};
+        arr = s2.quickSort(arr,0,arr.length-1);
         for(int n : arr){
             System.out.println(n);
         }
