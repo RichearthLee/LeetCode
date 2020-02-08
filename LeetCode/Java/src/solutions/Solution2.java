@@ -793,7 +793,7 @@ public class Solution2 {
         }
         return dp[0][0];
     }
-
+    /**
      * 北交考试题
      * @param n
      * @return
@@ -1265,7 +1265,12 @@ public class Solution2 {
         return false;
     }
 
-    public ListNode deleteDuplicates(ListNode head) {
+    /**
+     *
+     * @param head
+     * @return
+     */
+    public ListNode deleteDuplicates2(ListNode head) {
         if (head == null) return null;
         ListNode dump = new ListNode(Integer.MIN_VALUE);
         dump.next = head;
@@ -1283,6 +1288,27 @@ public class Solution2 {
                 post = post.next;
             }
         return dump.next;
+    }
+
+    /**
+     * 83. Remove Duplicates from Sorted List
+     * @param head
+     * @return
+     */
+    public ListNode deleteDuplicates(ListNode head) {
+        if(head == null) return null;
+        ListNode pre =head, cur = head;
+        while(cur != null) {
+            while (cur != null && cur.val == pre.val) {
+                cur = cur.next;
+            }
+            if (cur != pre.next) {
+                pre.next = cur;
+            }
+            pre = pre.next;
+            if(cur!= null )cur = cur.next;
+        }
+        return head;
     }
 
 
