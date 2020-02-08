@@ -9,7 +9,7 @@ public class TestMethod {
 //		int[][] arr={{1,2,8,9},{2,4,9,12},{4,7,10,13},{6,8,11,15}};
 //		System.out.println(Find(16,arr));
 		TestMethod tm = new TestMethod();
-		tm.divide();
+		tm.testPow();
          
 	}
 	 public static boolean Find(int target, int [][] array) {
@@ -175,6 +175,12 @@ public class TestMethod {
 		int a = 0;
 		int b = 0;
 		System.out.println(a/b);
+	}
+
+	public void testPow(){
+		double a = Math.pow(2,0);
+		System.out.println(a);
+		System.out.println((int)a);
 	}
 
 

@@ -3,7 +3,6 @@ package solutions;
 import utility.ListNode;
 import utility.TreeNode;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -793,6 +792,7 @@ public class Solution2 {
         }
         return dp[0][0];
     }
+
     /**
      * 北交考试题
      * @param n
@@ -1310,12 +1310,289 @@ public class Solution2 {
         }
         return head;
     }
+    /*
+     * @description: 86
+     * @param: [head, x]
+     * @return: utility.ListNode
+     * @author: Yukun Lee
+     * @date: 2019-12-26
+     */
+    public ListNode partition_v1(ListNode head, int x) {
+        ListNode dumb = new ListNode(0);
+        ListNode predumb = new ListNode(0);
+        predumb.next = head;
+        ListNode pre = predumb, res = dumb;
+        while (head != null) {
+            if (head.val < x) {
+                res.next = head;
+                res = res.next;
+                pre.next = head;
+            } else {
+                pre = pre.next;
+                head = head.next;
+            }
+            head = head.next;
+        }
+        res.next = predumb.next;
+        return dumb.next;
+    }
+
+    public ListNode partition(ListNode head, int x) {
+        ListNode dumbres = new ListNode(0);
+        ListNode dumb = new ListNode(0);
+        ListNode pre = dumb, cur = head, res = dumbres;
+        while (cur != null) {
+            while (cur != null && cur.val < x) {
+                cur = cur.next;
+            }
+            if (cur != pre) {
+                pre.next = cur;
+            }
+        }
+        res.next = head;
+        return dumbres.next;
+    }
+
+    /**
+     * @description: 88. Merge Sorted Array
+     * @param: [nums1, m, nums2, n]
+     * @return: void
+     * @author: Yukun Lee
+     * @date: 2019-12-26
+     */
+    public void merge_v1(int[] nums1, int m, int[] nums2, int n) {
+        int[] mid = nums1.clone();
+        int i = 0, j = 0;
+        while (i < m || j < n) {
+            if (j == n) {
+                nums1[i + j] = mid[i++];
+            } else if (i == m) {
+                nums1[i + j] = nums2[j++];
+            } else if (mid[i] < nums2[j]) {
+                nums1[i + j] = mid[i++];
+            } else {
+                nums1[i + j] = nums2[j++];
+            }
+        }
+    }
+
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i = m-1, j = n-1;
+        while (i >=0 && j >= 0) {
+            if(nums1[i] > nums2[j]){
+                nums1[i+j+1] = nums1[i--];
+            }else {
+                nums1[i+j+1] = nums2[j--];
+            }
+        }
+        while (j >= 0){
+            nums1[i+j+1] = nums2[j--];
+        }
+    }
+
+    public List<Integer> grayCode_v1(int n) {
+        List<Integer> res= new ArrayList<>();
+        res.add(0);
+        if(n == 0) return res;
+        res.add(1);
+        if(n == 1) return res;
+        int m =(int)Math.pow(2,n-2);
+        res.add(3);
+        res.add(2);
+        int a = 0,b=1,c=3,d=4;
+        for(int i = 1 ; i < m ; ++i){
+            res.add(a+=4);
+            res.add(b+=4);
+            res.add(c+=4);
+            res.add(d+=4);
+        }
+        return res;
+    }
+    public List<Integer> grayCode(int n) {
+        List<Integer> res= new ArrayList<>();
+        res.add(0);
+        for(int i = 1 ; i <= n ; ++i){
+            int m = res.size();
+            for(int j = m-1; j >= 0 ; j--){
+                res.add(res.get(j)+m);
+            }
+        }
+        return res;
+    }
+    
+    
+    /** 
+     * @description: 90. Subsets II
+     * @param: [nums] 
+     * @return: java.util.List<java.util.List<java.lang.Integer>> 
+     * @author: Yukun Lee 
+     * @date: 2019-12-27 
+     */ 
+    public List<List<Integer>> subsetsWithDup_v1(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(nums);
+        res.add(new ArrayList<>());
+        for(int i = 0 ; i <= nums.length ; ++i){
+            subsetsWithDup(res, new ArrayList<>(), nums, 0, i);
+        }
+        return res;
+    }
+
+    private void subsetsWithDup(List<List<Integer>> res, List<Integer> mid, int[] nums, int s, int k){
+        if(k == 0){
+            if(res.contains(mid)) return;
+            res.add(new ArrayList<>(mid));
+        }
+        for(int i = s ; i < nums.length ; ++i){
+            mid.add(nums[i]);
+            subsetsWithDup(res, mid, nums, i+1,k-1);
+            mid.remove(mid.size()-1);
+        }
+    }
 
 
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(nums);
+        res.add(new ArrayList<>());
+        int s, size = 0;
+        for(int i = 0 ; i <= nums.length ; ++i){
+            s = (i >= 1 && nums[i] == nums[i - 1]) ? size : 0;
+            size = res.size();
+            for(int j = s ; j < size ; ++j){
+                List<Integer> mid = new ArrayList<>(res.get(j));
+                mid.add(nums[i]);
+                res.add(mid);
+            }
+        }
+        return res;
+    }
+    
+    /** 
+     * @description: 91. Decode Ways
+     * @param: [s] 
+     * @return: int 
+     * @author: Yukun Lee 
+     * @date: 2019-12-27 
+     */ 
+    public int numDecodings_v1(String s) {
+        char[] arr = s.toCharArray();
+        int res= 0;
+        for(int i = 0 ; i < arr.length ; i++){
+            if((arr[i]=='1'|| arr[i] == '2') && i< arr.length-1){
+                res++;
+            }
+            if(arr[i]=='0'){
+                res--;
+            }
+        }
+        return res >0 ? res :0;
+    }
 
+    public int numDecodings(String s) {
+        if(s == null || s.length() == 0) {
+            return 0;
+        }
+        int[] dp = new int[s.length()+1];
+        dp[0] = 1;
+        dp[1] = s.charAt(0) != '0' ? 1 : 0;
+        for(int i = 2 ; i < dp.length ; i++){
+            int first = Integer.valueOf(s.substring(i-1, i));
+            int second = Integer.valueOf(s.substring(i-2, i));
+            if(first >= 1 && first <= 9) {
+                dp[i] += dp[i-1];
+            }
+            if(second >= 10 && second <= 26) {
+                dp[i] += dp[i-2];
+            }
+        }
+        return dp[dp.length-1];
+    }
 
+    /**
+     * 92. Reverse Linked List II
+     * @param head
+     * @param m
+     * @param n
+     * @return
+     */
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        ListNode dumb = new ListNode(0);
+        dumb.next = head;
+        ListNode letf = dumb, right = dumb;
+        while(m > 1){
+            letf = letf.next;
+            m--;
+        }
+        while( n > 0){
+            right = right.next;
+            n--;
+        }
+        head = letf;
+        letf = letf.next;
+        while(head.next != right){
+            head.next = letf.next;
+            letf.next = right.next;
+            right.next = letf;
+            letf = head.next;
+        }
+        return dumb.next;
+    }
 
+    /**
+     *
+     * @param head
+     * @return
+     */
+    public ListNode reverseList(ListNode head) {
+        if(head == null) return null;
+        ListNode letf = null, right = head;
+        while(right != null){
+            ListNode tmp = right.next;
+            right.next = letf;
+            letf = right;
+            right =tmp;
+        }
+        return letf;
+    }
 
+    /**
+     * quickSort
+     * @param nums
+     * @param start
+     * @param end
+     * @return
+     */
+    public int[] quickSort(int[] nums, int start, int end){
+        //if(nums == null || nums.length <= 0) return nums;
+        if(start >= end) return nums;
+        int cur = start, left = start, right = end;
+        boolean f = true;
+        while(left < right){
+            if(f){
+                if(nums[cur]>nums[right]){
+                    int mid = nums[right];
+                    nums[right] = nums[cur];
+                    nums[cur] = mid;
+                    cur = right;
+                    f = false;
+                }
+                    right--;
+            }else {
+                if(nums[cur]<nums[left]){
+                    int mid = nums[left];
+                    nums[left] = nums[cur];
+                    nums[cur] = mid;
+                    cur = left;
+                    f = true;
+                }
+                    left++;
+            }
+        }
+        quickSort(nums,start,cur-1);
+        quickSort(nums,cur+1, end);
+        return nums;
+    }
 
 
 
