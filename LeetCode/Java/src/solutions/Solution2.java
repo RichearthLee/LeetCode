@@ -1594,6 +1594,85 @@ public class Solution2 {
         return nums;
     }
 
+    /**
+     * 98. Validate Binary Search Tree
+     * @param root
+     * @return
+     */
+    public boolean isValidBST_v1(TreeNode root) {
+        Queue<TreeNode> arr = new LinkedList<>();
+        if(root == null)return true;
+        arr.add(root);
+        while(!arr.isEmpty()){
+            TreeNode node = arr.remove();
+            if(node.left != null){
+                if(node.left.val >= node.val){
+                    return false;
+                }
+                arr.add(node.left);
+            }
+            if(node.right != null){
+                if(node.right.val <= node.val){
+                    return false;
+                }
+                arr.add(node.right);
+            }
+        }
+        return true;
+    }
+
+    public boolean isValidBST_v2(TreeNode root) {
+        if(root == null)return true;
+        boolean r1 = true, r2 = true;
+        if(root.left != null){
+            if(root.left.val >= root.val){
+                return false;
+            }
+            r1 = isValidBST_Recursion_v2(root.left, root.val, -Double.MAX_VALUE);
+        }
+        if(root.right != null){
+            if(root.right.val <= root.val){
+                return false;
+            }
+            r2 = isValidBST_Recursion_v2(root.right,  Double.MAX_VALUE, root.val);
+        }
+        return r1 && r2;
+    }
+
+    private boolean isValidBST_Recursion_v2(TreeNode root, double max, double min){
+        boolean r1 = true, r2 = true;
+        if(root.left != null){
+            if(root.left.val >= root.val || root.left.val <= min){
+                return false;
+            }
+            r1 = isValidBST_Recursion_v2(root.left, root.val, min);
+        }
+        if(root.right != null){
+            if(root.right.val <= root.val || root.right.val >= max){
+                return false;
+            }
+            r2 = isValidBST_Recursion_v2(root.right, max , root.val);
+        }
+
+        return r1 && r2;
+    }
+
+    public boolean isValidBST(TreeNode root) {
+        if(root == null)return true;
+        return isValidBST_Recursion(root, Long.MAX_VALUE, Long.MIN_VALUE);
+    }
+
+    private boolean isValidBST_Recursion(TreeNode root, long max, long min){
+        if(root == null){
+            return true;
+        }
+        if(root.val <= min || root.val >= max){
+            return false;
+        }
+        return isValidBST_Recursion(root.left, root.val, min)
+                && isValidBST_Recursion(root.right, max , root.val);
+    }
+
 
 
 

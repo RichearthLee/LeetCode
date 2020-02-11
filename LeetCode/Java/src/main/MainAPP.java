@@ -75,11 +75,28 @@ public class MainAPP {
 //        char[][] c = {{'a','b'},{'c','d'}};
 //        s2.exist(c,"abcd");
 
-        int[] arr = {6 ,9, 4, 3, 2, 8};
-        arr = s2.quickSort(arr,0,arr.length-1);
-        for(int n : arr){
-            System.out.println(n);
-        }
+//        int[] arr = {6 ,9, 4, 3, 2, 8};
+//        arr = s2.quickSort(arr,0,arr.length-1);
+//        for(int n : arr){
+//            System.out.println(n);
+//        }
+
+        TreeNode n1 = new TreeNode(3);
+        TreeNode n2 = new TreeNode(1);
+        TreeNode n3 = new TreeNode(5);
+        TreeNode n4 = new TreeNode(0);
+        TreeNode n5 = new TreeNode(2);
+        TreeNode n6 = new TreeNode(4);
+        TreeNode n7 = new TreeNode(6);
+        n1.left = n2;
+        n1.right = n3;
+        n2.left = n4;
+        n2.right = n5;
+        n3.left = n6;
+        n3.right = n7;
+        s2.isValidBST(n1);
+        System.out.println(s2.isValidBST(n1));
+
 
 
 
