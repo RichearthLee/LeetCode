@@ -128,6 +128,115 @@ public class Solution3 {
         levelOrder_Recursion(root.right, res, height+1);
     }
 
+    /**
+     * 104. Maximum Depth of Binary Tree
+     * @param root
+     * @return
+     */
+    public int maxDepth(TreeNode root) {
+       return maxDepth_Recursion(root, 0);
+    }
+    private int maxDepth_Recursion(TreeNode root, int depth){
+        if(root == null){
+            return depth;
+        }
+        return Math.max(maxDepth_Recursion(root.left, depth+1)
+                ,maxDepth_Recursion(root.right, depth+1));
+    }
+
+    /**
+     * 103. Binary Tree Zigzag Level Order Traversal
+     * @param root
+     * @return
+     */
+    public List<List<Integer>> zigzagLevelOrder_v1(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<TreeNode> arr = new LinkedList<>();
+        if(root == null) return res;
+        arr.add(root);
+        while(!arr.isEmpty()){
+            int num = arr.size();
+            List<Integer> mid = new ArrayList<>();
+            for(int i = 0 ; i < num ; ++i){
+                TreeNode node = arr.remove(0);
+                if(node.left != null){
+                    arr.add(num-i-1, node.left);
+                }
+                if(node.right != null ){
+                    arr.add(num-i-1, node.right);
+                }
+                mid.add(node.val);
+            }
+            res.add(mid);
+        }
+        return res;
+    }
+
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        zigzagLevelOrder_Recursion(root, res, 0);
+        return res;
+    }
+    private void zigzagLevelOrder_Recursion(TreeNode root, List<List<Integer>> res, int height){
+        if (root == null) return;
+        if(res.size() <= height){
+            res.add(new ArrayList<>());
+        }
+        if(height % 2 == 0){
+            res.get(height).add(root.val);
+        }else{
+            res.get(height).add(0,root.val);
+        }
+
+        zigzagLevelOrder_Recursion(root.left, res, height+1);
+        zigzagLevelOrder_Recursion(root.right, res, height+1);
+    }
+
+    /**
+     * 105. Construct Binary Tree from Preorder and Inorder Traversal
+     * @param preorder
+     * @param inorder
+     * @return
+     */
+    public TreeNode buildTree_v1(int[] preorder, int[] inorder) {
+        if (preorder.length == 0 || inorder.length == 0) return null;
+        TreeNode root = new TreeNode(preorder[0]);
+        for(int i = 1 ; i < inorder.length ; ++i){
+            TreeNode left = new TreeNode(inorder[i]);
+        }
+
+        return root;
+    }
+
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        if (preorder.length == 0 || inorder.length == 0) return null;
+        return buildTree_Recursion(preorder,0,inorder,0,inorder.length-1);
+    }
+
+    private TreeNode buildTree_Recursion(int[] preorder, int preStart, int[] inorder, int inStart, int inEnd){
+        if(preStart > preorder.length - 1 || inStart > inEnd) return null;
+        TreeNode root = new TreeNode(preorder[preStart]);
+        int index = 0;
+        for(int i = inStart ; i <= inEnd ; i++){
+            if(preorder[preStart] == inorder[i]){
+                index = i;break;
+            }
+        }
+        root.left = buildTree_Recursion(
+                preorder,
+                preStart + 1,
+                inorder,
+                inStart,
+                index-1);
+        root.right = buildTree_Recursion(
+                preorder,
+                preStart + index - inStart + 1,
+                inorder,
+                index+1,
+                inEnd);
+        return root;
+    }
+
 
 
 }
