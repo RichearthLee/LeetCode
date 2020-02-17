@@ -1,12 +1,11 @@
 package solutions;
 
 
+import utility.ListNode;
+import utility.Node;
 import utility.TreeNode;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * @program: LeetCode
@@ -236,6 +235,274 @@ public class Solution3 {
                 inEnd);
         return root;
     }
+
+    /**
+     * 106. Construct Binary Tree from Inorder and Postorder Traversal
+     * @param postorder
+     * @param inorder
+     * @return
+     */
+    public TreeNode buildTree_v2(int[] postorder, int[] inorder) {
+        if (postorder.length == 0 || inorder.length == 0) return null;
+        return buildTree_Recursion_v2(postorder,postorder.length-1,inorder,0,inorder.length-1);
+    }
+
+    private TreeNode buildTree_Recursion_v2(int[] postorder, int postStart, int[] inorder, int inStart, int inEnd){
+        if(postStart < 0 || inStart > inEnd) return null;
+        TreeNode root = new TreeNode(postorder[postStart]);
+        int index = 0;
+        for(int i = inStart ; i <= inEnd ; i++){
+            if(postorder[postStart] == inorder[i]){
+                index = i;break;
+            }
+        }
+        root.left = buildTree_Recursion_v2(
+                postorder,
+                postStart -(inEnd - index) -1,
+                inorder,
+                inStart,
+                index-1);
+        root.right = buildTree_Recursion_v2(
+                postorder,
+                postStart - 1,
+                inorder,
+                index+1,
+                inEnd);
+        return root;
+    }
+
+    /**
+     * 107. Binary Tree Level Order Traversal II
+     * @param root
+     * @return
+     */
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        Queue<TreeNode> arr = new LinkedList<>();
+        if(root == null) return res;
+        arr.add(root);
+        while(!arr.isEmpty()){
+            int num = arr.size();
+            List<Integer> mid = new ArrayList<>();
+            for(int i = 0 ; i < num ; ++i){
+                TreeNode node = arr.remove();
+                if(node.left != null){
+                    arr.add(node.left);
+                }
+                if(node.right != null ){
+                    arr.add(node.right);
+                }
+                mid.add(node.val);
+            }
+            res.add(0,mid);
+        }
+        return res;
+    }
+
+    /**
+     * 108. Convert Sorted Array to Binary Search Tree
+     * @param nums
+     * @return
+     */
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return sortedArrayToBST_Recursion(nums,0, nums.length-1);
+    }
+
+    private TreeNode sortedArrayToBST_Recursion(int[] nums, int start, int end){
+        if (start > end) return null;
+        int index = (start+end)/2;
+        TreeNode root = new TreeNode(nums[index]);
+        root.left = sortedArrayToBST_Recursion(nums, start, index-1);
+        root.right = sortedArrayToBST_Recursion(nums,index+1, end);
+        return root;
+    }
+
+    /**
+     * 109. Convert Sorted List to Binary Search Tree
+     * @param head
+     * @return
+     */
+    public TreeNode sortedListToBST(ListNode head) {
+        if(head == null) return null;
+        ListNode fast = head, slow = head, pre = head;
+        while(fast != null && fast.next != null){
+            pre = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        TreeNode root = new TreeNode(slow.val);
+        pre.next = null;
+        root.left = pre == slow ? sortedListToBST(null):sortedListToBST(head);
+        root.right = sortedListToBST(slow.next);
+        return root;
+    }
+
+    /**
+     * 110. Balanced Binary Tree
+     * @param root
+     * @return
+     */
+    public boolean isBalanced(TreeNode root) {
+        if(root == null) return true;
+        return Math.abs(isBalanced(root.left, 2) - isBalanced(root.right, 2)) <= 1
+                && isBalanced(root.left)
+                && isBalanced(root.right);
+    }
+    private int isBalanced(TreeNode root, int height){
+        if(root == null) return height-1;
+        return Math.max(isBalanced(root.left,height+1),isBalanced(root.right,height+1));
+    }
+
+    /**
+     * 111. Minimum Depth of Binary Tree
+     * @param root
+     * @return
+     */
+    public int minDepth(TreeNode root) {
+        if (root == null) return 0;
+        int left = minDepth(root.left);
+        int right = minDepth(root.right);
+        return (left == 0 || right == 0) ? left + right + 1: Math.min(left,right) + 1;
+    }
+
+    /**
+     * 112. Path Sum
+     * @param root
+     * @param sum
+     * @return
+     */
+    public boolean hasPathSum(TreeNode root, int sum) {
+        if(root == null) return false;
+
+        if(root.left == null && root.right == null) return sum == root.val;
+
+        return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
+    }
+
+    /**
+     * 113. Path Sum II
+     * @param root
+     * @param sum
+     * @return
+     */
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> res = new ArrayList<>();
+        pathSum_Recusion(root, sum, res, new ArrayList<>());
+        return res;
+    }
+
+    private void pathSum_Recusion(TreeNode root, int sum,List<List<Integer>> res,List<Integer> mid) {
+        if(root == null) return;
+        mid.add(root.val);
+        if(root.left == null && root.right == null && sum == root.val){
+            res.add(new ArrayList<>(mid));
+        }
+        pathSum_Recusion(root.left, sum - root.val, res, mid);
+        pathSum_Recusion(root.right, sum - root.val, res, mid);
+        mid.remove(mid.size()-1);
+        return;
+    }
+
+    /**
+     * 114. Flatten Binary Tree to Linked List
+     * @param root
+     */
+    public void flatten_v1(TreeNode root) {
+        if (root == null) return;
+        PriorityQueue<TreeNode> sorted = new PriorityQueue<>(new Comparator<TreeNode>() {
+            @Override
+            public int compare(TreeNode o1, TreeNode o2) {
+                return o1.val - o2.val;
+            }
+        });
+        Queue<TreeNode> list = new LinkedList<>();
+        list.add(root);
+        while(!list.isEmpty()){
+            TreeNode node = list.poll();
+            if(node.left != null) list.add(node.left);
+            if(node.right != null) list.add(node.right);
+            sorted.add(node);
+        }
+        TreeNode cur = sorted.poll();
+        while(!sorted.isEmpty()){
+            cur.right = sorted.poll();
+            cur.left = null;
+            cur = cur.right;
+        }
+    }
+
+    public void flatten(TreeNode root) {
+        if(root == null) return;
+
+        flatten(root.left);
+        flatten(root.right);
+
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+
+        root.right = left;
+        root.left = null;
+
+        TreeNode cur = root;
+        while(cur.right != null)cur = cur.right;
+        cur.right = right;
+
+    }
+
+    /**
+     * 115. Distinct Subsequences
+     * @param s
+     * @param t
+     * @return
+     */
+    public int numDistinct_v1(String s, String t) {
+        return numDistinct(s,t,0,0);
+    }
+
+    private int numDistinct(String s, String t, int sStart, int tStart){
+        if(tStart == t.length()){
+            return 1;
+        }else if(sStart == s.length()){
+            return 0;
+        }
+        int res = 0;
+        for(int i = sStart ; i < s.length() ; ++i){
+            if(s.charAt(i) == t.charAt(tStart)){
+                res += numDistinct(s,t,i+1,tStart+1);
+            }
+        }
+        return res;
+    }
+
+    public int numDistinct(String s, String t) {
+        int[][] dp = new int[t.length()+1][s.length()+1];
+        for(int i = 0 ; i <= s.length() ; i++){
+            dp[0][i] = 1;
+        }
+        for(int i = 1 ; i<= t.length() ; ++i){
+            for (int j = 1 ; j <= s.length() ; ++j){
+                if(t.charAt(i-1) == s.charAt(j-1)){
+                    dp[i][j] = dp[i-1][j-1] + dp[i][j-1];
+                }else {
+                    dp[i][j] = dp[i][j-1];
+                }
+            }
+        }
+        return dp[t.length()][s.length()];
+    }
+
+    /**
+     * 116. Populating Next Right Pointers in Each Node
+     * @param root
+     * @return
+     */
+    public Node connect(Node root) {
+
+    }
+
+
+
 
 
 

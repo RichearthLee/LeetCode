@@ -5,6 +5,7 @@ import java.util.List;
 
 import solutions.Solution1;
 import solutions.Solution2;
+import solutions.Solution3;
 import utility.TreeNode;
 import test.TestMethod;
 
@@ -19,6 +20,7 @@ public class MainAPP {
     public static void main(String[] args) {
         Solution1 s1 = new Solution1();
         Solution2 s2 = new Solution2();
+        Solution3 s3 = new Solution3();
         TestMethod tm = new TestMethod();
 //        String[] str = {"flower","flow","flight"};
 //        String[] str1 = {"dog","racecar","car"};
@@ -88,14 +90,10 @@ public class MainAPP {
         TreeNode n5 = new TreeNode(2);
         TreeNode n6 = new TreeNode(4);
         TreeNode n7 = new TreeNode(6);
-        n1.left = n2;
-        n1.right = n3;
-        n2.left = n4;
-        n2.right = n5;
-        n3.left = n6;
-        n3.right = n7;
-        s2.isValidBST(n1);
-        System.out.println(s2.isValidBST(n1));
+        n1.right = n2;
+        n1.left = n3;
+        s3.flatten(n1);
+        System.out.println();
 
 
 
