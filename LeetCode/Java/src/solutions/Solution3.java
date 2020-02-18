@@ -498,8 +498,86 @@ public class Solution3 {
      * @return
      */
     public Node connect(Node root) {
-
+        if (root == null) return root;
+        if(root.left != null){
+            root.left.next = root.right;
+            if (root.next != null){
+                root.right.next = root.next.left;
+            }
+        }
+        connect(root.left);
+        connect(root.right);
+        return root;
     }
+
+    public Node connect_v1(Node root) {
+        Node cur = root, first = root;
+        while(first != null){
+            cur = first;
+            if (cur.left != null){
+                first = cur.left;
+            }
+            while(cur != null){
+                if(cur.left != null){
+                    cur.left.next = cur.right;
+                    if (cur.next != null){
+                        cur.right.next = cur.next.left;
+                    }
+                }
+                cur = cur.next;
+            }
+        }
+        return root;
+    }
+
+    /**
+     * 117. Populating Next Right Pointers in Each Node II
+     * @param root
+     * @return
+     */
+    public Node connect_v3(Node root) {
+        Node cur, first = root, child;
+        while(first != null){
+            cur = first;
+            while(first == cur){
+                if(cur.left != null){
+                    first = cur.left;
+                }else if(cur.right != null){
+                    first = cur.right;
+                }else {
+                    cur = cur.next;
+                }
+            }
+            while(cur != null){
+                if(cur.left != null){
+                    if (cur.right != null){
+                        cur.left.next = cur.right;
+                        child = cur.right;
+                    }else {
+                        child = cur.left;
+                    }
+                }else if(cur.right != null){
+                    child = cur.right;
+                }else {
+                    cur = cur.next;
+                    continue;
+                }
+                while (cur.next != null){
+                    if(cur.next.left != null){
+                        child.next = cur.next.left;
+                        break;
+                    }else if(cur.next.right != null){
+                        child.next = cur.next.right;
+                        break;
+                    }
+                    cur = cur.next;
+                }
+                cur = cur.next;
+            }
+        }
+        return root;
+    }
+
 
 
 
