@@ -536,45 +536,59 @@ public class Solution3 {
      * @return
      */
     public Node connect_v3(Node root) {
-        Node cur, first = root, child;
-        while(first != null){
-            cur = first;
-            while(first == cur){
-                if(cur.left != null){
-                    first = cur.left;
-                }else if(cur.right != null){
-                    first = cur.right;
-                }else {
-                    cur = cur.next;
-                }
-            }
+        Node cur, head = root, child;
+        while(head != null){
+            cur = head;
+            head = null;
+            child = null;
             while(cur != null){
                 if(cur.left != null){
-                    if (cur.right != null){
-                        cur.left.next = cur.right;
-                        child = cur.right;
+                    if(child == null){
+                        head = cur.left;
                     }else {
-                        child = cur.left;
+                        child.next = cur.left;
                     }
-                }else if(cur.right != null){
-                    child = cur.right;
-                }else {
-                    cur = cur.next;
-                    continue;
+                    child = cur.left;
                 }
-                while (cur.next != null){
-                    if(cur.next.left != null){
-                        child.next = cur.next.left;
-                        break;
-                    }else if(cur.next.right != null){
-                        child.next = cur.next.right;
-                        break;
+                if (cur.right != null){
+                    if (child == null){
+                        head = cur.right;
+                    }else {
+                        child.next = cur.right;
                     }
-                    cur = cur.next;
+                    child = cur.right;
                 }
                 cur = cur.next;
             }
         }
+        return root;
+    }
+
+    public Node connect_v4(Node root) {
+        if (root == null) return root;
+        Node child = null;
+        if(root.left != null && root.right != null){
+            root.left.next = root.right;
+            child = root.right;
+        }else if (root.left != null){
+            child = root.left;
+        }else if (root.right != null){
+            child = root.right;
+        }
+        Node pre = root.next;
+        while (child != null && pre != null){
+            if (pre.left != null){
+                child.next = pre.left;
+                break;
+            }else if (pre.right != null){
+                child.next = pre.right;
+                break;
+            }else {
+                pre = pre.next;
+            }
+        }
+        connect_v4(root.left);
+        connect_v4(root.right);
         return root;
     }
 

@@ -6,6 +6,7 @@ import java.util.List;
 import solutions.Solution1;
 import solutions.Solution2;
 import solutions.Solution3;
+import utility.Node;
 import utility.TreeNode;
 import test.TestMethod;
 
@@ -83,17 +84,30 @@ public class MainAPP {
 //            System.out.println(n);
 //        }
 
-        TreeNode n1 = new TreeNode(3);
-        TreeNode n2 = new TreeNode(1);
-        TreeNode n3 = new TreeNode(5);
-        TreeNode n4 = new TreeNode(0);
-        TreeNode n5 = new TreeNode(2);
-        TreeNode n6 = new TreeNode(4);
-        TreeNode n7 = new TreeNode(6);
-        n1.right = n2;
-        n1.left = n3;
-        s3.flatten(n1);
-        System.out.println();
+//        TreeNode n1 = new TreeNode(3);
+//        TreeNode n2 = new TreeNode(1);
+//        TreeNode n3 = new TreeNode(5);
+//        TreeNode n4 = new TreeNode(0);
+//        TreeNode n5 = new TreeNode(2);
+//        TreeNode n6 = new TreeNode(4);
+//        TreeNode n7 = new TreeNode(6);
+//        n1.right = n2;
+//        n1.left = n3;
+//        s3.flatten(n1);
+//        System.out.println();
+
+        Node n1 = new Node(1);
+        Node n2 = new Node(2);
+        Node n3 = new Node(3);
+        Node n4 = new Node(4);
+        Node n5 = new Node(5);
+        Node n7 = new Node(7);
+        n1.left = n2;
+        n1.right = n3;
+        n2.left = n4;
+        n2.right = n5;
+        n3.right = n7;
+        s3.connect_v3(n1);
 
 
 
