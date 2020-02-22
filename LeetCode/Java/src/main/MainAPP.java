@@ -96,18 +96,26 @@ public class MainAPP {
 //        s3.flatten(n1);
 //        System.out.println();
 
-        Node n1 = new Node(1);
-        Node n2 = new Node(2);
-        Node n3 = new Node(3);
-        Node n4 = new Node(4);
-        Node n5 = new Node(5);
-        Node n7 = new Node(7);
-        n1.left = n2;
-        n1.right = n3;
-        n2.left = n4;
-        n2.right = n5;
-        n3.right = n7;
-        s3.connect_v3(n1);
+//        Node n1 = new Node(1);
+//        Node n2 = new Node(2);
+//        Node n3 = new Node(3);
+//        Node n4 = new Node(4);
+//        Node n5 = new Node(5);
+//        Node n7 = new Node(7);
+//        n1.left = n2;
+//        n1.right = n3;
+//        n2.left = n4;
+//        n2.right = n5;
+//        n3.right = n7;
+//        s3.connect_v3(n1);
+
+//        s3.generate(5);
+//        ArrayList<Integer> arr = new ArrayList<>(2);
+//        System.out.println(arr.get(0));
+
+        System.out.println(s1.isEqual("tan","nat"));
+//        String[] strs = {"eat","tea","tan","ate","nat","bat"};
+//        s1.groupAnagrams(strs);
 
 
 

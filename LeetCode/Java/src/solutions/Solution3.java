@@ -592,6 +592,45 @@ public class Solution3 {
         return root;
     }
 
+    /**
+     * 118. Pascal's Triangle
+     * @param numRows
+     * @return
+     */
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (numRows == 0) return res;
+        for (int i = 0 ; i < numRows ; i++){
+            List<Integer> mid = new ArrayList<>();
+            if (i == 0){ mid.add(1);}
+            else {
+                for (int j = 0; j <= i ; j++){
+                    int pre = (j-1 >= 0 ? res.get(i-1).get(j-1) : 0);
+                    int post = (j == i ? 0 : res.get(i-1).get(j));
+                    mid.add(pre + post);
+                }
+            }
+            res.add(mid);
+        }
+        return res;
+    }
+
+    /**
+     * 119. Pascal's Triangle II
+     * @param rowIndex
+     * @return
+     */
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> res = new ArrayList<>(rowIndex + 1);
+        for(int i = 0 ; i < rowIndex + 1 ; i++){
+            res.add(1);
+            for(int j = i-1 ;  j > 0 ; --j){
+                res.set(j, res.get(j) + res.get(j-1));
+            }
+        }
+        return res;
+    }
+
 
 
 

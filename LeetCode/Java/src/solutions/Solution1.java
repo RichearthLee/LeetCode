@@ -918,4 +918,81 @@ public class Solution1 {
         return res;
     }
 
+    /**
+     * 49. Group Anagrams
+     * @param strs
+     * @return
+     */
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> res = new ArrayList<>();
+        for (String raw : strs){
+            boolean f = true;
+            for (int j = 0 ; j < res.size() ; ++j){
+                String s = res.get(j).get(0);
+                if (isEqual(s,raw)){
+                    res.get(j).add(raw);
+                    f = false;
+                    break;
+                }
+            }
+            if (f){
+                List<String> mid = new ArrayList<>();
+                mid.add(raw);
+                res.add(mid);
+            }
+        }
+        return res;
+    }
+
+    public Boolean isEqual(String s, String raw){
+        if (s.length() == raw.length()){
+            for(int k = 0 ; k < s.length() ; k++){
+                int index = raw.indexOf(s.charAt(k));
+                if (index == -1){
+                    return false;
+                }else {
+                    raw = raw.substring(0,index)
+                            + (index == raw.length()-1? "" : raw.substring(index+1));
+                }
+            }
+        }else {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 48. Rotate Image
+     * @param matrix
+     */
+    public void rotate(int[][] matrix) {
+        int[][] mid = new int[matrix.length][matrix.length];
+        for(int i = 0 ; i < matrix.length ; i++){
+            for (int j = 0; j < matrix.length ; j++){
+                mid[j][matrix.length - i - 1] = matrix[i][j];
+            }
+        }
+        for (int i = 0 ; i < matrix.length ; i++){
+            for(int j = 0 ; j < matrix.length ; j++){
+                matrix[i][j] = mid[i][j];
+            }
+        }
+    }
+
+    public void rotate_v1(int[][] matrix) {
+        for(int i = 0 ; i < matrix.length/2 ; i++){
+            int[] mid = matrix[i];
+            matrix[i] = matrix[matrix.length - i -1];
+            matrix[matrix.length - i -1] = mid;
+        }
+        for (int i = 0 ; i < matrix.length ; i++){
+            for(int j = i+1 ; j < matrix.length ; j++){
+                int mid = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = mid;
+            }
+        }
+    }
+
+
 }//class
