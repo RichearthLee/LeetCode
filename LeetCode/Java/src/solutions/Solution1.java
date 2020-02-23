@@ -994,5 +994,66 @@ public class Solution1 {
         }
     }
 
+    /**
+     * 46. Permutations
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums.length == 0) return res;
+        List<Integer> arr = new LinkedList<>();
+        for(int n : nums){
+            arr.add(n);
+        }
+        permute_Recursion(arr, res, new ArrayList<>());
+        return res;
+    }
+
+    private void permute_Recursion(List<Integer> arr, List<List<Integer>> res, List<Integer> mid){
+        if (arr.size() == 0){
+            res.add(new ArrayList<>(mid));
+            return;
+        }
+        for(int i = 0 ; i < arr.size() ; ++i){
+            int n = arr.get(i);
+            mid.add(n);
+            arr.remove(i);
+            permute_Recursion(arr, res, mid);
+            arr.add(i, n);
+            mid.remove(mid.size()-1);
+        }
+    }
+
+    /**
+     * 47. Permutations II
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        if(nums.length == 0) return res;
+        Arrays.sort(nums);
+        permuteUnique_Recursion(nums, new boolean[nums.length], res, new ArrayList<>());
+        return res;
+    }
+
+    private void permuteUnique_Recursion(int[] nums, boolean[] used, List<List<Integer>> res, List<Integer> mid){
+        if(mid.size() == nums.length){
+            res.add(new ArrayList<>(mid));
+        }else {
+            for(int i = 0 ; i < nums.length ; ++i){
+                if (used[i] ||( i != 0 && nums[i] == nums[i-1] && used[i-1])) continue;
+                mid.add(nums[i]);
+                used[i] = true;
+                permuteUnique_Recursion(nums, used, res, mid);
+                mid.remove(mid.size()-1);
+                used[i] = false;
+            }
+        }
+    }
+
+
+
 
 }//class

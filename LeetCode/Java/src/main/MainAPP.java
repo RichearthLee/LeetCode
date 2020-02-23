@@ -113,9 +113,10 @@ public class MainAPP {
 //        ArrayList<Integer> arr = new ArrayList<>(2);
 //        System.out.println(arr.get(0));
 
-        System.out.println(s1.isEqual("tan","nat"));
+//        System.out.println(s1.isEqual("tan","nat"));
 //        String[] strs = {"eat","tea","tan","ate","nat","bat"};
 //        s1.groupAnagrams(strs);
+        s1.permuteUnique(new int[]{1,1,2});
 
 
 
