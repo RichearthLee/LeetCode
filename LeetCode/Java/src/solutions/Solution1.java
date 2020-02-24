@@ -1053,6 +1053,58 @@ public class Solution1 {
         }
     }
 
+    /**
+     * 39. Combination Sum
+     * @param candidates
+     * @param target
+     * @return
+     */
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (candidates.length == 0 )return null;
+        combinationSum_Recursion(res, new ArrayList<>(),0 , candidates, target);
+        return res;
+    }
+    private void combinationSum_Recursion(List<List<Integer>> res, List<Integer> mid, int start, int[] candidates, int target){
+        if (target < 0) return;
+        if (target == 0) {
+            res.add(new ArrayList<>(mid));
+            return;
+        }
+        for (int i = start ; i < candidates.length ; i++){
+            mid.add(candidates[i]);
+            combinationSum_Recursion(res, mid, i, candidates, target - candidates[i]);
+            mid.remove(mid.size()-1);
+        }
+    }
+
+    /**
+     * 40. Combination Sum II
+     * @param candidates
+     * @param target
+     * @return
+     */
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (candidates.length == 0 )return null;
+        Arrays.sort(candidates);
+        combinationSum2_Recursion(res, new ArrayList<>(),0 , candidates, target);
+        return res;
+    }
+    private void combinationSum2_Recursion(List<List<Integer>> res, List<Integer> mid, int start, int[] candidates, int target){
+        if (target < 0) return;
+        if (target == 0) {
+            res.add(new ArrayList<>(mid));
+            return;
+        }
+        for (int i = start ; i < candidates.length ; i++){
+            if (i > start && candidates[i] == candidates[i-1]) continue;
+            mid.add(candidates[i]);
+            combinationSum_Recursion(res, mid, i+1, candidates, target - candidates[i]);
+            mid.remove(mid.size()-1);
+        }
+    }
+
 
 
 
