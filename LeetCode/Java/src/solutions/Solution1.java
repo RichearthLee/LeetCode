@@ -1105,6 +1105,63 @@ public class Solution1 {
         }
     }
 
+    /**
+     * 43. Multiply Strings
+     * @param num1
+     * @param num2
+     * @return
+     */
+    public String multiply(String num1, String num2) {
+        int n1 = num1.length();
+        int n2 = num2.length();
+        int[] res = new int[n1 + n2];
+        for(int i = n1-1 ; i >= 0 ; i--){
+            for(int j = n2-1 ; j >= 0; j--){
+                int num = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+                num = res[i + j + 1] + num;
+                res[i + j + 1] = num % 10;
+                res[i + j] += num / 10;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for(int n : res){
+            if(sb.length() != 0 || n != 0)
+            sb.append(n);
+        }
+        return sb.length() == 0 ? "0":sb.toString();
+    }
+
+    /**
+     * 38. Count and Say
+     * @param n
+     * @return
+     */
+    public String countAndSay(int n) {
+        StringBuilder cur = new StringBuilder("1");
+        StringBuilder pre;
+        for(int i = 1 ; i < n ; ++i ){
+            int count = 1;
+            pre = cur;
+            cur = new StringBuilder();
+            for(int j = 0, len = pre.length(); j < len ; j++){
+                if(j < len - 1 && pre.charAt(j) == pre.charAt(j+1)){
+                    count++;
+                }else {
+                    cur.append(count);
+                    cur.append(pre.charAt(j));
+                    count = 1;
+                }
+            }
+        }
+
+        return cur.toString();
+    }
+
+
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+
+    }
+
 
 
 
