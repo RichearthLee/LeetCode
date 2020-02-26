@@ -587,9 +587,24 @@ public class Solution1 {
      */ 
     public List<List<Integer>> fourSum(int[] nums, int target) {
         List<List<Integer>> res= new ArrayList<>();
-
-        return null;
+        Arrays.sort(nums);
+        fourSum_Recursion(res, new ArrayList<>(),4, 0,target,nums);
+        return res;
     }
+
+    private void fourSum_Recursion(List<List<Integer>> res, List<Integer> temp, int count, int start, int target, int[] nums){
+        if (target == 0 && count == 0){
+            res.add(new ArrayList<>(temp));
+        }else if (count > 0){
+            for(int i = start ; i < nums.length ; i ++){
+                if(i > 0 && nums[i-1] == nums[i] && i != start) continue;
+                temp.add(nums[i]);
+                fourSum_Recursion(res, temp, count-1, i+1, target-nums[i], nums);
+                temp.remove(temp.size()-1);
+            }
+        }
+    }
+
 
     public ListNode removeNthFromEnd(ListNode head, int n) {
         ListNode block = new ListNode(0);
@@ -913,9 +928,13 @@ public class Solution1 {
      * @create: 2019-08-02
      */
     public boolean isValidSudoku(char[][] board) {
-        boolean res = false;
-        
-        return res;
+        Set sudoku = new HashSet();
+        for(int i = 0 ; i < 9 ; i++){
+            for(int j = 0 ; j < 9 ; j++){
+                
+            }
+        }
+        return true;
     }
 
     /**
@@ -1157,10 +1176,35 @@ public class Solution1 {
         return cur.toString();
     }
 
-
-    public List<List<Integer>> fourSum(int[] nums, int target) {
-
+    /**
+     * 31. Next Permutation
+     * @param nums
+     */
+    public void nextPermutation(int[] nums) {
+        if(nums.length < 1) return;
+        int index = nums.length - 2;
+        while(index >= 0){
+            if(nums[index] < nums[index+1]){
+                for(int j = nums.length - 1 ; j >= 0 ; j--){
+                    if(nums[j] > nums[index]){
+                        int tmp = nums[index];
+                        nums[index] = nums[j];
+                        nums[j] = tmp;
+                        break;
+                    }
+                }
+                break;
+            }
+            index++;
+        }
+        for(int i = index + 1, j = nums.length - 1 ; i < j ; i++, j--){
+            int tmp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = tmp;
+        }
     }
+
+
 
 
 
