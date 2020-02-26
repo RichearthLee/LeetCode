@@ -928,10 +928,18 @@ public class Solution1 {
      * @create: 2019-08-02
      */
     public boolean isValidSudoku(char[][] board) {
-        Set sudoku = new HashSet();
+        Set<String> sudoku = new HashSet<>(90);
         for(int i = 0 ; i < 9 ; i++){
             for(int j = 0 ; j < 9 ; j++){
-                
+                char num = board[i][j];
+                if(num != '.'){
+                    if (!sudoku.add(num + " in row " + i)
+                            || !sudoku.add(num + " in col " + j)
+                            || !sudoku.add(num + " in cube " + i/3 + "-" + j/3)){
+                        return false;
+                    }
+                }
+
             }
         }
         return true;
