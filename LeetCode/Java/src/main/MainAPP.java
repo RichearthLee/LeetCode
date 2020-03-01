@@ -116,10 +116,13 @@ public class MainAPP {
 //        System.out.println(s1.isEqual("tan","nat"));
 //        String[] strs = {"eat","tea","tan","ate","nat","bat"};
 //        s1.groupAnagrams(strs);
-        s1.permuteUnique(new int[]{1,1,2});
-
+//        s1.permuteUnique(new int[]{1,1,2});
+//        Integer a = new Integer(0);
+        s1.Power(2,-3);
 
 
 
     }
+
+
 }

@@ -1212,6 +1212,23 @@ public class Solution1 {
         }
     }
 
+    public double Power(double base, int exponent) {
+        if(base == 0 || base == 1)return base;
+        if(exponent == 0) return 1;
+        int res = 1;
+        boolean flag = true;
+        while(exponent != 0){
+            res *= base;
+            if(exponent > 0){
+                exponent--;
+            }else{
+                exponent++;
+                flag = false;
+            }
+        }
+        return flag? res : 1/res;
+    }
+
 
 
 
