@@ -1,7 +1,6 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import solutions.Solution1;
 import solutions.Solution2;
@@ -19,6 +18,7 @@ import test.TestMethod;
 
 public class MainAPP {
     public static void main(String[] args) {
+        MainAPP main = new MainAPP();
         Solution1 s1 = new Solution1();
         Solution2 s2 = new Solution2();
         Solution3 s3 = new Solution3();
@@ -118,11 +118,28 @@ public class MainAPP {
 //        s1.groupAnagrams(strs);
 //        s1.permuteUnique(new int[]{1,1,2});
 //        Integer a = new Integer(0);
-        s1.Power(2,-3);
-
+//        s1.Power(2,-3);
+//        Queue<Integer> q = new LinkedList<>();
+        System.out.println(main.isValid("({[]})"));
 
 
     }
+
+    public boolean isValid(String str) {
+        if(str == "" || str == null)return true;
+        Stack<Character> st = new Stack<>();
+        int len = str.length();
+        for(int i = 0 ; i < len ; i++){
+            char c = str.charAt(i);
+            if(c == '(' || c == '{' || c == '['){
+                st.push(c);
+            }else if(st.isEmpty() || Math.abs(st.pop() - c) > 2){
+                return false;
+            }
+        }
+        return st.isEmpty();
+    }
+
 
 
 }
