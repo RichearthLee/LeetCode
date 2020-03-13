@@ -631,6 +631,16 @@ public class Solution3 {
         return res;
     }
 
+    /**
+     * 数组中的逆序对
+     * @param array
+     * @return
+     */
+    public int InversePairs(int [] array) {
+        int res = 0;
+        return res;
+    }
+
 
 
 

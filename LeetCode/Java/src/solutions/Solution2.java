@@ -1673,6 +1673,193 @@ public class Solution2 {
                 && isValidBST_Recursion(root.right, max , root.val);
     }
 
+    /**
+     *输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。要求不能创建任何新的结点，
+     * 只能调整树中结点指针的指向。
+     * @param pRootOfTree
+     * @return
+     */
+    public TreeNode Convert(TreeNode pRootOfTree) {
+        return Convert_recursion(pRootOfTree, null);
+    }
+
+    private TreeNode Convert_recursion(TreeNode root, TreeNode pre) {
+        if(root == null)return null;
+        TreeNode l = Convert_recursion(root.left, root);
+        if(pre != null && pre.right == root){
+
+        }
+        TreeNode r = Convert_recursion(root.right, root);
+        if(pre != null && pre.left == root){
+            if(r != null){
+                //root.right = r;
+                r.right = pre;
+                pre.left = r;
+            }else {
+                root.right = pre;
+            }
+        }
+        return root;
+    }
+
+
+    public TreeNode Convert_v1(TreeNode pRootOfTree) {
+        if(pRootOfTree == null)return null;
+        TreeNode l = Convert_v1(pRootOfTree.left);
+        if(l != null){
+            while(l.right != null)l = l.right;
+            pRootOfTree.left = l;
+            l.right = pRootOfTree;
+        }
+        TreeNode r = Convert_v1(pRootOfTree.right);
+        if(r != null){
+            while(r.left != null)r = r.left;
+            pRootOfTree.right = r;
+            r.left = pRootOfTree;
+        }
+        return pRootOfTree;
+    }
+
+    /**
+     *
+     * @param str
+     * @return
+     */
+    public ArrayList<String> Permutation(String str) {
+        ArrayList<String> res = new ArrayList<>();
+        if(str == null || str.equals(""))return res;
+        char[] arr = str.toCharArray();
+        Arrays.sort(arr);
+        recursion(res, new StringBuilder(), arr, new boolean[arr.length]);
+        return res;
+    }
+
+    private void recursion(ArrayList<String> res, StringBuilder sb, char[] arr, boolean[] used){
+        if(sb.length() == arr.length){
+            res.add(sb.toString());
+        }else{
+            int len = arr.length;
+            for(int i = 0 ; i < len ; i++){
+                if(i != 0 && arr[i-1] == arr[i] || used[i]) continue;
+                used[i] = true;
+                sb.append(arr[i]);
+                recursion(res, sb, arr, used);
+                sb.deleteCharAt(sb.length()-1);
+                used[i] = false;
+            }
+        }
+    }
+
+    /**
+     *
+     * @param array
+     * @return
+     */
+    public int MoreThanHalfNum_Solution(int [] array) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int n : array){
+            if(map.containsKey(n)){
+                map.put(n, map.get(n) + 1);
+            }else {
+                map.put(n, 1);
+            }
+            if(map.get(n) > array.length/2){
+                return n;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     *
+     * @param input
+     * @param k
+     * @return
+     */
+    public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
+        if(k == 0 || k > input.length) return new ArrayList<>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>(k, Comparator.reverseOrder());
+        for(int n : input){
+            if(pq.size() < k){
+                pq.offer(n);
+            }else if(n < pq.peek()){
+                pq.poll();
+                pq.offer(n);
+            }
+        }
+        return new ArrayList<>(pq);
+    }
+
+
+    public String PrintMinNumber(int [] numbers) {
+        StringBuilder sb = new StringBuilder();
+        if(numbers.length == 0) return sb.toString();
+        ArrayList<String> lt = new ArrayList<>();
+        for(int n : numbers){
+            lt.add(String.valueOf(n));
+        }
+        lt.sort((String s1, String s2) -> ((s1+s2).compareTo(s2+s1)));
+        for(String str : lt){
+            sb.append(str);
+        }
+        return sb.toString();
+    }
+
+    /**
+     *丑数
+     * @param index
+     * @return
+     */
+    public int GetUglyNumber_Solution(int index) {
+        if(index < 7) return index;
+        int p2 = 0, p3 = 0, p5 = 0, num = 1;
+        ArrayList<Integer> res = new ArrayList<>();
+        res.add(num);
+        while(res.size() < index){
+            num = Math.min(res.get(p2) * 2, Math.min(res.get(p3) * 3, res.get(p5) * 5));
+            if(res.get(p2) * 2 == num) p2++;
+            if(res.get(p3) * 3 == num) p3++;
+            if(res.get(p5) * 5 == num) p5++;
+            res.add(num);
+        }
+        return res.get(index-1);
+    }
+
+    /**
+     * 第一个只出现一次的字符
+     * @param str
+     * @return
+     */
+    public int FirstNotRepeatingChar(String str) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        int len = str.length();
+        char c;
+        for(int i = 0 ; i < len ; i++){
+            c = str.charAt(i);
+            if(map.containsKey(c)){
+                map.put(c, map.get(c)+1);
+            }else {
+                map.put(c, 1);
+            }
+        }
+//        int res = len;
+//        for(Map.Entry<Character, Integer> e : map.entrySet()){
+//            if(e.getValue() == 1){
+//                res = Math.min(str.indexOf(e.getKey()), res);
+//            }
+//        }
+//        Iterator<Map.Entry<Character, Integer>> it = map.entrySet().iterator();
+//        while(it.hasNext()){
+//            Map.Entry<Character, Integer> en = it.next();
+//        }
+        for(int i = 0 ; i < len ; i++){
+            if(map.get(str.charAt(i)) == 1){
+                return i;
+            }
+        }
+        return -1;
+    }
+
 
 
 

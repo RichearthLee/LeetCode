@@ -1,7 +1,10 @@
 package main;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
+import solutions.Interview;
 import solutions.Solution1;
 import solutions.Solution2;
 import solutions.Solution3;
@@ -19,6 +22,7 @@ import test.TestMethod;
 public class MainAPP {
     public static void main(String[] args) {
         MainAPP main = new MainAPP();
+        Interview itv = new Interview();
         Solution1 s1 = new Solution1();
         Solution2 s2 = new Solution2();
         Solution3 s3 = new Solution3();
@@ -84,18 +88,24 @@ public class MainAPP {
 //            System.out.println(n);
 //        }
 
-//        TreeNode n1 = new TreeNode(3);
-//        TreeNode n2 = new TreeNode(1);
-//        TreeNode n3 = new TreeNode(5);
-//        TreeNode n4 = new TreeNode(0);
-//        TreeNode n5 = new TreeNode(2);
+//        TreeNode n1 = new TreeNode(8);
+//        TreeNode n2 = new TreeNode(4);
+//        TreeNode n3 = new TreeNode(12);
+//        TreeNode n4 = new TreeNode(2);
+//        TreeNode n5 = new TreeNode(6);
 //        TreeNode n6 = new TreeNode(4);
 //        TreeNode n7 = new TreeNode(6);
 //        n1.right = n2;
 //        n1.left = n3;
 //        s3.flatten(n1);
 //        System.out.println();
+//        n1.left = n2;
+//        n1.right = n3;
+//        n2.left = n4;
+//        n2.right = n5;
+//        itv.Postorder(n1);
 
+//        s2.Convert(n1);
 //        Node n1 = new Node(1);
 //        Node n2 = new Node(2);
 //        Node n3 = new Node(3);
@@ -120,25 +130,33 @@ public class MainAPP {
 //        Integer a = new Integer(0);
 //        s1.Power(2,-3);
 //        Queue<Integer> q = new LinkedList<>();
-        System.out.println(main.isValid("({[]})"));
+//        ConcurrentHashMap chm = new ConcurrentHashMap();
+//        int[] nums = new int[10];
+//        for(int i = 0 ; i < nums.length ; i++){
+//            nums[i] =(int)(Math.random()*10);
+//        }
+//        itv.quickSort_v1(nums,0,nums.length-1);
+//        for(int n : nums){
+//            System.out.print(n + "\t");
+//        }
+//        System.out.println();
+        StringBuilder sb = new StringBuilder();
+        StringBuffer sbf = new StringBuffer();
+        ArrayList<String> res= new ArrayList<>();
+        String str = new String("");
+        String str1 = "";
+        String str2 = "";
+        System.out.println(str1==str2);
+
+        HashMap map = new HashMap();
+        ConcurrentHashMap cmap = new ConcurrentHashMap();
+        LinkedHashMap lmp = new LinkedHashMap();
+        ArrayList list = new ArrayList();
+        cmap.size();
 
 
     }
 
-    public boolean isValid(String str) {
-        if(str == "" || str == null)return true;
-        Stack<Character> st = new Stack<>();
-        int len = str.length();
-        for(int i = 0 ; i < len ; i++){
-            char c = str.charAt(i);
-            if(c == '(' || c == '{' || c == '['){
-                st.push(c);
-            }else if(st.isEmpty() || Math.abs(st.pop() - c) > 2){
-                return false;
-            }
-        }
-        return st.isEmpty();
-    }
 
 
 

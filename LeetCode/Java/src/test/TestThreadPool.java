@@ -1,9 +1,6 @@
 package test;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @program: LeetCode
@@ -31,6 +28,11 @@ public class TestThreadPool {
                 new ArrayBlockingQueue<>(512),
                 //new SynchronousQueue<Runnable>(),
                 new ThreadPoolExecutor.DiscardPolicy());
+
+        ExecutorService pool1 = Executors.newCachedThreadPool(Executors.defaultThreadFactory());
+        ExecutorService pool2 = Executors.newFixedThreadPool(10, Executors.privilegedThreadFactory());
+
+
         for(int i=0;i<20;i++) {
             pool.execute(new ThreadTask());
             pool.submit(new ThreadTask());

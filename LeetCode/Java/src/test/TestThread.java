@@ -1,28 +1,39 @@
 package test;
 
 import java.io.IOException;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class TestThread implements Runnable {
-	private static boolean n=true;
-	private static boolean flag=false;
+	private volatile static boolean n=true;
+	private volatile static boolean flag=false;
+	private volatile static boolean A = true;
+	private volatile static boolean B = false;
+	private volatile  Semaphore spA;
+	private volatile  Semaphore spB;
 
 
 		@Override
 		public  void run() {
 			// TODO Auto-generated method stub
-			while(n) {
+			while (n) {
 				try {
-					print();
+					printA();
+					printB();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-		
-				
 		}
-		
-		public synchronized void print() throws InterruptedException {
+
+	private TestThread(){
+		spA = new Semaphore(1);
+		spB = new Semaphore(0);
+	}
+
+
+	private synchronized void print() throws InterruptedException {
 			if(Thread.currentThread().getName().equals("A")) {
 				if(flag) {
 					wait();
@@ -40,9 +51,70 @@ public class TestThread implements Runnable {
 				}
 				notify();
 			}
-			
-			
 		}
+
+	private synchronized void print_v1() throws InterruptedException {
+		if(Thread.currentThread().getName().equals("A")) {
+			if(!flag) {
+				System.out.println("AAAAAAAA");
+				flag=true;
+			}
+		}else {
+			if(flag) {
+				System.out.println("BBBBBBBB");
+				flag=false;
+			}
+		}
+	}
+
+	private  void print_v2() throws InterruptedException {
+		if(Thread.currentThread().getName().equals("A")) {
+			while(true){
+				if(A){
+					B = false;
+					System.out.println("AAAAAAAA");
+					A = false;
+					B = true;
+				}
+			}
+
+		}else {
+			while(true){
+				if (B) {
+					A = false;
+					System.out.println("BBBBBBBB");
+					B = false;
+					A = true;
+				}
+			}
+
+		}
+	}
+
+	private void print_v3() throws InterruptedException {
+		if(Thread.currentThread().getName().equals("A")) {
+			spA.acquire();
+			System.out.println("AAAAAAAAA");
+			spB.release();
+		}else {
+			spB.acquire();
+			System.out.println("BBBBBBBB");
+			spA.release();
+		}
+	}
+
+	private  void printA()throws InterruptedException {
+		spA.acquire();
+		System.out.println("AAAAAAAAA");
+		spB.release();
+	}
+
+	private  void printB()throws InterruptedException {
+		spB.acquire();
+		System.out.println("BBBBBBBB");
+		spA.release();
+	}
+
 		
 	
 
@@ -72,6 +144,8 @@ public class TestThread implements Runnable {
 		
 		b1.start();
 		b2.start();
+
+        AtomicInteger ai = new AtomicInteger(0);
 
 	}
 
