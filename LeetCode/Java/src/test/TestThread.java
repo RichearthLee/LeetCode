@@ -3,6 +3,10 @@ package test;
 import java.io.IOException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class TestThread implements Runnable {
 	private volatile static boolean n=true;
@@ -146,6 +150,9 @@ public class TestThread implements Runnable {
 		b2.start();
 
         AtomicInteger ai = new AtomicInteger(0);
+		Lock lk = new ReentrantLock();
+		ReadWriteLock lk1 = new ReentrantReadWriteLock();
+		//lk1.readLock();
 
 	}
 

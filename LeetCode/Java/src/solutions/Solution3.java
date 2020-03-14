@@ -638,8 +638,131 @@ public class Solution3 {
      */
     public int InversePairs(int [] array) {
         int res = 0;
+        for(int i = 0 ; i < array.length ; ++i){
+            for(int j = i + 1 ; j < array.length ; ++j){
+                if(array[i] > array[j]){
+                    res++;
+                }
+            }
+        }
         return res;
     }
+
+    /**
+     * 两个链表的第一个公共结点
+     * @param pHead1
+     * @param pHead2
+     * @return
+     */
+    public ListNode FindFirstCommonNode(ListNode pHead1, ListNode pHead2) {
+        while(pHead1 != null){
+            ListNode cur = pHead2;
+            while(cur != null){
+                if(pHead1 == cur){
+                    return cur;
+                }
+                cur = cur.next;
+            }
+            pHead1 = pHead1.next;
+        }
+        return null;
+    }
+
+    public ListNode FindFirstCommonNode_v1(ListNode pHead1, ListNode pHead2) {
+        int len1 = 0, len2 = 0;
+        ListNode cur1 = pHead1;
+        while(cur1 != null){
+            cur1 = cur1.next;
+            ++len1;
+        }
+
+        ListNode cur2 = pHead2;
+        while(cur2 != null){
+            cur2 = cur2.next;
+            ++len2;
+        }
+        if(len1 > len2){
+            len1 = len1 - len2;
+            while(len1 > 0){
+                pHead1 = pHead1.next;
+                --len1;
+            }
+        }else {
+            len2 = len2 - len1;
+            while(len2 > 0){
+                pHead2 = pHead2.next;
+                --len2;
+            }
+        }
+        while(pHead1 != null){
+            if(pHead1 == pHead2)return pHead1;
+            pHead1 = pHead1.next;
+            pHead2 = pHead2.next;
+        }
+        return null;
+    }
+
+    public ListNode FindFirstCommonNode_v2(ListNode pHead1, ListNode pHead2) {
+        ListNode cur1 = pHead1;
+        ListNode cur2 = pHead2;
+        while(cur1 != cur2){
+            cur1 = cur1 == null ? pHead1 : cur1.next;
+            cur2 = cur2 == null ? pHead2 : cur2.next;
+        }
+        return cur1;
+    }
+
+    /**
+     * 数字在排序数组中出现的次数
+     * @param array
+     * @param k
+     * @return
+     */
+    public int GetNumberOfK(int [] array , int k) {
+        if(array.length == 0)return 0;
+        int res = 0, left =0, right = array.length-1;
+        while(left < right){
+            int mid = (left + right)/2;
+            if(array[mid] > k){
+                right = mid -1;
+            }else if(array[mid] < k){
+                left = mid + 1;
+            }else {
+                left = mid;
+                break;
+            }
+        }
+        for(int i = left+1 ; i < array.length && array[i] == k ; ++i){
+            res++;
+        }
+        for(int i = left ;  i >= 0 && array[i] == k ; --i){
+            res++;
+        }
+        return res;
+    }
+
+    /**
+     * 二叉树的深度
+     * @param root
+     * @return
+     */
+    public int TreeDepth(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+        return Math.max(TreeDepth(root.left)+1, TreeDepth(root.right)+1);
+    }
+
+    /**
+     * 平衡二叉树
+     * @param root
+     * @return
+     */
+    public boolean IsBalanced_Solution(TreeNode root) {
+
+    }
+
+
 
 
 
