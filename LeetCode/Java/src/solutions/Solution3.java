@@ -759,8 +759,37 @@ public class Solution3 {
      * @return
      */
     public boolean IsBalanced_Solution(TreeNode root) {
-
+        if(root == null){
+            return true;
+        }
+        Boolean f = Math.abs(TreeDepth(root.left) - TreeDepth(root.right)) < 2;
+        return IsBalanced_Solution(root.left) && IsBalanced_Solution(root.right) && f;
     }
+
+    /**
+     * 数组中只出现一次的数字
+     * @param array
+     * @param num1
+     * @param num2
+     */
+    public void FindNumsAppearOnce(int [] array,int num1[] , int num2[]) {
+        Set<Integer> st = new HashSet<>();
+        for(int i : array){
+            if(!st.add(i)){
+                st.remove(i);
+            }
+        }
+        boolean f = true;
+        for(int i : st){
+            if(f){
+                num1[0] = i;
+                f = false;
+            }else {
+                num2[0] = i;
+            }
+        }
+    }
+
 
 
 
