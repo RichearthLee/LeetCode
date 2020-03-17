@@ -790,6 +790,26 @@ public class Solution3 {
         }
     }
 
+    /**
+     * 和为S的连续正数序列
+     * @param sum
+     * @return
+     */
+    public ArrayList<ArrayList<Integer>> FindContinuousSequence(int sum) {
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        for(int i = 0 ; i < sum ; ++i){
+            int num = 0;
+            ArrayList<Integer> temp = new ArrayList<>();
+            for(int j = i ; j < sum ; ++j){
+                num += j;
+                temp.add(j);
+                if(num > 100) break;
+                if(num == 100) res.add(temp);
+            }
+        }
+        return res;
+    }
+
 
 
 
