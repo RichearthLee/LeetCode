@@ -810,6 +810,82 @@ public class Solution3 {
         return res;
     }
 
+    public int[] maxNum(int[] arr, int k){
+        int[] res = new int[k];
+        res[0] = arr[0];
+        if(arr.length < 2)return res;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int n : arr){
+            if(map.containsKey(n)){
+                map.put(n,map.get(n)+1);
+            }else{
+                map.put(n,1);
+            }
+        }
+        k = k > arr.length ? arr.length : k;
+        for(int i = 0 ; i < k ; ++i){
+            int key = 0, value = 0;
+            for(Map.Entry<Integer, Integer> n : map.entrySet()){
+                if(value < n.getValue()){
+                    value = n.getValue();
+                    key = n.getKey();
+                }
+            }
+            res[i] = key;
+            map.remove(key);
+        }
+        return res;
+    }
+
+    public String ReverseSentence(String str) {
+        StringBuilder sb = new StringBuilder();
+        String[] arr = str.split(" ");
+        if(arr.length == 0)return str;
+        for(int i = arr.length-1 ; i >= 0 ; --i){
+            sb.append(arr[i]+" ");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        //sb.toString().trim();
+        return sb.toString();
+    }
+
+    public boolean isContinuous(int [] numbers) {
+        if(numbers.length <= 1)return false;
+        Arrays.sort(numbers);
+        for(int i = 0 ; i < numbers.length-1 ; i++){
+            if(numbers[i] == 0)continue;
+            if(numbers[i+1] - numbers[i] == 1) continue;
+            if(numbers[i+1] - numbers[i] == 0) return false;
+            int n = numbers[i+1] - numbers[i];
+            for(int j = 0 ; numbers[j] <= 0 && n > 1; j++){
+                if(numbers[j] > 0)return false;
+                if(numbers[j] == 0){
+                    numbers[j] = -1;
+                    n--;
+                }
+            }
+            if(n > 1)return false;
+        }
+        return true;
+    }
+
+    public int LastRemaining_Solution(int n, int m) {
+        int[] arr = new int[n];
+        int i = -1, temp = m;
+        while(n > 0){
+            i++;
+            if(i == arr.length)i = 0;
+            if(arr[i] == 1)continue;
+            temp--;
+            if(temp == 0){
+                temp = m;
+                n--;
+                arr[i] = 1;
+            }
+        }
+        return i;
+    }
+
 
 
 

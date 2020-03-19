@@ -140,19 +140,24 @@ public class MainAPP {
 //            System.out.print(n + "\t");
 //        }
 //        System.out.println();
-        StringBuilder sb = new StringBuilder();
-        StringBuffer sbf = new StringBuffer();
-        ArrayList<String> res= new ArrayList<>();
-        String str = new String("");
-        String str1 = "";
-        String str2 = "";
-        System.out.println(str1==str2);
+//        StringBuilder sb = new StringBuilder();
+//        StringBuffer sbf = new StringBuffer();
+//        ArrayList<String> res= new ArrayList<>();
+//        String str = new String("");
+//        String str1 = "";
+//        String str2 = "";
+//        System.out.println(str1==str2);
+//
+//        HashMap map = new HashMap();
+//        ConcurrentHashMap cmap = new ConcurrentHashMap();
+//        LinkedHashMap lmp = new LinkedHashMap();
+//        ArrayList list = new ArrayList();
+//        cmap.size();
+        s3.LastRemaining_Solution(5,3);
 
-        HashMap map = new HashMap();
-        ConcurrentHashMap cmap = new ConcurrentHashMap();
-        LinkedHashMap lmp = new LinkedHashMap();
-        ArrayList list = new ArrayList();
-        cmap.size();
+
+
+
 
 
     }
