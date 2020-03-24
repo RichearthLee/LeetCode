@@ -1,6 +1,7 @@
 package solutions;
 
 
+import utility.TreeLinkNode;
 import utility.ListNode;
 import utility.Node;
 import utility.TreeNode;
@@ -885,6 +886,631 @@ public class Solution3 {
         }
         return i;
     }
+
+    public int StrToInt(String str) {
+        int len = str.length();
+        if(!(str.charAt(0) == '+' || str.charAt(0) == '-' || str.charAt(0) >= '0' && str.charAt(0) <= '9')){
+            return 0;
+        }
+        for(int i = 1 ; i < len ; i++){
+            if(str.charAt(i) < '0' || str.charAt(i) > '9'){
+                return 0;
+            }
+        }
+        return Integer.valueOf(str);
+    }
+
+    public boolean duplicate(int numbers[],int length,int [] duplication) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int n : numbers){
+            if(map.containsKey(n)){
+                map.put(n, map.get(n)+1);
+            }else {
+                map.put(n, 1);
+            }
+        }
+//        int n = 0;
+//        for(Map.Entry<Integer, Integer> ent : map.entrySet()){
+//            if(ent.getValue() > 1){
+//                duplication[n] = ent.getKey();
+//                n++;
+//                f = true;
+//            }
+//        }
+        for(int n : numbers){
+            if(map.get(n) > 1){
+                duplication[0] = n;
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public boolean duplicate_v1(int numbers[],int length,int [] duplication) {
+        if(length <= 0)return false;
+        int[] map = new int[length];
+        for(int n : numbers){
+             map[n]++;
+        }
+        for(int n : numbers){
+            if(map[n] > 1){
+                duplication[0] = n;
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    public void test(){
+        Scanner sc = new Scanner(System.in);
+        int num = sc.nextInt();
+        while (sc.hasNextInt()) {
+            num = sc.nextInt();
+        }
+        String[] str = new String[num+1];
+        for(int i = 0 ;i < num ; i++){
+            str[i] = sc.nextLine();
+        }
+        if(num == 0){
+            System.out.println(0);
+        }
+        if(num == 1){
+            System.out.println(str[0]);
+        }
+        Arrays.sort(str);
+        int len = 0;
+        for(int i = 0 ; i < num ; i++){
+            int length = str[i].length();
+            String temp = str[i];
+            for(int j = i+1 ; j < num ;j++){
+                if(temp.charAt(temp.length()-1) <= str[j].charAt(0)){
+                    len += + str[j].length();
+                    temp = str[j];
+                }
+                len = Math.max(len, length);
+            }
+        }
+        System.out.println(len);
+
+    }
+
+    private void testrecursion(String[] str, int index, int pre, int len){
+        if(index >= str.length){
+            return;
+        }
+        for(int i = index ; i < str.length ; i++){
+            if(str[index].charAt(0) >= str[pre].charAt(str[pre].length()-1)){
+                len += str[index].length();
+                testrecursion(str, i+1, i,1);
+                len -= str[index].length();
+            }
+        }
+    }
+
+    public int[] multiply(int[] A) {
+        int[] b = new int[A.length];
+        Arrays.fill(b,1);
+        for(int i= 0 ; i < b.length ; i++){
+            for(int j = 0 ; j < b.length ; j ++){
+                if(j != i){
+                    b[i] *= A[j];
+                }
+            }
+        }
+        return b;
+    }
+
+    public int[] multiply_v1(int[] A) {
+        int[] B = new int[A.length];
+        if(A.length == 0)return B;
+        B[0] = 1;
+        for(int i = 1, len = A.length ; i < len ; ++i){
+            B[i] = B[i-1] * A[i-1];
+        }
+        int temp = 1;
+        for(int i = A.length - 2; i >= 0 ; --i){
+            temp = temp * A[i+1];
+            B[i] *= temp;
+        }
+        return B;
+    }
+
+    /**
+     * 正则表达式匹配
+     * @param str
+     * @param pattern
+     * @return
+     */
+    public boolean match(char[] str, char[] pattern) {
+            if(str.length == 0 && pattern.length == 0)return true;
+            if(str.length != 0 && pattern.length == 0)return false;
+        return match_recursion(str, pattern, 0 ,0);
+    }
+    private boolean match_recursion(char[] str, char[] pattern, int i, int j){
+        if(i >= str.length && j >= pattern.length) return true;
+        if(i < str.length && j >= pattern.length) return false;
+        if(j < pattern.length-1 && pattern[j+1] == '*'){
+            if(i > str.length || ((i < str.length && pattern[j] != str[i]) && pattern[j] != '.')){
+                return match_recursion(str, pattern, i, j+2);
+            }else {
+                return match_recursion(str, pattern, i, j+2) || match_recursion(str, pattern, i+1, j);
+            }
+//            if((i < str.length && pattern[j] == '.') || (i < str.length && pattern[j] == str[i])){
+//                return match_recursion(str, pattern, i, j+2) || match_recursion(str, pattern, i+1, j);
+//            }else {
+//                return match_recursion(str, pattern, i, j+2);
+//            }
+        }else {
+            if((i < str.length && pattern[j] == '.') || (i < str.length && pattern[j] == str[i])){
+                return match_recursion(str, pattern,i+1,j+1);
+            }else {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * 表示数值的字符串
+     * @param str
+     * @return
+     */
+    public boolean isNumeric(char[] str) {
+        int nume = 0, numd = 0;
+        for(int i = 0; i < str.length ; i++){
+            if(str[i] < '0' || str[i] > '9'){
+                if((str[i] == '-' || str[i] == '+') && (i == 0 || str[i-1]== 'e' || str[i-1] == 'E')){
+                    continue;
+                }
+                if((str[i] == 'e' || str[i] == 'E') && nume == 0 && i != str.length-1){
+                    nume++;
+                    continue;
+                }
+                if(str[i] == '.' && nume == 0 && i != 0 && i != str.length-1 && numd==0 ||
+                        (str[i] == '.' && numd == 0&& (i < str.length-2 && (str[i+1] != 'E' || str[i+1] != 'e')))){
+                    numd++;
+                    continue;
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+    HashMap<Character, Integer> s3_map = new HashMap<>(32);
+    LinkedList<Character>  s3_arr = new LinkedList<>();
+    public void Insert(char ch) {
+        if(s3_map.containsKey(ch)){
+            s3_map.put(ch, s3_map.get(ch)+1);
+        }else {
+            s3_map.put(ch, 1);
+        }
+        s3_arr.offer(ch);
+    }
+    public char FirstAppearingOnce() {
+//        for(Character ch : s3_arr){
+//            if(s3_map.get(ch) == 1){
+//                return ch;
+//            }
+//        }
+        while(!s3_arr.isEmpty() && s3_map.get(s3_arr.get(0)) >1)s3_arr.poll();
+        if(s3_arr.isEmpty())return '#';
+        return s3_arr.get(0);
+    }
+
+    public ListNode EntryNodeOfLoop(ListNode pHead) {
+        Set<ListNode> set = new HashSet<>();
+        while(pHead != null){
+            if(set.contains(pHead)){
+                return pHead;
+            }
+            set.add(pHead);
+            pHead = pHead.next;
+        }
+        return null;
+    }
+
+    public ListNode deleteDuplication(ListNode pHead) {
+        if(pHead == null) return null;
+        ListNode dummy = new ListNode(0);
+        dummy.next = pHead;
+        ListNode pre = dummy;
+        boolean f = false;
+        while(pHead != null){
+            while(pHead.next != null && pHead.next.val == pHead.val){
+                pHead = pHead.next;
+                f = true;
+            }
+            if(f){
+                pre.next = pHead.next;
+            }
+            pre = pre.next;
+            pHead = pHead.next;
+            f = false;
+        }
+        return dummy.next;
+    }
+
+    public TreeLinkNode GetNext(TreeLinkNode pNode) {
+        if(pNode.right != null){
+            pNode = pNode.right;
+            while(pNode.left != null){
+                pNode = pNode.left;
+            }
+            return pNode;
+        }else {
+            if(pNode.next == null){
+                return null;
+            } else if (pNode.next.left == pNode){
+                return pNode.next;
+            }else if(pNode.next.right == pNode){
+                while(pNode.next != null && pNode.next.left != pNode){
+                    pNode = pNode.next;
+                }
+                return pNode.next;
+            }
+        }
+        return null;
+    }
+
+    public boolean isSymmetrical(TreeNode pRoot) {
+        if(pRoot == null)return true;
+        return isSymmetrical_mirror(pRoot.left,pRoot.right);
+    }
+    private boolean isSymmetrical_mirror(TreeNode left, TreeNode right){
+        if(left == null && right == null)return true;
+        if(left == null || right ==null)return false;
+        if(left.val == right.val)return isSymmetrical_mirror(left.left, right.right) &&
+                isSymmetrical_mirror(left.right, right.left);
+        return false;
+    }
+
+    public ArrayList<ArrayList<Integer>> PrintZ(TreeNode pRoot) {
+        Queue<TreeNode> qe = new LinkedList<>();
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        ArrayList<Integer> arr = new ArrayList<>();
+        if (pRoot == null)return res;
+        qe.offer(pRoot);
+        int len = 1;
+        int nextlen = 0;
+        boolean f = false;
+        while(!qe.isEmpty()){
+            TreeNode temp = qe.poll();
+            len--;
+            if(temp.left != null){
+                qe.offer(temp.left);nextlen++;
+            }
+            if(temp.right != null){
+                qe.offer(temp.right);nextlen++;
+            }
+            if(f){
+                arr.add(0,temp.val);
+            }else {
+                arr.add(temp.val);
+            }
+            if(len == 0){
+                f = !f;
+                len = nextlen;
+                nextlen = 0;
+                res.add(new ArrayList<>(arr));
+                arr.clear();
+            }
+        }
+        return res;
+    }
+
+    public ArrayList<ArrayList<Integer>> PrintZ_v1(TreeNode pRoot) {
+        Queue<TreeNode> qe = new LinkedList<>();
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        if (pRoot == null)return res;
+        qe.offer(pRoot);
+        int len = 1;
+        int nextlen = 0;
+        boolean f = false;
+        while(!qe.isEmpty()){
+            ArrayList<Integer> arr = new ArrayList<>();
+            for(; len > 0 ; len--){
+                TreeNode temp = qe.poll();
+                if(temp.left != null){
+                    qe.offer(temp.left);nextlen++;
+                }
+                if(temp.right != null){
+                    qe.offer(temp.right);nextlen++;
+                }
+                if(f){
+                    arr.add(0,temp.val);
+                }else {
+                    arr.add(temp.val);
+                }
+            }
+            f = !f;
+            len = nextlen;
+            nextlen = 0;
+            res.add(arr);
+        }
+        return res;
+    }
+
+
+    public ArrayList<ArrayList<Integer>> Print(TreeNode pRoot) {
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        Queue<TreeNode> qu = new LinkedList<>();
+        if(pRoot == null) return res;
+        qu.offer(pRoot);
+        int len = 1, nextlen = 0;
+        while (!qu.isEmpty()){
+            ArrayList<Integer> temp = new ArrayList<>();
+            for(;len > 0 ; len--){
+                TreeNode node = qu.poll();
+                temp.add(node.val);
+                if(node.left != null) {
+                    qu.offer(node.left);nextlen++;
+                }
+                if(node.right != null){
+                    qu.offer(node.right);nextlen++;
+                }
+            }
+            len = nextlen;
+            nextlen = 0;
+            res.add(temp);
+        }
+        return res;
+    }
+
+
+    //private StringBuilder s3_sb;
+
+    public String Serialize(TreeNode root) {
+        //StringBuilder s3_sb = new StringBuilder();
+        return Serialize_recursion(root, new StringBuilder()).toString();
+    }
+    private StringBuilder Serialize_recursion(TreeNode root, StringBuilder sb){
+        if(root != null){
+            sb.append(root.val); sb.append(',');
+        }else {
+            sb.append("#,"); return sb;
+        }
+        Serialize_recursion(root.left, sb);
+        Serialize_recursion(root.right, sb);
+        return sb;
+    }
+
+    public TreeNode Deserialize(String str) {
+        return Deserialize_recursion(str, new int[1]);
+    }
+    private TreeNode Deserialize_recursion(String str, int[] index){
+        if(str.charAt(index[0]) == '#'){
+            index[0]+=2; return null;
+        }
+        int i = index[0];
+        for(; str.charAt(i) != ',' ; ++i);
+        TreeNode node = new TreeNode(Integer.valueOf(str.substring(index[0], i)));
+        index[0]=i+1;
+        node.left = Deserialize_recursion(str, index);
+        node.right = Deserialize_recursion(str, index);
+        return node;
+    }
+
+    public TreeNode KthNode(TreeNode pRoot, int k) {
+//        LinkedList<TreeNode> res = new LinkedList<>();
+//        KthNode_recursion(pRoot, k, res);
+//        return res.size() == k ? res.peekLast() : null;
+        if(k == 0)return null;
+        int[] num = new int[1];
+        num[0] = k;
+        return KthNode_helper(pRoot, num);
+    }
+
+    private void KthNode_recursion(TreeNode pRoot, int k, LinkedList<TreeNode> res){
+        if(pRoot == null)return;
+        KthNode_recursion(pRoot.left, k, res);
+        if(res.size() >= k){
+            return;
+        }else {
+            res.offer(pRoot);
+        }
+        KthNode_recursion(pRoot.right , k , res);
+    }
+
+    private TreeNode KthNode_helper(TreeNode pRoot, int[] k){
+        if(pRoot == null)return null;
+        TreeNode node = KthNode_helper(pRoot.left, k);
+        if(node != null)return node;
+        k[0]--;
+        if(k[0] == 0){
+            return pRoot;
+        }
+        return KthNode_helper(pRoot.right , k);
+    }
+
+    private ArrayList<Integer> median = new ArrayList<>();
+    public void Insert_v1(Integer num) {
+        int left = 0, right = median.size()-1;
+        while(left < right){
+            int mid = (left + right)/2;
+            if(median.get(mid) < num){
+                left = mid+1;
+            }else if(median.get(mid) > num){
+                right = mid-1;
+            }
+        }
+        median.add(left, num);
+    }
+
+    public Double GetMedian_v1() {
+        int len = median.size();
+        if(len % 2 ==1){
+            return (double)median.get(len/2);
+        }else {
+            return (median.get(len/2-1) + median.get(len/2))/2.0;
+        }
+    }
+
+    private PriorityQueue<Integer> asc = new PriorityQueue<>();
+    private PriorityQueue<Integer> desc = new PriorityQueue<>((o1, o2) -> o2 - o1);
+    public void Insert(Integer num) {
+        int len = asc.size() + desc.size();
+        if(len % 2 == 1){
+            if(num >= desc.peek()){
+                asc.offer(num);
+            }else {
+                asc.offer(desc.poll());
+                desc.offer(num);
+            }
+
+        }else {
+            if(asc.isEmpty() || num <= asc.peek()){
+                desc.offer(num);
+            }else {
+                desc.offer(asc.poll());
+                asc.offer(num);
+            }
+
+        }
+    }
+
+    public Double GetMedian() {
+        int len = asc.size() + desc.size();
+        if(len == 0)return 0.0;
+        if(len % 2 ==1){
+            return (double)desc.peek();
+        }else {
+            return (desc.peek() + asc.peek())/2.0;
+        }
+    }
+
+
+
+    public ArrayList<Integer> maxInWindows(int [] num, int size) {
+        ArrayList<Integer> res = new ArrayList<>();
+        if(size == 0)return res;
+        for(int pre = 0,  post = size -1, len = num.length; post < len ; post++, pre++){
+            int max = num[pre];
+            for(int i = pre; i<= post ; i++){
+                max = Math.max(max, num[i]);
+            }
+            res.add(max);
+        }
+        return res;
+    }
+
+    public boolean hasPath(char[] matrix, int rows, int cols, char[] str) {
+        for(int i = 0 ; i < rows ; i++){
+            for(int j = 0 ; j < cols ; j++){
+                if(hasPath_recursion(matrix, rows, cols, i, j, str, 0)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean hasPath_recursion(char[] matrix, int rows, int cols,int i, int j, char[] str, int index){
+        int len = i*cols + j;
+        if(j < 0 || j > cols -1 || i < 0|| i > rows -1 || str[index] != matrix[len]) return false;
+        if(index == str.length - 1)return true;
+        char c = matrix[len];
+        matrix[len] = '#';
+        boolean f = hasPath_recursion(matrix, rows, cols, i, j-1, str, index+1);
+        f |= hasPath_recursion(matrix, rows, cols, i, j+1, str, index+1);
+        f |= hasPath_recursion(matrix, rows, cols, i-1, j, str, index+1);
+        f |= hasPath_recursion(matrix, rows, cols, i+1, j, str, index+1);
+        matrix[len] = c;
+        return f;
+    }
+
+
+    public int cutRope(int target) {
+        int cur = 1, pre = 1;
+        for(int i = 2; i <= target && cur >= pre; i++){
+            pre = cur;
+            cur = 1;
+            int tmp = target/i;
+            int rmd = target%i;
+            cur = (int)(Math.pow(tmp,i-rmd)*Math.pow(tmp+1,rmd));
+        }
+        return pre;
+    }
+
+    public int movingCount(int threshold, int rows, int cols) {
+        return movingCount_recrusion(threshold, rows, cols, 0, 0, new boolean[rows][cols]);
+    }
+    private int movingCount_recrusion(int threshold, int rows, int cols, int i, int j, boolean[][] f){
+        if(i < 0 || i>= rows || j < 0 || j>= cols || f[i][j] )return 0;
+        int count = 0;
+        for(int num = i; num != 0 ;){
+            count += num % 10;
+            num /= 10;
+        }
+        for(int num = j; num != 0 ;){
+            count += num % 10;
+            num /= 10;
+        }
+        if(count > threshold) return 0;
+        f[i][j] = true;
+        return movingCount_recrusion(threshold, rows, cols, i, j-1, f)
+        + movingCount_recrusion(threshold, rows, cols, i, j+1, f)
+        + movingCount_recrusion(threshold, rows, cols, i-1, j, f)
+        + movingCount_recrusion(threshold, rows, cols, i+1, j, f) + 1;
+    }
+
+    public int movingCount_v1(int threshold, int rows, int cols) {
+        boolean[][] matrix = new boolean[rows][cols];
+        if(threshold < 0)return 0;
+        int res = 1; matrix[0][0] = true;
+        for(int i = 0; i < rows ; i++){
+            for(int j = 0 ; j < cols ; j++){
+                if(!matrix[i][j] && movingCount_helper(i, j ,threshold) &&
+                        (i>0 && matrix[i-1][j] ||
+                        j> 0 && matrix[i][j-1] ||
+                        i< rows-1 && matrix[i+1][j] ||
+                        j< cols-1 &&matrix[i][j+1])){
+                        res++;
+                        matrix[i][j] = true;
+                }
+            }
+        }
+        return res;
+    }
+
+    private boolean movingCount_helper(int i, int j, int threshold){
+        int count = 0;
+        for(int num = i; num != 0 ;){
+            count += num % 10;
+            num /= 10;
+        }
+        for(int num = j; num != 0 ;){
+            count += num % 10;
+            num /= 10;
+        }
+        return count <= threshold;
+    }
+
+    private void print(boolean[][] matrix){
+        for (boolean[] booleans : matrix) {
+            for (boolean n : booleans) {
+                System.out.print(n + "\t");
+            }
+            System.out.println();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -153,7 +153,23 @@ public class MainAPP {
 //        LinkedHashMap lmp = new LinkedHashMap();
 //        ArrayList list = new ArrayList();
 //        cmap.size();
-        s3.LastRemaining_Solution(5,3);
+//        s3.LastRemaining_Solution(5,3);
+//        s3.duplicate(new int[0],0,new int[0]);
+//        TreeNode n1 = new TreeNode(1);
+//        TreeNode n2 = new TreeNode(2);
+//        TreeNode n3 = new TreeNode(3);
+//        TreeNode n4 = new TreeNode(4);
+//        n1.left = n2;
+//        n2.left = n3;
+//        n3.left = n4;
+//        s3.Print_v1(n1);
+//        String str = "";
+//        StringBuilder sb = new StringBuilder(str);
+//        String str = s3.Serialize(n1);
+//        System.out.println(str);
+//        s3.Deserialize(str);
+//        s3.hasPath("ABCESFCSADEE".toCharArray(),3,4,"ABCCED".toCharArray());
+        s3.movingCount_v1(15, 20, 20);
 
 
 
