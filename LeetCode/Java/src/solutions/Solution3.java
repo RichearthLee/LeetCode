@@ -1497,6 +1497,37 @@ public class Solution3 {
         }
     }
 
+    ArrayList<Integer> reverse = new ArrayList<>();
+    public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
+        if(listNode == null)return reverse;
+        printListFromTailToHead(listNode.next);
+        reverse.add(listNode.val);
+        return reverse;
+    }
+
+    public ArrayList<Integer> printListFromTailToHead_v1(ListNode listNode) {
+        ArrayList<Integer> reverse = new ArrayList<>();
+        while(listNode != null){
+            reverse.add(listNode.val);
+            listNode = listNode.next;
+        }
+        Collections.reverse(reverse);
+        return reverse;
+    }
+
+    /**
+     *
+     * @param triangle
+     * @return
+     */
+    public int minimumTotal(List<List<Integer>> triangle) {
+
+        return 0;
+    }
+
+
+
+
 
 
 

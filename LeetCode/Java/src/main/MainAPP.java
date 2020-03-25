@@ -8,6 +8,7 @@ import solutions.Interview;
 import solutions.Solution1;
 import solutions.Solution2;
 import solutions.Solution3;
+import utility.ListNode;
 import utility.Node;
 import utility.TreeNode;
 import test.TestMethod;
@@ -169,7 +170,26 @@ public class MainAPP {
 //        System.out.println(str);
 //        s3.Deserialize(str);
 //        s3.hasPath("ABCESFCSADEE".toCharArray(),3,4,"ABCCED".toCharArray());
-        s3.movingCount_v1(15, 20, 20);
+//        s3.movingCount_v1(15, 20, 20);
+        ListNode l1 = new ListNode(4);
+        ListNode l2 = new ListNode(3);
+        ListNode l3 = new ListNode(8);
+        ListNode l4 = new ListNode(9);
+        ListNode l5 = new ListNode(4);
+        ListNode l6 = new ListNode(0);
+        ListNode l7 = new ListNode(1);
+        l1.next = l2;
+        l2.next = l3;
+        l3.next = l4;
+        l4.next = l5;
+        l5.next = l6;
+        l6.next = l7;
+        ListNode node = itv.sortList(l1);
+        while(node != null){
+            System.out.print(node.val + "\t");
+            node = node.next;
+        }
+        System.out.println();
 
 
 

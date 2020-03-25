@@ -1,5 +1,6 @@
 package solutions;
 
+import utility.ListNode;
 import utility.TreeNode;
 
 import java.util.ArrayList;
@@ -186,6 +187,100 @@ public class Interview {
         }
         return res;
     }
+
+    /**
+     * 单链表排序  并归排序
+     * @return
+     */
+    public ListNode sortList(ListNode head){
+        if(head == null || head.next == null)return head;
+        ListNode fast = head.next, slow = head, pre= null;
+        while(fast != null && fast.next != null){
+            pre = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        pre.next = null;
+        fast = sortList(head);
+        slow = sortList(slow);
+        return mergeList(fast, slow);
+    }
+
+    private ListNode mergeList(ListNode l1, ListNode l2){
+        ListNode dummy = new ListNode(0);
+        ListNode pre = dummy;
+        while(l1 != null && l2 != null){
+            if(l1.val <= l2.val){
+                pre.next = l1;
+                l1 = l1.next;
+            }else {
+                pre.next = l2;
+                l2 = l2.next;
+            }
+            pre = pre.next;
+        }
+        if(l1 == null){
+            pre.next = l2;
+        }else {
+            pre.next = l1;
+        }
+        return dummy.next;
+    }
+
+    public ListNode sortList_v1(ListNode head){
+        ListNode cur = head, dummy = new ListNode(0), prev;
+        dummy.next = head;
+        int len = 0;
+        while(cur != null){
+            cur = cur.next;
+            len++;
+        }
+        for(int step = 1; step < len ; step <<= 1){
+            prev = dummy;
+            cur = dummy.next;
+            while(cur != null){
+                ListNode left = cur;
+                ListNode right = split(cur, step);
+                cur = split(right, step);
+                prev = mergeList(left, right, prev);
+            }
+        }
+        return dummy.next;
+    }
+
+    private ListNode split(ListNode cur, int step){
+        if(cur == null)return null;
+        ListNode pre = cur;
+        while(cur != null && step > 0){
+            pre = cur;
+            cur = cur.next;
+            step--;
+        }
+        pre.next = null;
+        return cur;
+    }
+
+    private ListNode mergeList(ListNode l1, ListNode l2, ListNode prev){
+        while(l1 != null && l2 != null){
+            if(l1.val <= l2.val){
+                prev.next = l1;
+                l1 = l1.next;
+            }else {
+                prev.next = l2;
+                l2 = l2.next;
+            }
+            prev = prev.next;
+        }
+        if(l1 != null){
+            prev.next = l1;
+        }else {
+            prev.next = l2;
+        }
+        while(prev.next != null)prev = prev.next;
+        return prev;
+    }
+
+
 
 
 
