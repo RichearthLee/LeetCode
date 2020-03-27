@@ -74,10 +74,16 @@ public class Interview {
         if(start >= end) return nums;
         int key = nums[start], left = start, right = end;
         while(left < right){
-            while(key <= nums[right] && left < right){
+//            while(key <= nums[right] && left < right){    //递增
+//                right--;
+//            }
+//            while(key >= nums[left] && left < right){
+//                left++;
+//            }
+            while(key >= nums[right] && left < right){      //递减
                 right--;
             }
-            while(key >= nums[left] && left < right){
+            while(key <= nums[left] && left < right){
                 left++;
             }
             if(left < right){
@@ -279,6 +285,28 @@ public class Interview {
         while(prev.next != null)prev = prev.next;
         return prev;
     }
+
+
+//    public int[] quickSort_v2(int[] nums, int start, int end){
+//        if(start >= end)return nums;
+//        int left = start, right = end,k = nums[start];
+//        while(left < right){
+//            while(right > left && k <= nums[right]){
+//                right--;
+//            }
+//            while(left < right && k >= nums[left]){
+//                left++;
+//            }
+//            int temp = nums[left];
+//            nums[left] = nums[right];
+//            nums[right] = temp;
+//        }
+//        nums[start] = nums[left];
+//        nums[left] = k;
+//        quickSort_v3(nums,start, left-1);
+//        quickSort_v3(nums,left+1, end);
+//        return nums;
+//    }
 
 
 

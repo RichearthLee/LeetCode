@@ -132,15 +132,17 @@ public class MainAPP {
 //        s1.Power(2,-3);
 //        Queue<Integer> q = new LinkedList<>();
 //        ConcurrentHashMap chm = new ConcurrentHashMap();
-//        int[] nums = new int[10];
-//        for(int i = 0 ; i < nums.length ; i++){
-//            nums[i] =(int)(Math.random()*10);
-//        }
-//        itv.quickSort_v1(nums,0,nums.length-1);
-//        for(int n : nums){
-//            System.out.print(n + "\t");
-//        }
-//        System.out.println();
+
+        int[] nums = new int[10];                         //快排测试
+        for(int i = 0 ; i < nums.length ; i++){
+            nums[i] =(int)(Math.random()*10);
+        }
+        itv.quickSort(nums,0,nums.length-1);
+        for(int n : nums){
+            System.out.print(n + "\t");
+        }
+        System.out.println();
+
 //        StringBuilder sb = new StringBuilder();
 //        StringBuffer sbf = new StringBuffer();
 //        ArrayList<String> res= new ArrayList<>();
@@ -171,25 +173,27 @@ public class MainAPP {
 //        s3.Deserialize(str);
 //        s3.hasPath("ABCESFCSADEE".toCharArray(),3,4,"ABCCED".toCharArray());
 //        s3.movingCount_v1(15, 20, 20);
-        ListNode l1 = new ListNode(4);
-        ListNode l2 = new ListNode(3);
-        ListNode l3 = new ListNode(8);
-        ListNode l4 = new ListNode(9);
-        ListNode l5 = new ListNode(4);
-        ListNode l6 = new ListNode(0);
-        ListNode l7 = new ListNode(1);
-        l1.next = l2;
-        l2.next = l3;
-        l3.next = l4;
-        l4.next = l5;
-        l5.next = l6;
-        l6.next = l7;
-        ListNode node = itv.sortList(l1);
-        while(node != null){
-            System.out.print(node.val + "\t");
-            node = node.next;
-        }
-        System.out.println();
+
+
+//        ListNode l1 = new ListNode(4);            //链表测试
+//        ListNode l2 = new ListNode(3);
+//        ListNode l3 = new ListNode(8);
+//        ListNode l4 = new ListNode(9);
+//        ListNode l5 = new ListNode(4);
+//        ListNode l6 = new ListNode(0);
+//        ListNode l7 = new ListNode(1);
+//        l1.next = l2;
+//        l2.next = l3;
+//        l3.next = l4;
+//        l4.next = l5;
+//        l5.next = l6;
+//        l6.next = l7;
+//        ListNode node = itv.sortList(l1);
+//        while(node != null){
+//            System.out.print(node.val + "\t");
+//            node = node.next;
+//        }
+//        System.out.println();
 
 
 

@@ -1520,10 +1520,304 @@ public class Solution3 {
      * @param triangle
      * @return
      */
-    public int minimumTotal(List<List<Integer>> triangle) {
-
-        return 0;
+    public int minimumTotal_v1(List<List<Integer>> triangle) {
+        int[] res = new int[1];
+        res[0] = Integer.MAX_VALUE;
+        return minimumTotal_recursion(triangle, 0, 0,new int[1], res);
     }
+    private int minimumTotal_recursion(List<List<Integer>> triangle, int col, int row, int[] tmp, int[] res){
+        if(row == triangle.size() || col == triangle.get(row).size()){
+            if(row == triangle.size()){
+                res[0] = Math.min(res[0], tmp[0]);
+            }
+            return res[0];
+        }
+        tmp[0] += triangle.get(row).get(col);
+        minimumTotal_recursion(triangle, col, row+1,tmp,res);
+        minimumTotal_recursion(triangle, col+1, row+1,tmp,res);
+        tmp[0] -= triangle.get(row).get(col);
+        return res[0];
+    }
+
+    public int minimumTotal_v2(List<List<Integer>> triangle) {
+        if(triangle.size() == 0 || triangle.get(0).size() == 0)return 0;
+        int[][] dp = new int[triangle.size()][triangle.get(triangle.size()-1).size()];
+        dp[0][0] = triangle.get(0).get(0);
+        for(int i = 1, row = triangle.size(); i < row ; i++){
+            for(int j = 0; j <= i ; j++){
+                int num = triangle.get(i).get(j);
+                if(j == 0){
+                    dp[i][j] = dp[i-1][j] + num;
+                }else if(j == i){
+                    dp[i][j] = dp[i-1][j-1] + num;
+                }else {
+                    dp[i][j] = Math.min(dp[i-1][j-1] + num, dp[i-1][j] + num);
+                }
+            }
+        }
+        int res = dp[dp.length-1][0];
+        for(int n : dp[dp.length-1]){
+            res = Math.min(res, n);
+        }
+        return res;
+    }
+
+    public int minimumTotal_v3(List<List<Integer>> triangle) {
+        if(triangle.size() == 0 || triangle.get(0).size() == 0)return 0;
+        int[] dp = new int[triangle.size()];
+        dp[0] = triangle.get(0).get(0);
+        for(int i = 1, row = triangle.size(); i < row ; i++){
+            int prev = 0;
+            for(int j = 0; j <= i ; j++){
+                int num = triangle.get(i).get(j), cur;
+                if(j == 0){
+                    prev = dp[j];
+                    dp[j] = dp[j] + num;
+                }else if(j == i){
+                    dp[j] = prev + num;
+                }else {
+                    cur = prev;
+                    prev = dp[j];
+                    dp[j] = Math.min(cur + num, dp[j] + num);
+                }
+            }
+        }
+        for(int n : dp){
+            dp[0] = Math.min(dp[0], n);
+        }
+        return dp[0];
+    }
+
+
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int[] dp = new int[triangle.size()+1];
+        for(int i = triangle.size()-1 ; i >= 0 ; i--){
+            for(int j = 0, col = triangle.get(i).size(); j < col ; j++){
+                dp[j] = Math.min(dp[j], dp[j+1]) + triangle.get(i).get(j);
+            }
+        }
+        return dp[0];
+    }
+
+    /**
+     * 121. Best Time to Buy and Sell Stock
+     * @param prices
+     * @return
+     */
+    public int maxProfit_v1(int[] prices) {  //记录最大值和最小值的下标
+        int min = 0,max = 0, res=0;
+        for(int i = 1; i <prices.length ; i++){
+            if(prices[i] > prices[max]){
+                max = i;
+                res = Math.max(res, prices[i] - prices[min]);
+            }else if(prices[i] < prices[min]){
+                min = i;
+                max = i;
+            }
+        }
+        return res;
+    }
+
+    public int maxProfit_V2(int[] prices) { //记录局部最大和全局最大
+        int max = 0, res = 0;
+        for(int i = 1; i < prices.length ; i++){
+            max = Math.max(0, max += prices[i] - prices[i-1]);
+            res = Math.max(max, res);
+        }
+        return res;
+    }
+
+    public int maxProfit_v3(int[] prices) {
+        int max = 0, min = 0;
+        for(int i = 0; i < prices.length ; i++){  //记录最小值和当前值做差
+            min = prices[i] < prices[min] ? i : min;
+            max = Math.max(max, prices[i] - prices[min]);
+        }
+        return max;
+    }
+
+    /**
+     * 122. Best Time to Buy and Sell Stock II
+     * @param prices a array
+     * @return the max value
+     */
+    public int maxProfit_v4(int[] prices) {
+        int res = 0, index =0;
+        for(int i = 0 ; i < prices.length ; i++){
+            while(i<prices.length-1 && prices[i] >= prices[index] && prices[i] < prices[i+1]){
+                i++;
+            }
+            res += prices[i] - prices[index];
+            index = i;
+        }
+        return res;
+    }
+
+    public int maxProfit_v5(int[] prices) {
+        int res = 0, index =0;
+        for(int i = 1 ; i < prices.length ; i++){
+            while(i < prices.length &&prices[i] >= prices[i-1]){
+                i++;
+            }
+            res += prices[i-1] - prices[index];
+            index = i;
+        }
+        return res;
+    }
+
+    /**
+     * 123. Best Time to Buy and Sell Stock III
+     * @param prices a array
+     * @return the max value
+     */
+    public int maxProfit_v6(int[] prices) {    //分开两段求最大值
+        int res = 0;
+        for(int i = 1 ; i < prices.length ; i++){
+            int pre=0, post=0, maxPre = 0, maxPost = 0;
+            for(int j = 1 ; j <= i ; j++){
+                pre = Math.max(0, pre += prices[j] - prices[j-1]);
+                maxPre = Math.max(maxPre, pre);
+            }
+            for(int j = i+2 ; j < prices.length ; j++){
+                post = Math.max(0,post += prices[j] - prices[j-1]);
+                maxPost = Math.max(post, maxPost);
+            }
+            res = Math.max(res, maxPost + maxPre);
+        }
+        return res;
+    }
+
+    public int maxProfit_v7(int[] prices) {  //不对
+        int index =0; int[] res = new int[2];
+        for(int i = 1 ; i < prices.length ; i++){
+            while(i < prices.length &&prices[i] >= prices[i-1]){
+                i++;
+            }
+            int num = prices[i-1] - prices[index];
+            if(num > res[0]){
+                res[1] = res[0];
+                res[0] = num;
+            }else if(num > res[1]){
+                res[1] = num;
+            }
+            index = i;
+        }
+        return res[0]+res[1];
+    }
+
+    public int maxProfit_v8(int[] prices) {   //利用DP模拟两次交易
+        int hold1 = Integer.MIN_VALUE, hold2 = Integer.MIN_VALUE;
+        int release1 = 0, release2 = 0;
+        for(int i:prices){                              // Assume we only have 0 money at first
+            release2 = Math.max(release2, hold2+i);     // The maximum if we've just sold 2nd stock so far.
+            hold2    = Math.max(hold2,    release1-i);  // The maximum if we've just buy  2nd stock so far.
+            release1 = Math.max(release1, hold1+i);     // The maximum if we've just sold 1nd stock so far.
+            hold1    = Math.max(hold1,    -i);          // The maximum if we've just buy  1st stock so far.
+        }
+        return release2; ///Since release1 is initiated as 0, so release2 will always higher than release1.
+    }
+
+    public int maxProfit(int[] prices) {   //利用DP
+        if(prices.length == 0)return 0;
+        int[][] dp = new int[3][prices.length];
+        for(int k = 1 ; k <= 2 ; k++){
+            int min = prices[0];
+            for(int i = 1 ; i < prices.length ; i++){
+                min = Math.min(min, prices[i] - dp[k-1][i-1]);
+                dp[k][i] = Math.max(dp[k][i-1], prices[i] - min);
+            }
+        }
+        return dp[2][prices.length-1];
+    }
+
+    /**
+     * 215. Kth Largest Element in an Array
+     * @param nums array
+     * @param k kth
+     * @return kth
+     */
+    public int findKthLargest(int[] nums, int k) {
+        return findKthLargest_helper(nums, k, 0, nums.length-1);
+    }
+    private int findKthLargest_helper(int[] nums, int k, int start, int end){
+        if(start >= end) return nums[start];
+        int left = start, right = end, key = nums[left];
+        while(left < right){
+            while(left < right && key > nums[right]){
+                right--;
+            }
+            while (left < right && key < nums[left]){
+                left++;
+            }
+            int tmp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = tmp;
+        }
+        nums[start] = nums[left];
+        nums[left] = key;
+
+        if(left+1 > k){
+            return findKthLargest_helper(nums, k, start, left-1);
+        }else if(left+1 < k){
+            return findKthLargest_helper(nums, k, left + 1, end);
+        }else {
+            return nums[left];
+        }
+    }
+
+    /**
+     * 454. 4Sum II
+     * @param A a
+     * @param B b
+     * @param C c
+     * @param D d
+     * @return n
+     */
+    public int fourSumCount_v1(int[] A, int[] B, int[] C, int[] D) {
+//        Set<ArrayList<Integer>> res = new HashSet<>();
+//        ArrayList<Integer> tmp;
+        int res=0;
+        //Arrays.sort(A);
+        //Arrays.sort(B);
+        //Arrays.sort(C);
+        //Arrays.sort(D);
+        for(int a = 0 ; a < A.length ; a++){
+            //if(a > 0 && A[a] == A[a-1])continue;
+            for(int b = 0 ; b < B.length ; b++){
+                //if(b > 0 && B[b] == B[b-1])continue;
+                for(int c = 0 ; c < C.length; c++){
+                    //if(c > 0 && C[c] == C[c-1])continue;
+                    for(int d = 0 ; d < D.length ;d++){
+                        //if(d > 0 && D[d] == D[d-1])continue;
+                        if(A[a] + B[b] + C[c] + D[d] == 0){
+                            res++;
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+
+    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int a : A){
+            for(int b : B){
+                //int num = a + b;
+                map.put(a + b, map.getOrDefault(a+b, 0)+1);
+            }
+        }
+        int res=0;
+        for(int c : C){
+            for(int d : D){
+                res += map.getOrDefault(-c-d,0);
+            }
+        }
+        return res;
+    }
+
+
 
 
 
