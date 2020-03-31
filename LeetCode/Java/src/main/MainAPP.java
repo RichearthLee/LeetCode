@@ -133,15 +133,15 @@ public class MainAPP {
 //        Queue<Integer> q = new LinkedList<>();
 //        ConcurrentHashMap chm = new ConcurrentHashMap();
 
-        int[] nums = new int[10];                         //快排测试
-        for(int i = 0 ; i < nums.length ; i++){
-            nums[i] =(int)(Math.random()*10);
-        }
-        itv.quickSort(nums,0,nums.length-1);
-        for(int n : nums){
-            System.out.print(n + "\t");
-        }
-        System.out.println();
+//        int[] nums = new int[10];                         //快排测试
+//        for(int i = 0 ; i < nums.length ; i++){
+//            nums[i] =(int)(Math.random()*10);
+//        }
+//        itv.quickSort(nums,0,nums.length-1);
+//        for(int n : nums){
+//            System.out.print(n + "\t");
+//        }
+//        System.out.println();
 
 //        StringBuilder sb = new StringBuilder();
 //        StringBuffer sbf = new StringBuffer();
@@ -194,6 +194,8 @@ public class MainAPP {
 //            node = node.next;
 //        }
 //        System.out.println();
+
+        s3.isPalindrome("A man, a plan, a canal: Panama");
 
 
 

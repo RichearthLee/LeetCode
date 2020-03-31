@@ -1817,6 +1817,214 @@ public class Solution3 {
         return res;
     }
 
+    /**
+     * 8. 字符串转换整数 (atoi)
+     * @param str
+     * @return
+     */
+    public int myAtoi(String str) {
+        if(str.length() == 0)return 0;
+        long res = 0, sign = 1;
+        for(int i =0, len = str.length(); i < len ; ++i){
+            if(str.charAt(i) == ' ' && (i == 0 || str.charAt(i-1) == ' ')){
+                continue;
+            }
+            if(str.charAt(i) == '-' && (i == 0 || str.charAt(i-1) == ' ')){
+                sign = -1;continue;
+            }else if(str.charAt(i) == '+' && (i == 0 || str.charAt(i-1) == ' ')){
+                continue;
+            }
+            if(str.charAt(i) >'9' || str.charAt(i) < '0'){
+                break;
+            }
+            res = (res*10 + (str.charAt(i) - '0'));
+            if(sign*res > Integer.MAX_VALUE)return Integer.MAX_VALUE;
+            if(sign*res < Integer.MIN_VALUE)return Integer.MIN_VALUE;
+        }
+        return (int)(sign*res);
+    }
+
+
+    public ListNode addTwoNumbers_v1(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy; int f = 0;
+        while(l1 != null || l2 != null){
+            if(l1 != null && l2 != null){
+                cur.next = new ListNode((l1.val + l2.val  + f)%10);
+                f = (l1.val + l2.val + f)/10;
+                l1 = l1.next;
+                l2 = l2.next;
+            }else if(l1 != null){
+                cur.next = new ListNode((l1.val + f)%10);
+                f = (l1.val + f)/10;
+                l1 = l1.next;
+            }else {
+                cur.next = new ListNode((l2.val + f)%10);
+                f = (l2.val + f)/10;
+                l2 = l2.next;
+            }
+            cur = cur.next;
+        }
+        if(f != 0){
+            cur.next = new ListNode(1);
+        }
+        return dummy.next;
+    }
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy; int f = 0; cur.next = l1;
+        while(l1 != null && l2 != null){
+            int tmp = l1.val + l2.val + f;
+            cur.next.val = tmp%10;
+            f = tmp/10;
+            l1 = l1.next;
+            l2 = l2.next;
+            cur = cur.next;
+        }
+        while(l1 != null){
+            int tmp = l1.val + f;
+            cur.next.val = tmp %10;
+            f = tmp/10;
+            l1 = l1.next;
+            cur = cur.next;
+        }
+        if(l2 != null){
+            cur.next = l2;
+        }
+        while(l2 != null){
+            int tmp = l2.val + f;
+            cur.next.val = tmp %10;
+            f = tmp/10;
+            l2 = l2.next;
+            cur = cur.next;
+        }
+        if(f != 0){
+            cur.next = new ListNode(1);
+        }
+        return dummy.next;
+    }
+
+    public boolean isPalindrome(String s) {
+        for(int left = 0 , right = s.length()-1 ; left < right ;left++, right--){
+            while(left < right && !valid(s.charAt(left))){
+                left++;
+            }
+            while(left < right && !valid(s.charAt(right))){
+                right--;
+            }
+            char a = s.charAt(left), b =  s.charAt(right);
+            if(!(a-b == 0 || (a > 64 && b > 64 && Math.abs(a-b) == 32))){
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean valid(char c){
+        return (c <='9' && c>='0' || c <= 'Z' && c >= 'A' || c <= 'z' && c >='a');
+    }
+
+
+    public boolean hasCycle_v1(ListNode head) {
+        Set<ListNode> set = new HashSet<>();
+        while(head != null){
+            if(set.contains(head))return true;
+            set.add(head);
+            head = head.next;
+        }
+        return false;
+    }
+
+    public boolean hasCycle(ListNode head) {
+        ListNode fast = head, slow = head;
+        while(fast != null && fast.next != null && slow != null){
+            fast = fast.next.next;
+            slow = slow.next;
+            if(fast == slow)return true;
+        }
+        return false;
+    }
+
+    public int majorityElement(int[] nums) {
+//        int count = 0, num = nums[0]-1;
+//        for(int n : nums){
+//            if(n == num){
+//                count++;
+//            }else {
+//                count--;
+//                if(count < 0){
+//                    num = n;count=1;
+//                }
+//            }
+//        }
+//        return num;
+        int num =nums[0];
+        for(int count = 1, i = 1; i < nums.length ; i++){
+            if(nums[i] == num){
+                count++;
+            }else {
+                count--;
+                if(count < 0){
+                    num = nums[i];
+                    count = 1;
+                }
+            }
+        }
+        return num;
+    }
+
+    public boolean containsDuplicate(int[] nums) {
+        Set<Integer> set = new HashSet<>(nums.length);
+        for (int x: nums) {
+            if (set.contains(x)) return true;
+            set.add(x);
+        }
+        return false;
+    }
+
+    public boolean isPowerOfTwo_v1(int n) {
+        if(n != 1 && (n & 1) == 1) return false;
+        for(int num = 1; num <= n ;){
+            if(num == n)return true;
+            n *= 2;
+        }
+        return false;
+    }
+
+    public boolean isPowerOfTwo(int n) {
+        if(n<0)return false;
+        while((n & 1) != 1) n >>= 1; n >>= 1;
+        for(int i = 0 ;i < 31 ; i++, n >>= 1){
+            if((n & 1) == 1)return false;
+        }
+        return true;
+    }
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        while(root != null){
+            if(root.val == p.val || root.val == q.val){
+                return root;
+            }else if(root.val > Math.min(p.val,q.val) && root.val < Math.max(p.val, q.val)){
+                return root;
+            }else if (q.val < root.val){
+                root = root.left;
+            }else {
+                root = root.right;
+            }
+        }
+        return null;
+    }
+
+    public void deleteNode(ListNode node) {
+        while(node.next != null){
+            node.val = node.next.val;
+            node = node.next;
+        }
+        node.next = null;
+    }
+
+
+
 
 
 
