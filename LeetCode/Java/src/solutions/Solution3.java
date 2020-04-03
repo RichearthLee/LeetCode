@@ -2055,7 +2055,7 @@ public class Solution3 {
         return 0;
     }
 
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    public TreeNode lowestCommonAncestor_v2(TreeNode root, TreeNode p, TreeNode q) {
         return lowestCommonAncestor_recursion(root, p, q, new int[1]);
     }
 
@@ -2085,6 +2085,15 @@ public class Solution3 {
             return left;
         }
         return right;
+    }
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null || root.val == p.val || root.val == q.val) return root;
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        if(left == null)return right;
+        if(right == null)return left;
+        return root;
     }
 
 
