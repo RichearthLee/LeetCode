@@ -2000,16 +2000,14 @@ public class Solution3 {
         return true;
     }
 
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    public TreeNode lowestCommonAncestor_v1(TreeNode root, TreeNode p, TreeNode q) {
         while(root != null){
-            if(root.val == p.val || root.val == q.val){
-                return root;
-            }else if(root.val > Math.min(p.val,q.val) && root.val < Math.max(p.val, q.val)){
-                return root;
-            }else if (q.val < root.val){
+            if(q.val > root.val && p.val > root.val){
+                root = root.right;
+            }else if(q.val < root.val && p.val < root.val){
                 root = root.left;
             }else {
-                root = root.right;
+                return root;
             }
         }
         return null;
@@ -2022,6 +2020,75 @@ public class Solution3 {
         }
         node.next = null;
     }
+
+    /**
+     *  二叉搜索树中第K小的元素
+     * @param root a
+     * @param k k
+     * @return a
+     */
+    public int kthSmallest_v1(TreeNode root, int k) {
+        return kthSmallest_recursion(root, k, new int[1]);
+    }
+
+    private int kthSmallest_recursion(TreeNode root, int k, int[] res) {
+        if(root == null)return 0;
+        int val = kthSmallest_recursion(root.left, k, res);
+        if(res[0] == k) return val;
+        else if(++res[0] == k) return root.val;
+        return kthSmallest_recursion(root.right, k, res);
+    }
+
+    public int kthSmallest(TreeNode root, int k) {
+        if(root == null)return 0;
+        Stack<TreeNode> st  = new Stack<>();
+        int count = 0;
+        while(!st.isEmpty() || root != null){
+            while(root != null){
+                st.push(root);
+                root = root.left;
+            }
+            root = st.pop();
+            if(++count == k)return root.val;
+            root = root.right;
+        }
+        return 0;
+    }
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        return lowestCommonAncestor_recursion(root, p, q, new int[1]);
+    }
+
+    private TreeNode lowestCommonAncestor_recursion(TreeNode root, TreeNode p, TreeNode q ,int[] n){
+        if(root == null)return null;
+        TreeNode left = lowestCommonAncestor_recursion(root.left,p ,q, n);
+        if(n[0] == 2){
+            return left;
+        }
+        TreeNode right = lowestCommonAncestor_recursion(root.right, p ,q, n);
+        if(n[0] == 2){
+            return right;
+        }
+        if(root.val == q.val || root.val == p.val){
+            if(left != null || right != null){
+                n[0] = 2;
+                return root;
+            }
+            n[0] = 1;
+            return root;
+        }
+        if(left != null && right != null){
+            n[0] = 2;
+            return root;
+        }
+        if(left != null){
+            return left;
+        }
+        return right;
+    }
+
+
+
 
 
 

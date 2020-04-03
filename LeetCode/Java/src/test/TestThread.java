@@ -1,6 +1,7 @@
 package test;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
@@ -153,6 +154,12 @@ public class TestThread implements Runnable {
 		Lock lk = new ReentrantLock();
 		ReadWriteLock lk1 = new ReentrantReadWriteLock();
 		//lk1.readLock();
+
+	}
+
+	public void testTime(){
+		Time time = new Time(System.currentTimeMillis());
+		time.toString();
 
 	}
 
