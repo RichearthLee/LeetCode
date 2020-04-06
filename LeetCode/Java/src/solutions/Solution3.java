@@ -2097,6 +2097,35 @@ public class Solution3 {
     }
 
 
+    public int[] productExceptSelf(int[] nums) {
+        int[] dp = new int[nums.length];
+        dp[0] = 1;
+        for(int i = 0 ; i < nums.length ; i++){
+            dp[i] = nums[i-1] * dp[i-1];
+        }
+        int tmp = 1;
+        for(int i = nums.length-1 ; i >= 0 ;i--){
+            dp[i] = tmp * dp[i];
+            tmp *= nums[i];
+        }
+        return dp;
+    }
+
+    public String reverseWords(String s) {
+        StringBuilder sb = new StringBuilder();
+        s += ' ';
+        int pre = 0;
+        for(int i = 0, len = s.length(); i < len ;i++){
+            if(s.charAt(i) == ' ' || i == len-1){
+                sb.append(new StringBuilder(s.substring(pre, i+1)).reverse());
+                pre = i+1;
+            }
+        }
+        return sb.toString().trim();
+    }
+
+
+
 
 
 
