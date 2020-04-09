@@ -195,7 +195,8 @@ public class MainAPP {
 //        }
 //        System.out.println();
 
-        s3.isPalindrome("A man, a plan, a canal: Panama");
+//        s3.isPalindrome("A man, a plan, a canal: Panama");
+        s3.matrix();
 
 
 

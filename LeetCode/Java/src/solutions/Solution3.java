@@ -2111,11 +2111,10 @@ public class Solution3 {
         return dp;
     }
 
-    public String reverseWords(String s) {
+    public String reverseWords_v1(String s) {
         StringBuilder sb = new StringBuilder();
         s += ' ';
-        int pre = 0;
-        for(int i = 0, len = s.length(); i < len ;i++){
+        for(int i = 0, pre = 0, len = s.length(); i < len ;i++){
             if(s.charAt(i) == ' ' || i == len-1){
                 sb.append(new StringBuilder(s.substring(pre, i+1)).reverse());
                 pre = i+1;
@@ -2123,6 +2122,357 @@ public class Solution3 {
         }
         return sb.toString().trim();
     }
+
+    public String reverseWords_v2(String s) {
+        StringBuilder sb = new StringBuilder();
+        String[] arr = s.split(" ");
+        for(String str : arr){
+            sb.append(new StringBuilder(str).reverse());
+            sb.append(' ');
+        }
+        return sb.toString().trim();
+    }
+
+    public String reverseWords(String s) {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0, len = s.length(); i < len ;i++){
+            StringBuilder tmp = new StringBuilder();
+            while(s.charAt(i) != ' '){
+                tmp.append(s.charAt(i));
+                i++;
+            }
+            sb.append(tmp.reverse());
+            sb.append(' ');
+        }
+        return sb.toString().trim();
+    }
+
+    public int maxProduct(int[] nums) {
+        long res = nums[0];
+        long temp = nums[0];
+        for(int i = 1 ; i < nums.length ; i++){
+            temp = Math.max(nums[i], temp * nums[i]);
+            res = Math.max(res, temp);
+        }
+        return (int) res;
+    }
+
+    public int maxProduct_v1(int[] nums) {
+        int res = nums[0];
+        for(int i = 0 ; i < nums.length ; i++){
+            for(int j = 0 ; j < nums.length - i ; j++){
+                int tmp = nums[j];
+                for(int k = 0; k < i; k++){
+                    tmp *= nums[j+k+1];
+                }
+                res = Math.max(res, tmp);
+            }
+        }
+        return res;
+    }
+
+    public int maxProduct_v2(int[] nums) {
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        for(int i = 1 ; i < nums.length ; i++){
+            if(nums[i] >= 0) dp[i] = Math.max(dp[i-1] * nums[i], nums[i]);
+            if(nums[i] < 0){
+                for(int j = i; j > 0; j--){
+                    if(dp[j] < 0){
+                        dp[i] = dp[i-1] * dp[j] * nums[i];
+                    }
+                }
+            }
+        }
+        return dp[nums.length-1];
+    }
+
+    public int maxProduct_v3(int[] nums) {
+        int res = nums[0], tmp = nums[0], neg = 0;
+        if(tmp < 0) {
+            neg = tmp;
+        }
+        for(int i = 1 ; i < nums.length ; i++){
+            if(nums[i] < 0){
+                if(neg == 0){
+                    neg = nums[i] * tmp;
+                }else {
+                    tmp = nums[i-1] < 0 ? neg : tmp * neg;
+                    neg = 0;
+                }
+            }else {
+                if(nums[i] == 0)neg = 0;
+            }
+            tmp = Math.max(nums[i], nums[i] * tmp);
+            res = Math.max(tmp, res);
+        }
+        return res;
+    }
+
+    public int maxProduct_v4(int[] nums) {
+        int max = Integer.MIN_VALUE, imax = 1, imin = 1;
+        for(int i=0; i<nums.length; i++){
+            if(nums[i] < 0){
+                int tmp = imax;
+                imax = imin;
+                imin = tmp;
+            }
+            imax = Math.max(imax*nums[i], nums[i]);
+            imin = Math.min(imin*nums[i], nums[i]);
+
+            max = Math.max(max, imax);
+        }
+        return max;
+    }
+
+    public void sequenceSwap(){
+        Scanner sc = new Scanner(System.in);
+        int len = sc.nextInt();
+        int arr[] = new int[len];
+        for(int i = 0 ; sc.hasNext() ; i++){
+            arr[i] = sc.nextInt();
+        }
+        for(int i = 0 ; i < arr.length ; i++){
+            for(int j = 0 ;j < arr.length ; j++){
+                for(int k = j ; k < arr.length ; k++){
+                    if((arr[j] + arr[k])%2 == 1 && validate(arr[j], arr[k])){
+                        int tmp = arr[j];
+                        arr[j] = arr[k];
+                        arr[k] = tmp;
+                    }
+                }
+            }
+        }
+        for(int n : arr){
+            System.out.print(n + " ");
+        }
+        System.out.println();
+    }
+
+    private boolean validate(int n, int m){
+        ArrayList<Integer> narr = new ArrayList<>();
+        ArrayList<Integer> marr = new ArrayList<>();
+        while(n != 0){
+            narr.add(n%10);
+            n = n /10;
+        }
+        while(m != 0){
+            marr.add(m%10);
+            m = m /10;
+        }
+        for(int i = narr.size()-1 , j = marr.size()-1; i > 0 && j >0; i--, j--) {
+            if(narr.get(i).equals(marr.get(j)))continue;
+            return narr.get(i) > marr.get(j);
+        }
+        return false;
+    }
+
+
+    public void score(){
+        Scanner sc = new Scanner(System.in);
+        int num = sc.nextInt();
+        Integer arr[] = new Integer[num];
+        for(int i = 0 ; sc.hasNext()&& i < num ; i++){
+            arr[i] = sc.nextInt();
+        }
+        Arrays.sort(arr, Collections.reverseOrder());
+        double [] p = new double[num];
+        for(int i = num-2, count = num-1 ; i >= 0 ; i--){
+            if(!arr[i].equals(arr[i+1])) count = i+1;
+            p[i] = (double) (num - count)/num;
+        }
+
+        int out = sc.nextInt();
+        for(int n = out; n >=0 && sc.hasNext() ; n--){
+            System.out.println(String.format("%.6f",p[sc.nextInt()-1]*100));
+        }
+    }
+
+    public void sequence(){
+        Scanner sc = new Scanner(System.in);
+        int num = sc.nextInt(),  count = sc.nextInt();
+        int arr[] = new int[num];
+        for(int i = 0 ; sc.hasNext()&& i < num ; i++){
+            arr[i] = sc.nextInt();
+        }
+        Arrays.sort(arr);
+        for(int n = count; n >=0 && sc.hasNext() ; n--){
+            int c = 0;
+            for(int i = num-1 ; i >= 0 ; i--){
+                if(arr[i] < n){
+                    System.out.println(c);
+                }
+                c++;
+                arr[i]--;
+            }
+            for(int i = 0 ; i < num-1; i++){
+                if(arr[i] > arr[i+1]){
+                    int tmp = arr[i];
+                    arr[i] = arr[i+1];
+                    arr[i+1] = tmp;
+                }
+            }
+        }
+    }
+
+    public int num(int[] arr){
+        if(arr.length <=1 )return -1;
+        int[] res = new int[arr.length-1];
+        for(int i = 0 ; i < arr.length-1 ; i++){
+            res[i] = arr[i+1] - arr[i];
+        }
+        int n = 1;
+        boolean f = true;
+        while(f){
+            for(int m : res){
+                if(m == 0) {
+                    f = false;
+                    return -1;
+                }
+                if(m % n != 0){
+                    return n;
+                }
+            }
+            n++;
+        }
+        return -1;
+    }
+
+    public static void attack(){
+        Scanner in = new Scanner(System.in);
+        int num = in.nextInt(), def = in.nextInt();
+        int[] arr = new int[num];
+        int[] dmg = new int[num];
+        for(int i = 0 ; i < num && in.hasNext();i++){
+            arr[i] = in.nextInt();
+        }
+        for(int i = 0 ; i < num && in.hasNext();i++){
+            dmg[i] = in.nextInt();
+        }
+        int[] darr = arr.clone();
+        Arrays.sort(darr);
+        int res = 0;
+        for(int m : darr){
+            if(m > def){
+                for(int i = 0 ; i < num ; i++){
+                    if(m == arr[i]){
+                        arr[i] = -1;
+                        res += dmg[i];
+                        break;
+                    }
+                }
+            }else {
+                def++;
+            }
+        }
+        System.out.println(res);
+    }
+
+    public void aff(){
+        Scanner in = new Scanner(System.in);
+        Set<Integer> set = new HashSet<>();
+        int pep = in.nextInt(), num = in.nextInt();
+        set.add(in.nextInt());
+        for(int i = 0 ; i < num;i++){
+            int count = in.nextInt();
+            int[] arr = new int[count];
+            for(int j = 0 ; j < count ; j++){
+                arr[j] = in.nextInt();
+            }
+            for(int n : arr){
+                if(set.contains(n)){
+                    for(int m : arr){
+                        set.add(m);
+                    }
+                    break;
+                }
+            }
+        }
+        System.out.println(set.size());
+    }
+
+    public void matrix(){
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt(), m = in.nextInt();
+        int[][] mt = new int[n][m];
+        if(n == 0 || m == 0)return;
+        for(int i = 0 ; i < n  && in.hasNext(); i++){
+            int num = in.nextInt();
+            for(int j = m-1 ; j >= 0 ; j--){
+                mt[i][j] = num%10;
+                num /= 10;
+            }
+        }
+        int[][] res = new int[n][m];
+        for(int i = 0 ; i < n ; i++){
+            for(int j = 0 ; j < m ; j++){
+                if(mt[i][j] == 1){
+                    res[i][j] = matrix_helper(mt,i,j);
+                }
+            }
+        }
+        for(int i = 0 ; i < n ; i++){
+            for(int j = 0 ; j < m ; j++){
+                if(j == m-1){
+                    System.out.print(res[i][j]);
+                }else {
+                    System.out.print(res[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public int matrix_helper(int[][] matrix, int i , int j){
+        if(i< 0 || i >= matrix.length || j <0 || j >= matrix[0].length||matrix[i][j]==0){
+            return 0;
+        }
+        int len = Integer.MAX_VALUE;
+        len = Math.min(len , matrix_helper(matrix, i+1, j));
+        len = Math.min(len , matrix_helper(matrix, i-1, j));
+        len = Math.min(len , matrix_helper(matrix, i, j+1));
+        len = Math.min(len , matrix_helper(matrix, i+1, j-1));
+        return len +1;
+    }
+
+
+    /**
+     * 198. 打家劫舍
+     * @param nums a
+     * @return a
+     */
+    public int rob(int[] nums) {
+        if(nums.length == 0)return 0;
+        int[] dp = new int[nums.length+1];
+        dp[0] = 0;dp[1] = nums[0];
+        for(int i = 2 ; i < dp.length ; i++){
+            dp[i] = Math.max(dp[i-2] + nums[i-1], dp[i-1]);
+        }
+        return dp[nums.length];
+    }
+
+    public int rob_v1(int[] nums) {
+        if(nums.length == 0)return 0;
+        int prepre = 0, pre = nums[0];
+        for(int i = 1 ; i < nums.length ; i++){
+            int tmp = pre;
+            pre = Math.max(prepre + nums[i], pre);
+            prepre = tmp;
+        }
+        return pre;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
