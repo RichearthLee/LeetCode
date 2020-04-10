@@ -2,7 +2,7 @@ package previous;
 
 import java.util.*;
 
-public class T1_Solution {
+public class ShortestPath {
 	
 	/**
 	 * @author yukunlee

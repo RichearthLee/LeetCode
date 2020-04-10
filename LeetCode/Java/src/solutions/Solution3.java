@@ -2462,6 +2462,13 @@ public class Solution3 {
         return pre;
     }
 
+    public int rob_v2(int[] nums) {
+        if(nums.length == 0)return 0;
+        if(nums.length == 1)return nums[0];
+        return Math.max(rob_v1(Arrays.copyOfRange(nums,0,nums.length-1)),
+                rob_v1(Arrays.copyOfRange(nums,1,nums.length)));
+    }
+
 
 
 
