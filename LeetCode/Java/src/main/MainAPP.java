@@ -4,10 +4,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import solutions.Interview;
-import solutions.Solution1;
-import solutions.Solution2;
-import solutions.Solution3;
+import solutions.*;
 import utility.ListNode;
 import utility.Node;
 import utility.TreeNode;
@@ -22,12 +19,15 @@ import test.TestMethod;
 
 public class MainAPP {
     public static void main(String[] args) {
-        MainAPP main = new MainAPP();
-        Interview itv = new Interview();
-        Solution1 s1 = new Solution1();
-        Solution2 s2 = new Solution2();
-        Solution3 s3 = new Solution3();
-        TestMethod tm = new TestMethod();
+//        MainAPP main = new MainAPP();
+//        Interview itv = new Interview();
+//        Solution1 s1 = new Solution1();
+//        Solution2 s2 = new Solution2();
+//        Solution3 s3 = new Solution3();
+//        TestMethod tm = new TestMethod();
+        Solution4 s4 = new Solution4();
+
+
 //        String[] str = {"flower","flow","flight"};
 //        String[] str1 = {"dog","racecar","car"};
 //        String[] str2 = {"a"};
@@ -196,7 +196,8 @@ public class MainAPP {
 //        System.out.println();
 
 //        s3.isPalindrome("A man, a plan, a canal: Panama");
-        s3.matrix();
+//        s3.matrix();
+        s4.hw3();
 
 
 

@@ -9,7 +9,7 @@ public class TestMethod {
 //		int[][] arr={{1,2,8,9},{2,4,9,12},{4,7,10,13},{6,8,11,15}};
 //		System.out.println(Find(16,arr));
 		TestMethod tm = new TestMethod();
-		tm.testPow();
+		tm.testStringSort();
          
 	}
 	 public static boolean Find(int target, int [][] array) {
@@ -182,6 +182,24 @@ public class TestMethod {
 		System.out.println(a);
 		System.out.println((int)a);
 	}
+
+	public void testStringSort(){
+		String[] str ={"tom","tommy", "ada"};
+		Arrays.sort(str);
+		for(String s : str){
+			System.out.println(s);
+		}
+
+		ArrayList<String> arr = new ArrayList<>();
+		arr.add("tommy");
+		arr.add("tom");
+		arr.add("ada");
+		Collections.sort(arr);
+		for(String s : arr){
+			System.out.println(s);
+		}
+	}
+
 
 
 }
