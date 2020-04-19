@@ -587,6 +587,141 @@ public class Solution4 {
         }
     }
 
+    public void alarm(){
+        Scanner in = new Scanner(System.in);
+        int num = in.nextInt();
+        int[][] clock = new int[num][2];
+        for (int i = 0; i < num; i++) {
+            for (int j = 0; j < 2; j++) {
+                clock[i][j] = in.nextInt();
+            }
+        }
+        int des = in.nextInt();
+        int hours = in.nextInt();
+        int minute = in.nextInt();
+        minute -= des;
+        while(minute < 0){
+            minute += 60;
+            hours -= 1;
+        }
+        Arrays.sort(clock, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if(o1[0] == o2[0])return o1[1]-o2[1];
+                return o1[0] - o2[0];
+            }
+        });
+        int res = 0;
+        for (int i = 0; i < num; i++) {
+            if(hours > clock[i][0]){
+                res = i;
+            }else if(hours == clock[i][0] && minute >= clock[i][1]){
+                 res = i;
+            }else {
+                break;
+            }
+        }
+        System.out.println(clock[res][0] + " " + clock[res][1]);
+
+    }
+
+    /**
+     * 21 1165911996
+     * 842104736 130059605 359419358 682646280 378385685 622124412 740110626 814007758 557557315 40153082 542984016 274340808 991565332 765434204 225621097 350652062 714078666 381520025 613885618 64141537 783016950
+     */
+    public void bag(){
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt(), w = in.nextInt();
+        int[] list = new int[n];
+        for (int i = 0; i < n; i++) {
+            list[i] = in.nextInt();
+        }
+        Arrays.sort(list);
+        int[] res = new int[n];
+        long count = 0; int index = 0;
+        res[0] = list[0] > w?1:2;
+        for (int i = 1; i < n; i++) {
+            if(count + list[i] < w){
+                count += list[i];
+                res[i] = res[i-1]*2;
+                index = i;
+            }else {
+                break;
+            }
+        }
+        for (int i = index + 1; i < n; i++) {
+            for (int j = index ; j >= 0; j--) {
+                if(count - list[j] + list[i] < w){
+                    res[i] = res[i-1] + (j >0 ?res[j-1]:0);
+                    index = j;
+                    break;
+                }else {
+                    count -= list[j];
+                }
+            }
+            if(res[i] == 0)res[i] = res[i-1];
+        }
+        System.out.println(res[n-1]);
+    }
+
+    private static long result = 1;
+    public void bag_v1(){
+        Scanner input = new Scanner(System.in);
+        int n = input.nextInt();
+        long w = input.nextInt();
+        long[] v = new long[n];
+        long sum = 0;
+        for (int i = 0; i < n; i++) {
+            v[i] = input.nextInt();
+            sum = sum + v[i];
+        }
+        if (sum <= w) {
+            System.out.println((int) Math.pow(2, n));
+        } else {
+            state(v, 0, w, 0);
+            System.out.println(result);
+        }
+        state(v, 0, w, 0);
+        System.out.println(result);
+    }
+    private void state(long[] v,int index, long w, long current){
+        if (index == v.length)
+            return;
+        if (current + v[index] <= w){
+            result++;
+            state(v, index+1,w,current+v[index]);
+        }
+        state(v,index+1,w,current);
+    }
+
+    public void time(){
+        Scanner in = new Scanner(System.in);
+        int t = in.nextInt();in.nextLine();
+        for (int i = 0; i < t; i++) {
+            String[] str = in.nextLine().split(":");
+            if(str[0].charAt(0) > '2' ||(str[0].charAt(0) == '2' && str[0].charAt(1)>'3')){
+                str[0] = "0"+str[0].charAt(1);
+            }
+            if(str[1].charAt(0) > '5'){
+                str[1] = "0" + str[1].charAt(1);
+            }
+            if(str[2].charAt(0) > '5'){
+                str[2] = "0" + str[2].charAt(1);
+            }
+            System.out.println(str[0]+":"+str[1]+":"+str[2]);
+        }
+    }
+
+    public void time_1(){
+        Scanner sc=new Scanner(System.in);
+        int T=sc.nextInt(); sc.nextLine();
+        for(int i = 0 ; i < T ; i++){
+            System.out.println(sc.nextLine()
+                            .replaceFirst("^[3-9]","0")
+                            .replaceFirst("^2([4-9])","0$1")
+                            .replaceAll("[6-9](\\d)","0$1"));
+        }
+    }
 
 
 
