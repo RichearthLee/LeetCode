@@ -3,6 +3,7 @@ package test;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TestMap {
 
@@ -10,9 +11,12 @@ public class TestMap {
 //        int[] nums = {2,1,3,3,0};
 //        testTreeMap(nums);
 
-        TreeMap<Integer, Integer> map = new TreeMap<>();
-        //map.put(null,1);
-        //map.getOrDefault(null,0);
+        TreeMap<Integer, Integer> treeMapmap = new TreeMap<>();
+        treeMapmap.put(null,1);
+        treeMapmap.getOrDefault(null,0);
+
+        ConcurrentHashMap chm = new ConcurrentHashMap();
+        chm.put("1",1);
 
         HashMap<Integer, Integer> map1 = new HashMap<>();
         map1.put(null,1);

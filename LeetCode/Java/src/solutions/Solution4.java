@@ -723,6 +723,154 @@ public class Solution4 {
         }
     }
 
+    public void agent(){
+        Scanner in = new Scanner(System.in);
+        int N = in.nextInt(), D = in.nextInt();
+        int[] arr = new int[N];
+        for (int i = 0; i < N; i++) {
+            arr[i] = in.nextInt();
+        }
+        long res = 0;
+        for (int i = 0; i < N; i++) {
+            long index = Arrays.binarySearch(arr, arr[i] + D);
+            index = index > 0? index : -index-2;
+            index = index -i;
+            res += (index-1)*index/2;
+        }
+        System.out.println(res%99997867);
+    }
+
+    public void agent_v1(){
+        Scanner in = new Scanner(System.in);
+        int N = in.nextInt(), D = in.nextInt();
+        int[] arr = new int[N];
+        for (int i = 0; i < N; i++) {
+            arr[i] = in.nextInt();
+        }
+        long res = 0;
+        for (int i = 0, j = 0; j < N; j++) {
+            while(j >= 2 && arr[j] - arr[i] > D){
+                i++;
+            }
+            long num = j-i;
+            res += num * (num-1)/2;
+        }
+        res %= 99997867;
+        System.out.println(res);
+    }
+
+    public void agent_v2(){
+        Scanner in = new Scanner(System.in);
+        int N = in.nextInt(), D = in.nextInt();
+        int[] arr = new int[N];
+        for (int i = 0; i < N; i++) {
+            arr[i] = in.nextInt();
+        }
+        long res = 0;
+        for (int i = 0, j = 0; i < N -1;) {
+            if(j < N && (j - i < 2 || arr[j] - arr[i] <= D)){
+                j++;
+            }else {
+                long num = j-i-1;
+                res += num * (num-1)/2;
+                i++;
+            }
+        }
+        res %= 99997867;
+        System.out.println(res);
+    }
+
+
+    public void change(){
+        Scanner in = new Scanner(System.in);
+        int N = 1024 - in.nextInt();
+        int res = 0;
+        for (int i = 64; i > 0;i /= 4) {
+            res += N / i;
+            N %= i;
+            if(N == 0)break;
+        }
+        System.out.println(res);
+    }
+
+    public void change_dp(){
+        Scanner in = new Scanner(System.in);
+        int N = 1024 - in.nextInt();
+        int[] dp = new int[N];
+        Arrays.fill(dp,N);
+        int[] money = {1,4,16,64};
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < money.length; j++) {
+                if (i - money[j] >= 0){
+                    dp[i] = Math.min(dp[i - money[j]]+1, dp[i]);
+                }
+            }
+        }
+        System.out.println();
+    }
+
+    public void stringCount(){
+        Scanner in = new Scanner(System.in);
+        String str = in.nextLine();
+        in.close();
+        TreeMap<Character, Integer> map = new TreeMap<>();
+        for (int i = 0, len = str.length(); i < len; i++) {
+            char c = str.charAt(i);
+            map.put(c, map.getOrDefault(c, 0)+1);
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<Character, Integer> en:
+             map.entrySet()) {
+            sb.append(en.getKey());
+            sb.append(en.getValue());
+        }
+        System.out.println(sb.toString());
+    }
+
+    public void tower(){
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt(), k = in.nextInt();
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = in.nextInt();
+        }
+        int[][] res = new int[k+1][2];
+        if (k == 0){
+            int mini = 0, maxi = 0;
+            for (int j = 0; j < n; j++) {
+                if (arr[j] < arr[mini])mini = j;
+                if (arr[j] > arr[maxi])maxi = j;
+            }
+            res[0][0] = arr[maxi] - arr[mini];
+            res[0][1] = 0;
+        }else {
+            for (int i = 1; i <= k; i++) {
+                int mini = 0, maxi = 0;
+                for (int j = 0; j < n; j++) {
+                    if (arr[j] < arr[mini])mini = j;
+                    if (arr[j] > arr[maxi])maxi = j;
+                }
+                if (maxi == mini){
+                    res[0][0] = 0; res[0][1] = i;break;
+                }
+                arr[maxi]--;arr[mini]++;
+                res[0][1] = i;
+                res[i][0] = maxi+1;
+                res[i][1] = mini+1;
+                for (int j = 0; j < n; j++) {
+                    if (arr[j] < arr[mini])mini = j;
+                    if (arr[j] > arr[maxi])maxi = j;
+                }
+                res[0][0] = arr[maxi] - arr[mini];
+            }
+        }
+        for (int i = 0; i <= res[0][1]; i++) {
+            System.out.println(res[i][0] + " " + res[i][1]);
+        }
+    }
+
+
+
 
 
 

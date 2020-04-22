@@ -197,7 +197,7 @@ public class MainAPP {
 
 //        s3.isPalindrome("A man, a plan, a canal: Panama");
 //        s3.matrix();
-        s4.time();
+        s4.tower();
 
 
 
