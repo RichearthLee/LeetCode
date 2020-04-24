@@ -869,6 +869,40 @@ public class Solution4 {
         }
     }
 
+    public void matirx(){
+        Scanner in = new Scanner(System.in);
+        int N = in.nextInt();
+        long[][] index = new long[N][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < N; j++) {
+                index[j][i] = in.nextLong();
+            }
+        }
+        
+    }
+
+    public void session(){
+        Scanner in = new Scanner(System.in);
+        int T = in.nextInt();
+        for (int i = 0; i < T; i++) {
+            int N = in.nextInt();
+            LinkedHashSet<Integer> lset = new LinkedHashSet<>();
+            for (int j = 0; j < N; j++) {
+                int key = in.nextInt();
+                lset.remove(key);
+                lset.add(key);
+            }
+            StringBuilder sb = new StringBuilder();
+            ListIterator<Integer> it = new ArrayList<>(lset).listIterator(lset.size());
+            while(it.hasPrevious()){
+                sb.append(it.previous());
+                sb.append(' ');
+            }
+            sb.deleteCharAt(sb.length()-1);
+            System.out.println(sb.toString());
+        }
+    }
+
 
 
 

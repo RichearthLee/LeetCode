@@ -1,8 +1,6 @@
 package test;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class TestMap {
@@ -11,7 +9,7 @@ public class TestMap {
 //        int[] nums = {2,1,3,3,0};
 //        testTreeMap(nums);
 
-        TreeMap<Integer, Integer> treeMapmap = new TreeMap<>();
+        /*TreeMap<Integer, Integer> treeMapmap = new TreeMap<>();
         treeMapmap.put(null,1);
         treeMapmap.getOrDefault(null,0);
 
@@ -20,7 +18,16 @@ public class TestMap {
 
         HashMap<Integer, Integer> map1 = new HashMap<>();
         map1.put(null,1);
-        map1.getOrDefault(null,0);
+        map1.getOrDefault(null,0);*/
+
+        LinkedHashMap<Integer, Integer> lmap  = new LinkedHashMap<>();
+        lmap.put(1,1);
+        lmap.put(2,2);
+        lmap.put(3,3);
+        lmap.remove(1);
+        lmap.put(1,-1);
+        lmap.remove(4);
+        printMap(lmap);
     }
 
     public static void testTreeMap(int[] nums){
@@ -30,6 +37,16 @@ public class TestMap {
         }
         for(Map.Entry<Integer, Integer> en : map.entrySet()){
             System.out.println(en.getKey());
+        }
+    }
+
+    public static void printMap(Map map){
+//        for (Map.Entry entry: map.entrySet()) {
+//        }
+        Iterator<Map.Entry> entries = map.entrySet().iterator();
+        while(entries.hasNext()){
+            Map.Entry entry = entries.next();
+            System.out.println(entry.getKey()+":"+entry.getValue());
         }
     }
 
