@@ -1,14 +1,6 @@
 package main;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import solutions.*;
-import utility.ListNode;
-import utility.Node;
-import utility.TreeNode;
-import test.TestMethod;
 
 /**
  * @program: LeetCode
@@ -197,7 +189,18 @@ public class MainAPP {
 
 //        s3.isPalindrome("A man, a plan, a canal: Panama");
 //        s3.matrix();
-        s4.tower();
+//        int[][] pre = new int[1][2];
+//        pre[0][0] = 1;
+//        pre[0][1] = 0;
+////        pre[1][0] = 0;
+////        pre[1][1] = 2;
+////        pre[2][0] = 1;
+////        pre[2][1] = 0;
+//        s4.canFinish_v2(2, pre);
+//        int[] test = {4,3,2,7,8,2,3,1};
+//        s4.findDisappearedNumbers_v1(test);
+
+        s4.hammingDistance(3, 7);
 
 
 
