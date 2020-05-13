@@ -416,6 +416,187 @@ public class Solution4 {
         return Math.max(left, right)+1;
     }
 
+    /**
+     * 581. 最短无序连续子数组
+     * @param nums int[]
+     * @return nums
+     */
+    public int findUnsortedSubarray(int[] nums) {
+        int left = 0, right = nums.length-1;
+        while(left < right){
+            if (nums[left] <= nums[left+1]){
+                left++;
+            }else {
+                break;
+            }
+        }
+        while(left < right){
+            if (nums[right] >= nums[right-1]){
+                right--;
+            }else {
+                break;
+            }
+        }
+        if (left == right)return 0;
+        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+        for (int i = left; i <= right; i++) {
+            min = Math.min(min, nums[i]);
+            max = Math.max(max, nums[i]);
+        }
+        for (int i = 0; i < left; i++) {
+            if (nums[i] > min){
+                left = i;
+                break;
+            }
+        }
+        for (int i = nums.length-1; i >= right; i--) {
+            if (nums[i] < max){
+                right = i;
+                break;
+            }
+        }
+        return (right - left)+ 1;
+    }
+
+    public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
+        if (t1 == null && t2 == null)return null;
+        if (t1 != null && t2 != null){
+            t1.left = mergeTrees(t1.left, t2.left);
+            t1.right  = mergeTrees(t1.right, t2.right);
+            t1.val += t2.val;
+        }else if (t1 == null){
+            t2.left = mergeTrees(null, t2.left);
+            t2.right = mergeTrees(null, t2.right);
+            return t2;
+        }else {
+            t1.left = mergeTrees(t1.left, null);
+            t1.right = mergeTrees(t1.right, null);
+        }
+        return t1;
+    }
+
+    public TreeNode mergeTrees_v1(TreeNode t1, TreeNode t2) {
+        if (t2 == null) {
+            return t1;
+        }
+        if (t1 == null){
+            return t2;
+        }
+        t1.left = mergeTrees_v1(t1.left, t2.left);
+        t1.right  = mergeTrees_v1(t1.right, t2.right);
+        t1.val += t2.val;
+        return t1;
+    }
+
+
+    public TreeNode mergeTrees_v2(TreeNode t1, TreeNode t2) {
+        if (t1 == null)return t2;
+        if (t2 == null) return t1;
+        LinkedList<TreeNode[]> queue = new LinkedList<>();
+        queue.push(new TreeNode[]{t1, t2});
+        while(!queue.isEmpty()){
+            TreeNode[] nodes = queue.poll();
+            nodes[0].val += nodes[1].val;
+            if (nodes[0].left == null){
+                nodes[0].left = nodes[1].left;
+            }else if (nodes[1].left != null){
+                queue.push(new TreeNode[]{nodes[0].left, nodes[1].left});
+            }
+            if (nodes[0].right == null){
+                nodes[0].right = nodes[1].right;
+            }else if (nodes[1].right != null){
+                queue.push(new TreeNode[]{nodes[0].right, nodes[1].right});
+            }
+        }
+        return t1;
+    }
+
+
+    class MinStack {
+
+        /** initialize your data structure here. */
+        private Stack<Integer> s1;
+        private Stack<Integer> s2;
+        public MinStack() {
+            s1 = new Stack<>();
+            s2 = new Stack<>();
+        }
+
+        public void push(int x) {
+            s1.push(x);
+            if (s2.isEmpty() || s2.peek() >= x){
+                s2.push(x);
+            }
+        }
+
+        public void pop() {
+            int x = s1.pop();
+            if (x == s2.peek()){
+                s2.pop();
+            }
+        }
+
+        public int top() {
+            return s1.peek();
+        }
+
+        public int getMin() {
+            return s2.peek();
+        }
+
+    }
+
+    public int minStep(int[] nums){
+        int[] dp = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            boolean f = true;
+            for (int j = i+1; j < i+nums[i] && j < nums.length; j++) {
+                if (dp[j] == 0){
+                    if (f){
+                        dp[j] = dp[j-1]+1;
+                        f = false;
+                    }else {
+                        dp[j] = dp[j-1];
+                    }
+                }
+            }
+        }
+        return dp[nums.length-1];
+    }
+
+    public int jump_v1(int[] nums) {
+        if(nums.length == 0) return 0;
+        int[] res = new int[nums.length];
+        for(int i = 0; i < nums.length ; ++i) {
+            for (int j = 1; j <= nums[i]; ++j) {
+                if(i + j >= nums.length){
+                    return res[nums.length-1];
+                }
+                if (res[i + j] == 0) {
+                    res[i + j] = res[i] + 1;
+                }
+            }
+        }
+        return res[nums.length-1];
+    }
+
+    public int jump_v2(int[] nums) {
+        int length = nums.length;
+        int end = 0;
+        int maxPosition = 0;
+        int steps = 0;
+        for (int i = 0; i < length - 1; i++) {
+            maxPosition = Math.max(maxPosition, i + nums[i]);
+            if (i == end) {
+                end = maxPosition;
+                steps++;
+            }
+        }
+        return steps;
+    }
+
+
+
 
 
 

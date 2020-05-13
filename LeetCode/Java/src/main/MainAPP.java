@@ -13,9 +13,9 @@ public class MainAPP {
     public static void main(String[] args) {
 //        MainAPP main = new MainAPP();
 //        Interview itv = new Interview();
-//        Solution1 s1 = new Solution1();
-//        Solution2 s2 = new Solution2();
-//        Solution3 s3 = new Solution3();
+        Solution1 s1 = new Solution1();
+        Solution2 s2 = new Solution2();
+        Solution3 s3 = new Solution3();
 //        TestMethod tm = new TestMethod();
         Solution4 s4 = new Solution4();
 
@@ -200,7 +200,8 @@ public class MainAPP {
 //        int[] test = {4,3,2,7,8,2,3,1};
 //        s4.findDisappearedNumbers_v1(test);
 
-        s4.hammingDistance(3, 7);
+//        s4.hammingDistance(3, 7);
+        s1.longestPalindrome_v2("a");
 
 
 

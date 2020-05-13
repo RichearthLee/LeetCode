@@ -10,8 +10,6 @@ public class Interview {
     /**
      * alibaba
      * 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
-     * @param str
-     * @return
      */
     public boolean isValid(String str) {
         if(str == "" || str == null)return true;
@@ -30,11 +28,38 @@ public class Interview {
 
     /**
      * bytedance  quicksort
-     * @param nums
-     * @param start
-     * @param end
-     * @return
      */
+    public int[] quickSort(int[] nums, int start, int end){
+        //if(nums == null || nums.length <= 0) return nums;
+        if(start >= end) return nums;
+        int key = nums[start], left = start, right = end;
+        while(left < right){
+            while(key <= nums[right] && left < right){    //递增
+                right--;
+            }
+            while(key >= nums[left] && left < right){
+                left++;
+            }
+//            while(key >= nums[right] && left < right){      //递减
+//                right--;
+//            }
+//            while(key <= nums[left] && left < right){
+//                left++;
+//            }
+            if(left < right){
+                int tmp = nums[left];
+                nums[left] = nums[right];
+                nums[right] = tmp;
+            }
+        }
+        nums[start] = nums[left];
+        nums[left] = key;
+        quickSort(nums,start,left-1);
+        quickSort(nums,left+1, end);
+        return nums;
+    }
+
+
     public int[] quickSort_v1(int[] nums, int start, int end){
         //if(nums == null || nums.length <= 0) return nums;
         if(start >= end) return nums;
@@ -69,43 +94,11 @@ public class Interview {
     }
 
 
-    public int[] quickSort(int[] nums, int start, int end){
-        //if(nums == null || nums.length <= 0) return nums;
-        if(start >= end) return nums;
-        int key = nums[start], left = start, right = end;
-        while(left < right){
-//            while(key <= nums[right] && left < right){    //递增
-//                right--;
-//            }
-//            while(key >= nums[left] && left < right){
-//                left++;
-//            }
-            while(key >= nums[right] && left < right){      //递减
-                right--;
-            }
-            while(key <= nums[left] && left < right){
-                left++;
-            }
-            if(left < right){
-                int tmp = nums[left];
-                nums[left] = nums[right];
-                nums[right] = tmp;
-            }
-        }
-        nums[start] = nums[left];
-        nums[left] = key;
-        quickSort(nums,start,left-1);
-        quickSort(nums,left+1, end);
-        return nums;
-    }
-
 
     /**
      * Preorder, Inorder, Postorder 二叉树非递归
-     * @param root
-     * @return
      */
-    public TreeNode Inorder_Preorder(TreeNode root) {
+    public TreeNode Preorde_Inorderr(TreeNode root) {
         if(root==null) return null;
         Stack<TreeNode> stack = new Stack<>();
         TreeNode p = root;
@@ -146,8 +139,6 @@ public class Interview {
 
     /**
      * Preorder, Inorder, Postorder 二叉树递归
-     * @param root
-     * @return
      */
     public TreeNode Preorder_Inorder_Postorder(TreeNode root) {
         if(root==null) return null;
@@ -162,8 +153,6 @@ public class Interview {
 
     /**
      * 顺时针打印矩阵
-     * @param matrix
-     * @return
      */
     public ArrayList<Integer> printMatrix(int [][] matrix) {
         ArrayList<Integer> res = new ArrayList<>();
@@ -196,7 +185,6 @@ public class Interview {
 
     /**
      * 单链表排序  并归排序
-     * @return
      */
     public ListNode sortList(ListNode head){
         if(head == null || head.next == null)return head;

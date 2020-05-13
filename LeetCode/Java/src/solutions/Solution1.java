@@ -1,6 +1,7 @@
 package solutions;
 
 import utility.ListNode;
+import utility.TreeNode;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -88,7 +89,6 @@ public class Solution1 {
                 }
             }
         }
-
         printMatrix(dp);
         return res;
     }
@@ -1228,6 +1228,335 @@ public class Solution1 {
         }
         return flag? res : 1/res;
     }
+
+    public int[] twoSum(int[] nums, int target) {
+        int left = 0, right = nums.length-1;
+        Arrays.sort(nums);
+        while(left < right){
+            if (nums[left] + nums[right] < target){
+                left++;
+            }else if (nums[left] + nums[right] > target){
+                right--;
+            }else {
+                return new int[]{left, right};
+            }
+        }
+        return new int[]{left, right};
+    }
+
+    public int[] twoSum_v1(int[] nums, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(target - nums[i])){
+                return new int[]{map.get(target - nums[i]), i};
+            }else {
+                map.put(nums[i], i);
+            }
+        }
+        return null;
+    }
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy;
+        int f = 0;
+        while(l1 != null || l2 != null){
+            int val = (l1== null?0:l1.val) + (l2==null?0:l2.val) + f;
+            ListNode node = new ListNode(val % 10);
+            f = val / 10;
+            cur.next = node;
+            cur = cur.next;
+            if (l1 != null) l1 = l1.next;
+            if (l2 != null) l2 = l2.next;
+        }
+        if (f != 0) cur.next = new ListNode(1);
+        return dummy.next;
+    }
+
+    public int lengthOfLongestSubstring(String s) {
+        int[] map = new int[26];
+        int res = 0, cur = 0;
+        for (int i = 0, len = s.length(); i < len; i++) {
+            int c = s.charAt(i) - 'a';
+            if (map[c] > 0){
+                res = Math.max(res, cur);
+                cur = 1;
+                Arrays.fill(map, 0);
+                map[c]++;
+            }else {
+                map[c]++;
+                cur++;
+            }
+        }
+        return res;
+    }
+
+    public int lengthOfLongestSubstring_v1(String s) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int res = 0, cur = 0;
+        for (int i = 0, len = s.length(); i < len; i++) {
+            int c = s.charAt(i);
+            if (map.getOrDefault(c, 0) > 0){
+                res = Math.max(res, cur);
+                cur = 1;
+                map.clear();
+                map.put(c, 1);
+            }else {
+                map.put(c, 1);
+                cur++;
+            }
+        }
+        return res;
+    }
+
+    public int lengthOfLongestSubstring_v2(String s) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int res = 0, cur = 0;
+        for (int i = 0, len = s.length(); i < len; i++) {
+            int c = s.charAt(i);
+            if (map.containsKey(c)){
+                cur = Math.max(map.get(c), cur);
+            }
+            map.put(c, i);
+            res = Math.max(res, i-cur);
+        }
+        return res;
+    }
+
+
+    public double findMedianSortedArrays_v2(int[] nums1, int[] nums2) {
+        int mid = (nums1.length + nums2.length);
+        int f = mid % 2;
+        mid >>= 1;
+        if(f == 1)mid++;
+        double res = 0;
+        for (int i = 0, j = 0;;) {
+            int num;
+            if (j == nums2.length || i < nums1.length && nums1[i] < nums2[j]){
+                num = nums1[i++];
+            }else {
+                num = nums2[j++];
+            }
+            if(i + j == mid){
+                if (f == 0){
+                    res += num; f++; mid++;
+                } else {
+                    res = res > 0? (res + num)/2: num;
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+
+
+    public String longestPalindrome_v1(String s) {
+        int len = s.length();
+        if (len <= 0)return s;
+        int[] dp = new int[len];
+        dp[0] = 1;
+        int res = 0;
+        for (int i = 1; i < len; i++) {
+            int n = dp[i-1];
+            if (i-n-1 >=0 && s.charAt(i-n-1) == s.charAt(i)){
+                dp[i] = dp[i-1]+2;
+            } else if ( s.charAt(i-1) == s.charAt(i) && (dp[i-1]==1 || dp[i-1] == dp[i-2]+1)){
+                dp[i] = dp[i-1]+1;
+            } else {
+                dp[i] = 1;
+            }
+            res = Math.max(res, dp[i]);
+        }
+        for (int i = 0; i < dp.length; i++) {
+            if (dp[i] == res){
+                return s.substring(i - dp[i]+1, i+1);
+            }
+        }
+        return s;
+    }
+
+    public String longestPalindrome_v2(String s) {    //最长公共子串
+        int len = s.length();
+        if (len == 0)return s;
+        String reverse = new StringBuilder(s).reverse().toString();
+        int[][] dp = new int[len][len];
+        int max = 0, index = 0;
+        for (int i = 0; i < len ; i++){
+            for (int j = 0; j < len; j++) {
+                if (s.charAt(i) == reverse.charAt(j)){
+                    if (i == 0 || j == 0){
+                        dp[i][j] = 1;
+                    }else {
+                        dp[i][j] = dp[i-1][j-1]+1;
+                    }
+                }
+                if (dp[i][j] > max){
+                    int pre = len - i - 1;
+                    if (pre + dp[i][j] -1 == j){
+                        max = dp[i][j];
+                        index = i;
+                    }
+                }
+            }
+        }
+        return s.substring(index - max + 1, index+1);
+    }
+
+    public int reverse(int x) {
+        long res = 0;
+        while(x != 0){
+            int val = x % 10;
+            x /= 10;
+            res = res * 10 + val;
+        }
+        if (res > Integer.MAX_VALUE || res < Integer.MIN_VALUE){
+            return 0;
+        }
+        return (int) res;
+    }
+
+    public int myAtoi(String str) {
+        HashMap<String, String[]> map = new HashMap<>();
+        map.put("start", new String[]{"start", "signed", "in_number", "end"});
+        map.put("signed", new String[]{"end", "end", "in_number", "end"});
+        map.put("in_number", new String[]{"end", "end", "in_number", "end"});
+        map.put("end", new String[]{"end", "end", "end", "end"});
+
+        String state = "start";
+        long res = 0, sign = 1;
+        for (int i = 0, len = str.length(); i < len; i++) {
+            char c = str.charAt(i);
+            state = map.get(state)[get_col(c)];
+            if (state.equals("signed") && c == '-'){
+                sign = -1;
+            }
+            if (state.equals("in_number")){
+                res = res * 10 + c - '0';
+                if (res * sign > Integer.MAX_VALUE){
+                    return Integer.MAX_VALUE;
+                }
+                if (res * sign < Integer.MIN_VALUE){
+                    return Integer.MIN_VALUE;
+                }
+            }
+        }
+        return (int)(res * sign);
+    }
+
+    private int get_col(char c) {
+        if (c == ' ') return 0;
+        if (c == '+' || c == '-') return 1;
+        if (c >= '0' && c <= '9') return 2;
+        return 3;
+    }
+
+    public boolean isPalindrome_v1(int x) {
+        if (x < 0)return false;
+        ArrayList<Integer> list = new ArrayList<>();
+        while(x != 0){
+            int n = x % 10;
+            x = x /10;
+            list.add(n);
+        }
+        for (int i = 0 ,j = list.size()-1; i < j ; i++, j--) {
+            if (!list.get(i).equals(list.get(j))){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isPalindrome_v2(int x) {
+        if (x < 0)return false;
+        long val = 0, pre = x;
+        while(x != 0){
+            int n = x % 10;
+            x = x /10;
+            val = val*10 + n;
+        }
+        return val == pre;
+    }
+
+    public boolean isPalindrome_v3(int x) {
+        if (x < 0)return false;
+        int val = 0;
+        while(x > val){
+            val = val*10 + x % 10;
+            x = x /10;
+        }
+        return x == val || x == val / 10;
+    }
+
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        ArrayList<List<Integer>> res = new ArrayList<>();
+        if (root == null)return res;
+        ArrayList<Integer> temp = new ArrayList<>();
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int cur = 0, pre = 1;
+        while(!queue.isEmpty()){
+            TreeNode node = queue.poll();
+            temp.add(node.val);
+            pre--;
+            if (node.left != null){
+                queue.offer(node.left); cur++;
+            }
+            if (node.right != null){
+                queue.offer(node.right); cur++;
+            }
+            if (pre == 0){
+                res.add(new ArrayList<>(temp));
+                temp.clear();
+                pre = cur;
+                cur = 0;
+            }
+        }
+        return res;
+    }
+
+    public List<List<Integer>> levelOrder_v1(TreeNode root) {
+        ArrayList<List<Integer>> res = new ArrayList<>();
+        if (root == null)return res;
+        ArrayList<Integer> temp;
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int cur = 0, pre = 1;
+        while(!queue.isEmpty()){
+            temp = new ArrayList<>();
+            while(pre > 0){
+                TreeNode node = queue.poll();
+                temp.add(node.val);
+                pre--;
+                if (node.left != null){
+                    queue.offer(node.left); cur++;
+                }
+                if (node.right != null){
+                    queue.offer(node.right); cur++;
+                }
+            }
+            pre = cur; cur = 0;
+            res.add(temp);
+        }
+        return res;
+    }
+
+    public List<List<Integer>> levelOrder_v2(TreeNode root) {
+        ArrayList<List<Integer>> res = new ArrayList<>();
+        if (root != null) {
+            levelOrder_hepler(res, root, 0);
+        }
+        return res;
+    }
+    private void levelOrder_hepler(ArrayList<List<Integer>> res, TreeNode root, int deepth){
+        if (root == null)return;
+        if (res.size() <= deepth){
+            res.add(new ArrayList<>());
+        }
+        res.get(deepth).add(root.val);
+        levelOrder_hepler(res, root.left, deepth+1);
+        levelOrder_hepler(res, root.right, deepth+1);
+    }
+
 
 
 
