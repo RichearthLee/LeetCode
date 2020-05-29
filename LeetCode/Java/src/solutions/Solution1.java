@@ -1,5 +1,6 @@
 package solutions;
 
+import com.sun.javafx.binding.StringFormatter;
 import utility.ListNode;
 import utility.TreeNode;
 
@@ -750,12 +751,8 @@ public class Solution1 {
     }
     
     /**
-     * @description: 33. Search in Rotated Sorted Array
-     * @param: [nums, target] 
-     * @return: int 
-     * @author: Yukun Lee 
-     * @date: 2019-07-30 
-     */ 
+     *  33. Search in Rotated Sorted Array
+     */
     public int search(int[] nums, int target) {
         if (nums.length == 0) return -1;
         int left = 0, right = nums.length-1;
@@ -786,12 +783,8 @@ public class Solution1 {
     }
     
     /** 
-     * @description: 34. Find First and Last Position of Element in Sorted Array
-     * @param: [nums, target] 
-     * @return: int[] 
-     * @author: Yukun Lee 
-     * @date: 2019-08-01 
-     */ 
+     *  34. Find First and Last Position of Element in Sorted Array
+     */
     public int[] searchRange_v1(int[] nums, int target) {
         int[] res = new int[2];
         res[0] = -1;
@@ -1556,6 +1549,668 @@ public class Solution1 {
         levelOrder_hepler(res, root.left, deepth+1);
         levelOrder_hepler(res, root.right, deepth+1);
     }
+
+    public int threeSumClosest_v1(int[] nums, int target) {
+        Arrays.sort(nums);
+        int res = nums[0] + nums[1] + nums[2];
+        for(int i = 0, len = nums.length; i < len - 2 ; ++i){
+            int head = i + 1, tail = len - 1;
+            while (head < tail){
+                int tmp = nums[head] + nums[tail] + nums[i];
+                if (Math.abs(target - res) > Math.abs(target - tmp)){ res = tmp; }
+                if(tmp == target){
+                    return target;
+                }else if(tmp < target){
+                    head++;
+                }else {
+                    tail--;
+                }
+            }
+        }
+        return res;
+    }
+
+    public List<String> letterCombinations_v1(String digits) {
+        HashMap<Character, String> map = new HashMap<>();
+        map.put('2', "abc");map.put('3', "def");
+        map.put('4', "ghi");map.put('5', "jkl");map.put('6', "mno");
+        map.put('7', "pqrs");map.put('8', "tuv");map.put('9', "wxyz");
+//        String[] mapping = new String[]{"0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        LinkedList<String> res = new LinkedList<>();
+        res.add("");
+        for (int i = 0, len = digits.length(); i < len; i++) {
+            String str = map.get(digits.charAt(i));
+//            String str = mapping[digits.charAt(i) - '0'];
+            int cur = 0, res_len = res.size();
+            for (Iterator<String> iterator = res.listIterator(); iterator.hasNext() && cur < res_len; cur++) {
+                String temp = iterator.next();
+                for (int k = 0, str_len = str.length(); k < str_len; k++) {
+                    res.add(temp + str.charAt(k));
+                }
+                iterator.remove();
+            }
+
+        }
+        return res;
+    }
+
+    public List<String> letterCombinations_v2(String digits) {
+        LinkedList<String> res = new LinkedList<>();
+        if (digits.length() == 0)return res;
+        String[] mapping = new String[]{"0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        res.add("");
+        for (int i = 0, len = digits.length(); i < len; i++) {
+            String str = mapping[digits.charAt(i) - '0'];
+            for (int j = 0, res_len = res.size(); j < res_len; j++) {
+                String tmp = res.pollFirst();
+                for (int k = 0, str_len = str.length(); k < str_len; k++) {
+                    res.add(tmp + str.charAt(k));
+                }
+            }
+        }
+        return res;
+    }
+
+    public ListNode removeNthFromEnd_v1(ListNode head, int n) {
+        if (head == null)return null;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode fast = dummy, slow = dummy;
+        for (int i = 0; i < n; i++) {
+            fast = fast.next;
+        }
+        while (fast.next != null){
+            fast = fast.next;
+            slow = slow.next;
+        }
+        slow.next = slow.next.next;
+        return dummy.next;
+    }
+
+    public boolean isValid_v1(String s) {
+        Stack<Character> st = new Stack<>();
+        for (int i = 0, len = s.length(); i < len; i++) {
+            char c = s.charAt(i);
+            if (st.isEmpty() || c == '(' || c == '[' || c == '{'){
+                st.push(c);
+            }else {
+                if (Math.abs(c - st.pop()) > 2){
+                    return false;
+                }
+            }
+        }
+        return st.isEmpty();
+    }
+
+
+    public ListNode mergeTwoLists_v1(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0), cur = dummy;
+        while(l1 != null && l2!= null){
+            if (l1.val > l2.val){
+                cur.next = l2;
+                l2 = l2.next;
+            }else {
+                cur.next = l1;
+                l1 = l1.next;
+            }
+            cur = cur.next;
+        }
+        if (l1 != null){
+            cur.next = l1;
+        }else {
+            cur.next = l2;
+        }
+        return dummy.next;
+    }
+
+    public ListNode mergeTwoLists_v2(ListNode l1, ListNode l2) {
+        if(l1 == null){
+            return l2;
+        }
+        if (l2 == null){
+            return l1;
+        }
+        if (l1.val < l2.val){
+            l1.next = mergeTwoLists_v2(l1.next, l2);
+            return l1;
+        }else {
+            l2.next = mergeTwoLists_v2(l1, l2.next);
+            return l2;
+        }
+    }
+
+    public List<String> generateParenthesis_1(int n) {
+        LinkedList<String> res = new LinkedList<>();
+        if (n < 1)return res;
+        generateParenthesis_hepler(res, new StringBuilder("("), n-1, n);
+        return res;
+    }
+    private void generateParenthesis_hepler(LinkedList<String> res, StringBuilder tmp, int left, int right){
+        if (left>right) return;
+        if (left == 0 && right == 0) {
+            res.offer(tmp.toString());
+            return;
+        }
+        if (left != 0){
+            generateParenthesis_hepler(res, tmp.append('('), left-1, right);
+            tmp.deleteCharAt(tmp.length()-1);
+        }
+        if (right != 0){
+            generateParenthesis_hepler(res, tmp.append(')'), left, right-1);
+            tmp.deleteCharAt(tmp.length()-1);
+        }
+    }
+
+    private boolean parenthesisValidate(String str){
+        Stack<Character> st = new Stack<>();
+        for (int i = 0, len = str.length(); i < len; i++) {
+            char c = str.charAt(i);
+            if (st.isEmpty() || c == '('){
+                st.push(c);
+            }else {
+                if (st.pop() != '('){
+                    return false;
+                }
+            }
+        }
+        return st.isEmpty();
+    }
+
+    public ListNode mergeKLists_v1(ListNode[] lists) {
+        if (lists.length == 0 )return null;
+        return mergeKLists_v1_helper(lists, 0, lists.length-1);
+    }
+
+    private ListNode mergeKLists_v1_helper(ListNode[] lists, int left , int right){
+        if (left >= right){
+            return lists[left];
+        }
+        ListNode l1 = mergeKLists_v1_helper(lists, (left + right)/2+1 , right);
+        ListNode l2 = mergeKLists_v1_helper(lists, left, (left+ right)/2);
+        return mergeTwoLists(l1,l2);
+    }
+
+//    private ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+//        if(l1 == null){
+//            return l2;
+//        }
+//        if (l2 == null){
+//            return l1;
+//        }
+//        if (l1.val < l2.val){
+//            l1.next = mergeTwoLists(l1.next, l2);
+//            return l1;
+//        }else {
+//            l2.next = mergeTwoLists(l1, l2.next);
+//            return l2;
+//        }
+//    }
+
+    public ListNode swapPairs_v2(ListNode head) {
+        if (head == null)return null;
+        ListNode dummy = new ListNode(0),
+                cur = dummy, fast = head.next, slow = head;
+        while(fast != null){
+            cur.next = fast;
+            slow.next = fast.next;
+            fast.next = slow;
+            cur = cur.next.next;
+
+        }
+        return dummy.next;
+    }
+
+    public ListNode swapPairs_v3(ListNode head) {
+        if (head == null)return null;
+        ListNode dummy = new ListNode(0),
+                cur = head, pre = dummy;
+        dummy.next = head;
+        head = head.next;
+        boolean f = true;
+        while(head != null){
+            if (f){
+                cur.next = head.next;
+                pre.next = head;
+                head.next = cur;
+                head = cur.next;
+                pre = pre.next;
+            }else {
+                cur = cur.next;
+                pre = pre.next;
+                head = head.next;
+            }
+            f = !f;
+        }
+        return dummy.next;
+    }
+
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode dummy = new ListNode(0),
+                cur = dummy, pre = head, post = head;
+        while(post != null){
+            for (int i = 1; i < k && post != null; i++) {
+                post = post.next;
+            }
+            if (post == null) {
+                cur.next = pre;
+                break;
+            }
+            ListNode tmp = post.next;
+            post.next = null;
+            printLinkedList(pre);
+            cur.next = reverseList(pre);
+            printLinkedList(pre);
+            printLinkedList(cur);
+            cur = pre;
+            pre = tmp;
+            post = tmp;
+        }
+        return dummy.next;
+    }
+
+    private ListNode reverseList(ListNode head) {
+        if(head == null) return null;
+        ListNode left = null, right = head;
+        while(right != null){
+            ListNode tmp = right.next;
+            right.next = left;
+            left = right;
+            right =tmp;
+        }
+        return left;
+    }
+
+    private void printLinkedList(ListNode head){
+        ListNode tmp = head;
+        while(tmp != null){
+            System.out.print(tmp.val + "\t");
+            tmp = tmp.next;
+        }
+        System.out.println();
+    }
+
+    public int removeDuplicates_v1(int[] nums) {
+        int count = 0;
+        for (int i = nums.length-1; i > 0; i--) {
+            if (nums[i] == nums[i-1]){
+                int tmp = 0;
+                while (i > 0 && nums[i] == nums[i-1]){
+                    count++;
+                    i--;
+                    tmp++;
+                }
+                System.arraycopy(nums, i + tmp, nums, i, nums.length - count - i);
+            }
+        }
+        return nums.length - count;
+    }
+
+    public int removeDuplicates_v2(int[] nums) {
+        int i = 0;
+        for (int j = 0; j < nums.length; i++, j++) {
+            while(j < nums.length-1 && nums[j] == nums[j+1]){
+                j++;
+            }
+            nums[i] = nums[j];
+        }
+        return i;
+    }
+
+    public int removeDuplicates_v3(int[] nums) {
+        if (nums.length == 0)return 0;
+        int i = 0;
+        for (int j = 0; j < nums.length; j++) {
+            if (nums[i] != nums[j]) i++;
+            nums[i] = nums[j];
+        }
+        return i+1;
+    }
+
+    public int removeElement(int[] nums, int val) {
+        if (nums.length == 0)return 0;
+        int i = 0;
+        for (int j = 0; j < nums.length; j++) {
+            if (nums[j] != val) {
+                nums[i] = nums[j];
+                i++;
+            }
+        }
+        return i;
+    }
+
+    public int strStr(String haystack, String needle) {
+        for (int i = 0, len = haystack.length(),len_nd = needle.length(); i < len - len_nd; i++) {
+            int  j = 0;
+            for (j = i; j < len_nd; j++) {
+                if (haystack.charAt(i+j) != needle.charAt(j))break;
+            }
+            if (j == len_nd)return i;
+        }
+        return -1;
+    }
+
+    public void nextPermutation_v1(int[] nums) {
+        for (int i = nums.length-1; i >= 0 ; i--) {
+            if (i == 0 || nums[i-1] < nums[i]){
+                if (i == 0){
+                    Arrays.sort(nums);
+                    return;
+                }
+                for (int j = nums.length-1; j >= i ; j--) {
+                    if (nums[j] > nums[i-1]){
+                        int tmp = nums[j];
+                        nums[j] = nums[i-1];
+                        nums[i-1] = tmp;
+                        Arrays.sort(nums, i, nums.length);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    public int divide(int dividend, int divisor) {
+        int sign = 1;
+        int res = 0;
+        if (dividend < 0){
+            dividend = -dividend;
+            sign = -sign;
+        }
+        if (divisor < 0){
+            divisor = -divisor;
+            sign = -sign;
+        }
+        while(dividend >= divisor){
+            dividend -= divisor;
+            res ++;
+        }
+        if (res == Integer.MIN_VALUE && sign < 0){
+            return Integer.MAX_VALUE;
+        }
+        return sign > 0 ? res : -res;
+    }
+
+    public int divide_v1(int dividend, int divisor) {
+        int sign = 1;
+        long dividend_tmp = dividend, divisor_tmp = divisor, res = 0;
+        if (dividend_tmp < 0){
+            dividend_tmp = -dividend_tmp;
+            sign = -sign;
+        }
+        if (divisor_tmp < 0){
+            divisor_tmp = -divisor_tmp;
+            sign = -sign;
+        }
+        if (dividend_tmp < divisor_tmp)return 0;
+
+        while(dividend_tmp >= divisor_tmp){
+            if (res == 0) {
+                res++;
+            } else {
+                res <<= 1;
+            }
+            divisor_tmp <<= 1;
+        }
+        divisor_tmp >>= 1;
+        dividend_tmp = dividend_tmp - divisor_tmp;
+        dividend_tmp = dividend < 0 ?-dividend_tmp : dividend_tmp;
+        res = (sign > 0? res:-res)
+                + divide_v1((int) dividend_tmp, divisor);
+        if (res > Integer.MAX_VALUE || res < Integer.MIN_VALUE){
+            res = Integer.MAX_VALUE;
+        }
+        return (int) res;
+    }
+
+    public int longestValidParentheses(String s) {
+        Stack<Character> st = new Stack<>();
+        int res = 0;
+        for (int i = 0, count = 0, len = s.length(); i < len; i++) {
+            char c = s.charAt(i);
+            if (st.isEmpty() || c == '('){
+                st.push(c);
+            }else {
+                if (st.peek() == '('){
+                    count += 2;
+                    res = Math.max(res, count);
+                    st.pop();
+                }else{
+                    st.push(c);
+                    count = 0;
+                }
+            }
+        }
+        return res;
+    }
+
+    public int longestValidParentheses_v1(String s) {
+        Stack<Integer> st = new Stack<>();
+        int[] dp = new int[s.length()];
+        int res = 0;
+        for (int i = 0, count = 0, len = s.length(); i < len; i++) {
+            if (s.charAt(i) == '('){
+                st.push(i);
+            }else {
+                if(st.isEmpty())continue;
+                int index = st.pop();
+                dp[i] = 2 + (index > 0 ? dp[index-1] : 0);
+                res = Math.max(dp[i], res);
+            }
+        }
+        return res;
+    }
+
+    public int longestValidParentheses_v2(String s) {
+        int left = 0, right = 0, maxlength = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                left++;
+            } else {
+                right++;
+            }
+            if (left == right) {
+                maxlength = Math.max(maxlength, 2 * right);
+            } else if (right > left) {
+                left = right = 0;
+            }
+        }
+        left = right = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            if (s.charAt(i) == '(') {
+                left++;
+            } else {
+                right++;
+            }
+            if (left == right) {
+                maxlength = Math.max(maxlength, 2 * left);
+            } else if (left > right) {
+                left = right = 0;
+            }
+        }
+        return maxlength;
+    }
+
+
+    public int search_v1(int[] nums, int target) {
+        if(nums.length == 0)return -1;
+        int left = 0, right = nums.length-1;
+        while(left < right){
+            int mid = (left + right)>>2;
+            if (target == nums[mid])return mid;
+            if (nums[mid] > nums[left]){
+                if (target < nums[mid] && target >= nums[left]){
+                    right = mid -1;
+                }else  {
+                    left = mid + 1;
+                }
+            }else {
+                if ( target > nums[mid] && target <= nums[right]){
+                    left = mid + 1;
+                }else {
+                    right = mid - 1;
+                }
+            }
+        }
+        return nums[left] == target ? left : -1;
+    }
+
+
+    public int[] searchRange_V1(int[] nums, int target) {
+        int[] res = new int[2];
+        int left = 0 , right = nums.length-1;
+        double tar = target - 0.5;
+        while(left <= right){
+            int mid = (left + right)>>1;
+            double cur = nums[mid];
+            if (cur > tar){
+                right = mid - 1;
+            }else{
+                left = mid + 1;
+            }
+        }
+        res[0] = left;
+        left = 0;  right = nums.length-1;
+        tar = target + 0.5;
+        while(left <= right){
+            int mid = (left + right)>>1;
+            double cur = nums[mid];
+            if (cur > tar){
+                right = mid - 1;
+            }else{
+                left = mid + 1;
+            }
+        }
+        res[1] = right;
+        if (res[0] > res[1]){
+            res[0] = -1; res[1] = -1;
+        }
+        return res;
+    }
+
+    public int[] searchRange_V2(int[] nums, int target) {
+        int[] res = new int[]{-1, -1};
+        int left = 0 , right = nums.length-1;
+        while(left <= right){    //左边界
+            int mid = (left + right)>>1;
+            if (target <= nums[mid]){
+                right = mid - 1;
+            }else {
+                left = mid + 1;
+            }
+        }
+        if (left >= nums.length || nums[left] != target){
+            return res;
+        }
+        res[0] = left;
+        left = 0; right = nums.length-1;
+        while(left <= right){  //右边界
+            int mid = (left + right)>>1;
+            if (target >=  nums[mid]){
+                left = mid + 1;
+            }else {
+                right = mid - 1;
+            }
+        }
+        res[1] = right;
+        return res;
+    }
+
+    public int searchInsert_v1(int[] nums, int target) {
+        int left = 0, right = nums.length-1;
+        while(left <= right){
+            int mid = (left + right) >>> 1;
+            if (target < nums[mid]){
+                right = mid - 1;
+            }else if(target > nums[mid]){
+                left = mid + 1;
+            }else {
+                return mid;
+            }
+        }
+        return left;
+    }
+
+    public boolean isValidSudoku_v1(char[][] board) {
+        HashSet<Character> set = new HashSet<>();
+        HashMap<Integer, Integer> [] rows = new HashMap[9];
+        for (int i = 0; i < 9; i++) {
+            set.clear();
+            for (int j = 0; j < 9; j++) {
+                char c= board[i][j];
+                if (set.contains(c)){
+                    return false;
+                }
+                if(c != '.')set.add(c);
+            }
+        }
+        for (int i = 0; i < 9; i++) {
+            set.clear();
+            for (int j = 0; j < 9; j++) {
+                char c= board[j][i];
+                if (set.contains(c)){
+                    return false;
+                }
+                if(c != '.')set.add(c);
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                set.clear();
+                for (int k = i * 3; k < (i+1) * 3; k++) {
+                    for (int l = j * 3; l < (j+1) * 3; l++) {
+                        char c= board[k][l];
+                        if (set.contains(c)){
+                            return false;
+                        }
+                        if(c != '.')set.add(c);
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+
+    public String countAndSay_v1(int n) {
+        if (n <= 0) return "";
+        StringBuilder res = new StringBuilder();
+        res.append(1);
+        for (int i = 1; i < n; i++) {
+            StringBuilder tmp = new StringBuilder();
+            for (int j = 0, len = res.length(); j < len; j++) {
+                int count = 1;
+                while(j < len -1 && res.charAt(j) == res.charAt(j+1)) {
+                    count++; j++;
+                };
+                tmp.append(count);
+                tmp.append(res.charAt(j));
+            }
+            res = tmp;
+        }
+        return res.toString();
+    }
+
+    public List<List<Integer>> combinationSum_v1(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        combinationSum_v1_helper(res, new ArrayList<>(), 0, candidates, target, 0);
+        return res;
+    }
+    
+    private void combinationSum_v1_helper(List<List<Integer>> list, List<Integer> tmp, int index, int[] candidates, int target, int count){
+        if (count > target)return;
+        if (count == target){
+            list.add(new ArrayList<>(tmp));
+        }
+        for (int i = index; i < candidates.length; i++) {
+            tmp.add(candidates[i]);
+            combinationSum_v1_helper(list, tmp, i, candidates, target, count+candidates[i]);
+            tmp.remove(tmp.size()-1);
+        }
+    }
+
+
+
 
 
 

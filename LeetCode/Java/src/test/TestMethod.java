@@ -2,16 +2,39 @@ package test;
 
 import java.util.*;
 
-public class TestMethod {
+public  class TestMethod {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 //		int[][] arr={{1,2,8,9},{2,4,9,12},{4,7,10,13},{6,8,11,15}};
 //		System.out.println(Find(16,arr));
 		TestMethod tm = new TestMethod();
-		tm.testStringSort();
+
+		String str = "123";
+		tm.testParam(str);
+		System.out.println(str);
          
 	}
+
+	public void testParam(String string){
+		string = string.substring(1);
+		System.out.println(string);
+	}
+
+
+	public void testFinal(final String str, final int a){
+	}
+
+
+	public void testLoop(){
+		boolean f = false;
+		OK :for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				break OK;
+			}
+		}
+	}
+
 	 public static boolean Find(int target, int [][] array) {
 	        int rowCount=array.length;
 	        int colCount=array[0].length;

@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class TestThread implements Runnable {
+public  class  TestThread implements Runnable {
 	private volatile static boolean n=true;
 	private volatile static boolean flag=false;
 	private volatile static boolean A = true;

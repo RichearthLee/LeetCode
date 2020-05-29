@@ -1,6 +1,7 @@
 package main;
 
 import solutions.*;
+import utility.ListNode;
 
 /**
  * @program: LeetCode
@@ -201,11 +202,27 @@ public class MainAPP {
 //        s4.findDisappearedNumbers_v1(test);
 
 //        s4.hammingDistance(3, 7);
-        s1.longestPalindrome_v2("a");
+//        s1.longestPalindrome_v2("a");
 
+//        s4.isMatch("aab", "c*a*b");
+//        s4.threeSum(new int[]{1,1,-2});
+//        s1.generateParenthesis_1(3);
 
+//        ListNode n1 = new ListNode(1);
+//        ListNode n2 = new ListNode(2);
+//        ListNode n3 = new ListNode(3);
+//        ListNode n4 = new ListNode(4);
+//        ListNode n5 = new ListNode(5);
+//        n1.next = n2;
+//        n2.next = n3;
+//        n3.next = n4;
+//        n4.next = n5;
+//        s1.reverseKGroup(n1,2);
+//        s1.removeDuplicates_v1(new int[]{0,0,1,1,1,2,2,3,3,4});
+//        s1.divide_v1(Integer.MIN_VALUE, -3);
+//        s1.divide_v1(10, 3);
 
-
+            s1.searchRange_V1(new int[]{5,7,7,8,8,10}, 6);
 
 
     }

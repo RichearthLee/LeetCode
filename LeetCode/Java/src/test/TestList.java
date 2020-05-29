@@ -1,5 +1,6 @@
 package test;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -10,6 +11,7 @@ public class TestList {
         Stack<Integer> st = new Stack<>();
         Queue<Integer> q = new LinkedList<>();
         LinkedList<Integer> link = new LinkedList<>();
+        ArrayList<Integer> arr =new ArrayList<>();
 
         st.push(1);
         st.push(2);

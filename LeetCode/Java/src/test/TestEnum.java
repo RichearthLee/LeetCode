@@ -1,6 +1,6 @@
 package test;
 
-public class testEnum {
+public class TestEnum {
 
     public static void main(String[] args) {
         Color c = Color.BLANK;

@@ -4,6 +4,7 @@ import utility.ListNode;
 import utility.TreeNode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Stack;
 
 public class Interview {
@@ -242,6 +243,9 @@ public class Interview {
         return dummy.next;
     }
 
+    /**
+     *链表拆分
+     */
     private ListNode split(ListNode cur, int step){
         if(cur == null)return null;
         ListNode pre = cur;
@@ -254,6 +258,9 @@ public class Interview {
         return cur;
     }
 
+    /**
+     *链表合并
+     */
     private ListNode mergeList(ListNode l1, ListNode l2, ListNode prev){
         while(l1 != null && l2 != null){
             if(l1.val <= l2.val){
@@ -274,27 +281,47 @@ public class Interview {
         return prev;
     }
 
+    /**
+     *  KMP算法
+     * @param haystack  被匹配字符串
+     * @param needle    匹配字符串
+     * @return  index
+     */
+    public int strStr(String haystack, String needle) {
+        int j = 0;
+        for (int i = 0, N = haystack.length(), M = needle.length(); i < N; i++) {
+            // 当前是状态 j，遇到字符 txt[i]，
+            // pat 应该转移到哪个状态？
+            j = dp[j][haystack.charAt(i)];
+            // 如果达到终止态，返回匹配开头的索引
+            if (j == M) return i - M + 1;
+        }
+        // 没到达终止态，匹配失败
+        return -1;
+    }
 
-//    public int[] quickSort_v2(int[] nums, int start, int end){
-//        if(start >= end)return nums;
-//        int left = start, right = end,k = nums[start];
-//        while(left < right){
-//            while(right > left && k <= nums[right]){
-//                right--;
-//            }
-//            while(left < right && k >= nums[left]){
-//                left++;
-//            }
-//            int temp = nums[left];
-//            nums[left] = nums[right];
-//            nums[right] = temp;
-//        }
-//        nums[start] = nums[left];
-//        nums[left] = k;
-//        quickSort_v3(nums,start, left-1);
-//        quickSort_v3(nums,left+1, end);
-//        return nums;
-//    }
+    private int[][] dp;
+
+    public void KMP(String pat) {
+        int M = pat.length();
+        // dp[状态][字符] = 下个状态
+        dp = new int[M][256];
+        // base case
+        dp[0][pat.charAt(0)] = 1;
+        // 影子状态 X 初始为 0
+        int X = 0;
+        // 当前状态 j 从 1 开始
+        for (int j = 1; j < M; j++) {
+            for (int c = 0; c < 256; c++) {
+                if (pat.charAt(j) == c)
+                    dp[j][c] = j + 1;
+                else
+                    dp[j][c] = dp[X][c];
+            }
+            // 更新影子状态
+            X = dp[X][pat.charAt(j)];
+        }
+    }
 
 
 
@@ -303,4 +330,11 @@ public class Interview {
 
 
 
-}
+
+
+
+
+
+
+
+    }

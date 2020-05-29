@@ -2,23 +2,26 @@ package test;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
+import java.math.*;
 public class TestMap {
 
     public static void main(String[] args) {
 //        int[] nums = {2,1,3,3,0};
 //        testTreeMap(nums);
-
-        /*TreeMap<Integer, Integer> treeMapmap = new TreeMap<>();
+        Math.min(1,2);
+        TreeMap<Integer, Integer> treeMapmap = new TreeMap<>();
         treeMapmap.put(null,1);
         treeMapmap.getOrDefault(null,0);
 
         ConcurrentHashMap chm = new ConcurrentHashMap();
         chm.put("1",1);
 
+        HashSet<Integer> hs = new HashSet<>();
+
+        Hashtable ht = new Hashtable();
         HashMap<Integer, Integer> map1 = new HashMap<>();
         map1.put(null,1);
-        map1.getOrDefault(null,0);*/
+        map1.getOrDefault(null,0);
 
         LinkedHashMap<Integer, Integer> lmap  = new LinkedHashMap<>();
         lmap.put(1,1);

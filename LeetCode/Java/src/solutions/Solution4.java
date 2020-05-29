@@ -8,7 +8,7 @@ import java.util.*;
 
 public class Solution4 {
 
-    public boolean wordBreak(String s, List<String> wordDict) {
+    public boolean wordBreak(String s, List<String> wordDict){
         if (s.length() == 0)return true;
         for (int i = 0, len = s.length(); i < len; i++) {
             String str = s.substring(0, i);
@@ -594,6 +594,206 @@ public class Solution4 {
         }
         return steps;
     }
+
+
+    public boolean validate(ListNode head){
+        ListNode fast = head, slow = head;
+        while(fast != null && fast.next != null){
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Integer> nums(int n){
+        ArrayList<Integer> res = new ArrayList<>(n);
+        for (int i = 2; i <= n; i++) {
+            boolean f = true;
+            for (int j = 2, len = (int) Math.sqrt(n); j <= len; j++) {
+                if (n % j == 0) {
+                    f = false; break;
+                }
+            }
+            if (f)res.add(i);
+        }
+        return res;
+    }
+
+    public boolean isMatch(String text, String pattern) {
+        if (pattern.isEmpty()) return text.isEmpty();
+        boolean first_match = (!text.isEmpty() &&
+                (pattern.charAt(0) == text.charAt(0) || pattern.charAt(0) == '.'));
+        if (pattern.length() >= 2 && pattern.charAt(1) == '*'){
+            return (isMatch(text, pattern.substring(2)) ||
+                    (first_match && isMatch(text.substring(1), pattern)));
+        } else {
+            return first_match && isMatch(text.substring(1), pattern.substring(1));
+        }
+    }
+
+
+    public int maxArea(int[] height) {
+        int left = 0, right = height.length-1, area = 0;
+        while (left < right){
+            area = Math.max(area, (right - left) * Math.min(height[left], height[right]));
+            if (height[left] > height[right]){
+                right--;
+            }else {
+                left++;
+            }
+        }
+        return area;
+    }
+
+    public String longestCommonPrefix(String[] strs) {
+        if (strs.length == 0)return "";
+        String res = strs[0];
+        for (int i = 1, len = strs.length; i < len; i++) {
+            for (int j = 0, len1 = res.length(), len2 = strs[i].length(); j < len1 && j <= len2; j++) {
+                if (j == len2|| res.charAt(j) != strs[i].charAt(j)){
+                    res = res.substring(0,j);break;
+                }
+            }
+        }
+        return res;
+    }
+
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums.length < 3)return res;
+        Arrays.sort(nums);
+        if (nums[0] * nums[nums.length-1] > 0){
+            return res;
+        }
+        for (int i = 0; i < nums.length-2; i++) {
+            if (nums[i] > 0) break;
+            int left = i+1, right = nums.length-1;
+            while (left < right){
+                //if (nums[i] * nums[right] > 0) break;
+                int count = nums[i] + nums[left] + nums[right];
+                if (count == 0){
+                    res.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                }
+                if (count < 0){
+                    while(left < right && nums[left] == nums[++left]);
+                }else{
+                    while(left < right && nums[right] == nums[--right]);
+                }
+            }
+            while(i < nums.length-3 && nums[i] == nums[i+1])i++;
+        }
+        return res;
+    }
+
+    public List<List<Integer>> threeSum_v1(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums.length < 3)return res;
+        Arrays.sort(nums);
+        HashMap<Integer, Integer> map = new HashMap<>(nums.length);
+        map.put(nums[0], 0);
+        for (int i = 1; i < nums.length; i++) {
+            for (int j = i+1; j < nums.length; j++) {
+                if (j > i || nums[j] == nums[j-1])continue;
+                int n = -nums[i]-nums[j];
+                if (map.containsKey(n) && (map.get(n) == i-1 || nums[i] != nums[i-1])){
+                    res.add(new ArrayList<>(Arrays.asList(n, nums[i], nums[j])));
+                }
+            }
+            map.put(nums[i], Math.min(i, map.getOrDefault(nums[i], Integer.MAX_VALUE)));
+        }
+        return res;
+    }
+
+    public List<List<Integer>> threeSum_v2(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums.length < 3)return res;
+        Arrays.sort(nums);
+        res = threeSum_v2_helper(nums,0, res, new ArrayList<>());
+        return res;
+    }
+
+    public List<List<Integer>> threeSum_v2_helper(int[] nums, int index,List<List<Integer>> res, List<Integer> tmp) {
+        if (tmp.size() == 3){
+            if (tmp.get(0) + tmp.get(1)  == -tmp.get(2)){
+                res.add(new ArrayList<>(tmp));
+            }
+            return res;
+        }
+        for (int i = index; i < nums.length; i++) {
+            if (i > index && nums[i] == nums[i-1])continue;
+            tmp.add(nums[i]);
+            threeSum_v2_helper(nums,i+1, res, tmp);
+            tmp.remove(tmp.size()-1);
+        }
+        return res;
+    }
+
+    public List<List<Integer>> threeSum_3(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums.length < 3)return res;
+        if (nums[0] * nums[nums.length-1] > 0){
+            return res;
+        }
+        for(int i = 0 ; i < nums.length - 2 ; ++i){
+            if(i == 0 || nums[i] != nums[i-1]){
+                int head = i + 1, tail = nums.length - 1, val = -nums[i];
+                while (head < tail){
+                    if (nums[i] * nums[tail] > 0)break;
+                    if(nums[head] + nums[tail] == val){
+                        res.add(Arrays.asList(nums[i],nums[head],nums[tail]));
+                        while (head < tail && nums[head] == nums[head+1]) head++;
+                        while (head < tail && nums[tail] == nums[tail-1]) tail--;
+                        head++;
+                        tail--;
+                    }else if(nums[head] + nums[tail] < val){
+                        head++;
+                    }else {
+                        tail--;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    private enum  PhoneNum {
+        NUM1(1,""), NUM2(2, "abc"), NUM3(3, "def"),
+        NUM4(4, "ghi"), NUM5(5, "jkl"), NUM6(6, "mno"),
+        NUM7(7, "pqrs"), NUM8(8, "tuv"), NUM9(9, "wxyz");
+
+        private int num;
+        private String chars;
+
+        PhoneNum(int num, String chars){
+            this.num = num;
+            this.chars = chars;
+        }
+
+        public int getNum() {
+            return num;
+        }
+
+        public void setNum(int num) {
+            this.num = num;
+        }
+
+        public String getChars() {
+            return chars;
+        }
+
+        public void setChars(String chars) {
+            this.chars = chars;
+        }
+    }
+
+
+
+
+
 
 
 
