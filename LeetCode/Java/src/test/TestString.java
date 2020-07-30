@@ -9,6 +9,8 @@ public class TestString {
         String str = "abc";
         System.out.println(str.substring(2));
         String s = str.substring(3);
+
+        String[] arr = "/a//b////c/d//././/.".split("/");
         System.out.println(s);
 
     }

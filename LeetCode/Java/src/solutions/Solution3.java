@@ -2470,26 +2470,486 @@ public class Solution3 {
     }
 
 
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null && q == null){
+            return true;
+        }else if (p != null && q != null){
+            if (p.val != q.val)return false;
+            return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+        }else {
+            return false;
+        }
+    }
+
+    public boolean isSymmetric_v2(TreeNode root) {
+        return isSymmetric_v2_helper(root.left, root.right);
+    }
+    private boolean isSymmetric_v2_helper(TreeNode p, TreeNode q){
+        if (p == null && q == null){
+            return true;
+        }else if (p != null && q != null){
+            if (p.val != q.val)return false;
+            return isSameTree(p.left, q.right) && isSameTree(p.right, q.left);
+        }else {
+            return false;
+        }
+    }
+
+    public boolean isSymmetric_v3(TreeNode root) {
+        if (root == null)return true;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int prelen = 1;
+        while(!queue.isEmpty()){
+            ArrayList<Integer> tmp = new ArrayList<>(prelen);
+            while (prelen > 0){
+                TreeNode node = queue.poll();
+                if (node.left != null){
+                    queue.offer(node.left);
+                    tmp.add(node.left.val);
+                }else {
+                    tmp.add(null);
+                }
+                if (node.right != null){
+                    queue.offer(node.right);
+                    tmp.add(node.right.val);
+                }else {
+                    tmp.add(null);
+                }
+                prelen--;
+            }
+            for (int i = 0, len = tmp.size(); i < len/2; i++) {
+                if (!tmp.get(i).equals(tmp.get(len - 1 - i))){
+                    return false;
+                }
+            }
+            prelen = tmp.size();
+        }
+        return true;
+    }
+
+    public List<List<Integer>> levelOrder_v3(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null)return res;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int prelen = 1, curlen = 0;
+        while(!queue.isEmpty()){
+            ArrayList<Integer> tmp = new ArrayList<>(prelen);
+            while (prelen > 0){
+                TreeNode node = queue.poll();
+                tmp.add(node.val);
+                if (node.left != null){
+                    queue.offer(node.left);
+                    curlen++;
+                }
+                if (node.right != null){
+                    queue.offer(node.right);
+                    curlen++;
+                }
+                prelen--;
+            }
+            res.add(tmp);
+            prelen = curlen;
+            curlen = 0;
+        }
+        return res;
+    }
 
 
+    public List<List<Integer>> zigzagLevelOrder_v2(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        zigzagLevelOrder_v1_helper(root, 0, res);
+        return res;
+    }
+    private void zigzagLevelOrder_v1_helper(TreeNode root, int depth, List<List<Integer>> res){
+        if (root == null){
+            return;
+        }
+        if (depth >= res.size()){
+            res.add(new ArrayList<>());
+        }
+        if ((depth & 1) == 1){
+            res.get(depth).add(root.val);
+        }else {
+            res.get(depth).add(0, root.val);
+        }
+        zigzagLevelOrder_v1_helper(root.left, depth+1, res);
+        zigzagLevelOrder_v1_helper(root.right, depth+1, res);
+    }
+
+    public int maxDepth_v1(TreeNode root) {
+        if (root == null){
+            return 0;
+        }
+        return 1 + Math.max(maxDepth_v1(root.left), maxDepth_v1(root.right));
+    }
+
+    private int pre = 0;
+    public TreeNode buildTree_v3(int[] preorder, int[] inorder) {
+        if (preorder == null || preorder.length == 0 || inorder == null || inorder.length == 0){
+            return null;
+        }
+        return buildTree_v3_helper(preorder, inorder, 0, inorder.length-1);
+    }
+
+    private TreeNode buildTree_v3_helper(int[] preorder, int[] inorder, int in_start, int in_end) {
+        if (pre >= preorder.length || in_start > in_end){
+            return null;
+        }
+        TreeNode root = new TreeNode(preorder[pre]);
+        for (int i = in_start; i <= in_end ; i++) {
+            if (preorder[pre] == inorder[i]){
+                pre++;
+                root.left = buildTree_v3_helper(preorder, inorder, in_start, i-1);
+                root.right = buildTree_v3_helper(preorder, inorder, i+1, in_end);
+                break;
+            }
+        }
+        return root;
+    }
+
+    private int post = 0;
+    public TreeNode buildTree_v4(int[] inorder, int[] postorder) {
+        if (postorder == null || postorder.length == 0 || inorder == null || inorder.length == 0
+                || inorder.length != postorder.length){
+            return null;
+        }
+        post = postorder.length-1;
+        return buildTree_v4_helper(postorder, inorder, 0, inorder.length-1);
+    }
+    private TreeNode buildTree_v4_helper(int[] postorder, int[] inorder, int in_start, int in_end) {
+        if (post < 0 || in_start > in_end){
+            return null;
+        }
+        TreeNode root = new TreeNode(postorder[post]);
+        for (int i = in_start; i <= in_end ; i++) {
+            if (postorder[post] == inorder[i]){
+                post--;
+                root.right = buildTree_v4_helper(postorder, inorder, i+1, in_end);
+                root.left = buildTree_v4_helper(postorder, inorder, in_start, i-1);
+                break;
+            }
+        }
+        return root;
+    }
 
 
+    public TreeNode sortedArrayToBST_v1(int[] nums) {
+        return sortedArrayToBST_v1_helper(nums, 0, nums.length-1);
+    }
+    private TreeNode sortedArrayToBST_v1_helper(int[] nums, int s, int e){
+        if (s > e){
+            return null;
+        }
+        int mid = (s + e) >> 1;
+        TreeNode l = sortedArrayToBST_v1_helper(nums, s, mid-1);
+        TreeNode r = sortedArrayToBST_v1_helper(nums,mid+1, e);
+        TreeNode node = new TreeNode(nums[mid]);
+        node.left = l;
+        node.right = r;
+        return node;
+    }
 
+    public TreeNode sortedListToBST_v1(ListNode head) {
+        if (head == null){
+            return null;
+        }
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode fast = head, slow = dummy;
+        while (fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        fast = slow.next;
+        TreeNode node = new TreeNode(fast.val);
+        slow.next = null;
+        node.left = sortedListToBST_v1(dummy.next);
+        node.right = sortedListToBST_v1(fast.next);
+        return node;
+    }
 
+    public TreeNode sortedListToBST_v2(ListNode head) {
+        if (head == null){
+            return null;
+        }
+        ListNode fast = head.next, slow = head, pre = head;
+        while (fast != null && fast.next != null){
+            pre = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        slow.next = fast;
+        pre.next = null;
+        TreeNode node = new TreeNode(slow.val);
+        node.left = sortedListToBST_v2(head == slow?null:head);
+        node.right = sortedListToBST_v2(slow.next);
+        return node;
+    }
 
+    private boolean isBalanced_v1 = true;
+    public boolean isBalanced_v1(TreeNode root) {
+        isBalanced_v1_helper(root);
+        return isBalanced_v1;
+    }
+    private int isBalanced_v1_helper(TreeNode root){
+        if (root == null){
+            return 0;
+        }
+        int left = isBalanced_v1_helper(root.left);
+        int right = isBalanced_v1_helper(root.right);
+        if (Math.abs(left - right) > 1){
+            isBalanced_v1 = false;
+        }
+        return 1+Math.max(left , right);
+    }
 
+    public int minDepth_v1(TreeNode root) {
+        if (root == null){
+            return 0;
+        }
+        int left = minDepth_v1(root.left);
+        int right = minDepth_v1(root.right);
+        if (left == 0){
+            return 1 + right;
+        }
+        if (right == 0){
+            return 1 + left;
+        }
+        return 1+Math.min(left, right);
+    }
 
+    public boolean hasPathSum_v1(TreeNode root, int sum) {
+        if (root == null || sum < 0)return false;
+        if (root.left == null && root.right == null && sum - root.val == 0){
+            return true;
+        }
+        return hasPathSum_v1(root.left, sum - root.val) || hasPathSum_v1(root.right, sum - root.val);
+    }
 
+    public List<List<Integer>> pathSum_v1(TreeNode root, int sum) {
+        List<List<Integer>> res = new ArrayList<>();
+        pathSum_v1_helper(res, new ArrayList<>(), sum, root);
+        return res;
+    }
+    private void pathSum_v1_helper(List<List<Integer>> res, List<Integer> tmp, int sum, TreeNode root){
+        if (root == null)return;
+        tmp.add(root.val);
+        if (root.left == null && root.right == null && sum - root.val == 0){
+            res.add(new ArrayList<>(tmp));
+        }
+        pathSum_v1_helper(res, tmp, sum - root.val, root.left);
+        pathSum_v1_helper(res, tmp, sum - root.val, root.right);
+        tmp.remove(tmp.size()-1);
+    }
 
+    public void flatten_v2(TreeNode root) {
+        if (root == null)return;
+        flatten_v2(root.left);
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        root.left = null;
+        root.right = left;
+        left = root;
+        while(left.right != null){
+            left = left.right;
+        }
+        left.right = right;
+        flatten_v2(right);
+    }
 
+    public int numDistinct_v2(String s, String t) {
+        return numDistinct_v2_helper(s, t, 0,0);
+    }
+    private int numDistinct_v2_helper(String s, String t, int index, int len){
+        if (len == t.length()){
+            return 1;
+        }
+        int res = 0;
+        for (int i = index; i < s.length(); i++) {
+            if (s.charAt(i) == t.charAt(len)){
+                res += numDistinct_v2_helper(s, t, i+1, len+1);
+            }
+        }
+        return res;
+    }
 
+    public int numDistinct_v3(String s, String t) {
+        int[][] dp = new int[t.length()+1][s.length()+1];
+        Arrays.fill(dp[0],1);
+        for (int i = 1; i < dp.length; i++) {
+            for (int j = 1; j < dp[0].length; j++) {
+                if (t.charAt(i-1) == s.charAt(j-1)){
+                    dp[i][j] += dp[i-1][j];
+                }
+                dp[i][j] += dp[i][j-1];
+            }
+        }
+        return dp[t.length()][s.length()];
+    }
 
+    public Node connect_v2(Node root) {
+        List<List<Node>> tmp = new ArrayList<>();
+        connect_v2_helper(tmp, root,0);
+        return root;
+    }
+    private void connect_v2_helper(List<List<Node>> tmp, Node root, int depth){
+        if (root == null){
+            return;
+        }
+        if (tmp.size() <= depth){
+            tmp.add(new ArrayList<>());
+        }
+        if (!tmp.get(depth).isEmpty()){
+            tmp.get(depth).get(tmp.get(depth).size()-1).next = root;
+        }
+        tmp.get(depth).add(root);
+        connect_v2_helper(tmp, root.left, depth+1);
+        connect_v2_helper(tmp, root.right, depth+1);
+    }
 
+    public Node connect_v5(Node root) {
+        if (root == null){
+            return null;
+        }
+        if (root.left != null){
+            if (root.right != null){
+                root.left.next = root.right;
+            }else if (root.next != null){
+                if (root.next.left != null){
+                    root.left.next = root.next.left;
+                }else {
+                    root.left.next = root.next.right;
+                }
+            }
+        }
+        if (root.right != null){
+            if (root.next != null){
+                if (root.next.left != null){
+                    root.right.next = root.next.left;
+                }else {
+                    root.right.next = root.next.right;
+                }
+            }
+        }
+        connect_v5(root.left);
+        connect_v5(root.right);
+        return root;
+    }
 
+    public Node connect_v6(Node root) {
+        if (root == null){
+            return null;
+        }
+        Node cur, post = root;
+        if (root.left != null) {
+            if (root.right != null){
+                root.left.next = root.right;
+                cur = root.right;
+            }else {
+                cur = root.left;
+            }
+        }else {
+            cur = root.right;
+        }
+        while(cur != null && post.next != null){
+            if (post.next.left != null){
+                cur.next = post.next.left;
+                break;
+            }else if (post.next.right != null){
+                cur.next = post.next.right;
+                break;
+            }
+            post = post.next;
+        }
+        connect_v5(root.left);
+        connect_v5(root.right);
+        return root;
+    }
 
+    public Node connect_v7(Node root) {
+        Node first = root, cur = root;
+        while(first != null){
+            cur = first;
+            first = null;
+            while (cur != null){
+                if (cur.left != null){
+                    if (first == null){
+                        first = cur.left;
+                    }
+                    if (cur.right != null){
+                        cur.left.next = cur.right;
+                        cur = connect_v7_helper(cur.right, cur);
+                    }else {
+                       cur = connect_v7_helper(cur.left, cur);
+                    }
+                } else if (cur.right != null){
+                    if (first == null){
+                        first = cur.right;
+                    }
+                    cur = connect_v7_helper(cur.right, cur);
+                }
+                cur = cur.next;
+            }
+        }
+        return root;
+    }
+    private Node connect_v7_helper(Node pre, Node cur){
+        while(cur.next != null){
+            if (cur.next.left != null){
+                pre.next = cur.next.left;
+                break;
+            }
+            if (cur.next.right != null){
+                pre.next = cur.next.right;
+                break;
+            }
+            cur = cur.next;
+        }
+        return cur;
+    }
 
+    public Node connect_v8(Node root) {
+        Node cur, head = root, child;
+        while(head != null){
+            cur = head;
+            head = null;
+            child = null;
+            while(cur != null){
+                if (cur.left != null){
+                    if (head == null) head = cur.left;
+                    if (child != null){
+                        child.next = cur.left;
+                    }
+                    child = cur.left;
+                }
+                if (cur.right != null){
+                    if (head == null) head = cur.right;
+                    if (child != null){
+                        child.next = cur.right;
+                    }
+                    child = cur.right;
+                }
+                cur = cur.next;
+            }
+        }
+        return root;
+    }
 
+    public List<List<Integer>> generate_v1(int numRows) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (numRows < 1)return res;
+        res.add(new ArrayList<Integer>(){{add(1);}});
+        for (int i = 1; i < numRows; i++) {
+            List<Integer> tmp = new ArrayList<>(), pre = res.get(i-1);
+            for (int j = 0, len = pre.size(); j < len; j++) {
+                tmp.add((i > 0 ? pre.get(i-1):0) + pre.get(i));
+            }
 
+        }
+        return res;
+    }
 
 
 
