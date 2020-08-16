@@ -2,6 +2,8 @@ package main;
 
 import solutions.*;
 import utility.ListNode;
+import utility.Node;
+import utility.TreeNode;
 
 /**
  * @program: LeetCode
@@ -13,7 +15,7 @@ import utility.ListNode;
 public class MainAPP {
     public static void main(String[] args) {
 //        MainAPP main = new MainAPP();
-//        Interview itv = new Interview();
+        Important ip = new Important();
         Solution1 s1 = new Solution1();
         Solution2 s2 = new Solution2();
         Solution3 s3 = new Solution3();
@@ -221,28 +223,36 @@ public class MainAPP {
 //        s1.removeDuplicates_v1(new int[]{0,0,1,1,1,2,2,3,3,4});
 //        s1.divide_v1(Integer.MIN_VALUE, -3);
 //        s1.divide_v1(10, 3);
-
 //        s1.searchRange_V1(new int[]{5,7,7,8,8,10}, 6);
 
-        /*char[][] chars =
-                {{'5','3','.','.','7','.','.','.','.'},
-                 {'6','.','.','1','9','5','.','.','.'},
-                 {'.','9','8','.','.','.','.','6','.'},
-                 {'8','.','.','.','6','.','.','.','3'},
-                 {'4','.','.','8','.','3','.','.','1'},
-                 {'7','.','.','.','2','.','.','.','6'},
-                 {'.','6','.','.','.','.','2','8','.'},
-                 {'.','.','.','4','1','9','.','.','5'},
-                 {'.','.','.','.','8','.','.','7','9'}};
+//            s2.uniquePaths_v3(10,10);
+//            s2.search_v2(new int[]{3,1}, 1);
+//            s2.numDecodings_v2("24512");
+//        s2.restoreIpAddresses("0000");
+//        TreeNode t1 = new TreeNode(1);
+//        TreeNode t2 = new TreeNode(2);
+//        TreeNode t3 = new TreeNode(3);
+//        TreeNode t4 = new TreeNode(4);
+//        TreeNode t5 = new TreeNode(5);
+//        TreeNode t6 = new TreeNode(6);
+//        t1.left = t2;
+//        t1.right = t3;
+//        t2.left = t4;
+//        t2.right = t5;
+//        t3.left = t6;
+//        s2.inorderTraversal_v1(t1);
+//        int[] nums = {2,3,1,6,0};
+//        ip.test(nums,0, nums.length-1);
+//        for (int n : nums) {
+//            System.out.print(n+"\t");
+//        }
+//        ListNode l1 = new ListNode(-10);
+//        ListNode l2 = new ListNode(-3);l1.next = l2;
+//        ListNode l3 = new ListNode(0);l2.next = l3;
+//        ListNode l4 = new ListNode(5);l3.next = l4;
+//        ListNode l5 = new ListNode(9);l4.next = l5;
+//        s3.sortedListToBST_v2(l1);
 
-        s1.solveSudoku(chars);*/
-//        s1.firstMissingPositive_v3(new int[]{3,4,-1,1});
-//        s1.trap_V1(new int[]{0,1,0,2,1,0,1,3,2,1,2,1});
-//        s1.trap_V3(new int[]{4,2,3});
-//        s1.multiply_v2("2", "3");
-//        s1.permuteUnique_v1(new int[]{1,1,2,2});
-//        s1.groupAnagrams_v1(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"});
-        s2.myPow(2.0, Integer.MIN_VALUE);
 
     }
 

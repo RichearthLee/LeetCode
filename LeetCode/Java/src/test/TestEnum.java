@@ -4,7 +4,10 @@ public class TestEnum {
 
     public static void main(String[] args) {
         Color c = Color.BLANK;
-        c.getName();
+        for (Color color :
+                Color.values()) {
+            System.out.println(color.name());
+        }
     }
 
     public enum Color {
@@ -20,24 +23,11 @@ public class TestEnum {
         // 普通方法
         public static String getName(int index) {
             for (Color c : Color.values()) {
-                if (c.getIndex() == index) {
+                if (c.index == index) {
                     return c.name;
                 }
             }
             return null;
-        }
-        // get set 方法
-        public String getName() {
-            return name;
-        }
-        public void setName(String name) {
-            this.name = name;
-        }
-        public int getIndex() {
-            return index;
-        }
-        public void setIndex(int index) {
-            this.index = index;
         }
     }
 }

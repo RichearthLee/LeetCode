@@ -1,5 +1,6 @@
 package solutions;
 
+import com.sun.scenario.animation.shared.ClipEnvelope;
 import utility.ListNode;
 import utility.TreeNode;
 
@@ -1883,6 +1884,1079 @@ public class Solution2 {
         }
         return res;
     }
+
+    public int lengthOfLastWord_v2(String s) {
+        s = s.trim();
+        for (int i = s.length()-1; i >= 0; i--) {
+            if (s.charAt(i) == ' '){
+                return s.length() - i - 1;
+            }
+        }
+        return s.length();
+    }
+
+    public int[][] generateMatrix_v1(int n) {
+        int[][] matrix = new int[n][n];
+        int left = 0, right = n-1, top = 0, bottom = n-1;
+        for (int i = 0, j = 0, num = 1;  ; ) {
+            while(j <= right) matrix[i][j++] = num++;
+            if (++top > bottom)break;
+            j--; i++;
+            while(i <= bottom) matrix[i++][j] = num++;
+            if (left > --right)break;
+            i--;j--;
+            while(j >= left) matrix[i][j--] = num++;
+            if (top > --bottom)break;
+            j++;i--;
+            while(i >= top) matrix[i--][j] = num++;
+            if (++left > right)break;
+            i++;j++;
+        }
+        return matrix;
+    }
+
+    public int[][] generateMatrix_v2(int n) {
+        int[][] matrix = new int[n][n];
+        int left = 0, right = n-1, top = 0, bottom = n-1, num = 1;
+        while(num <= n*n){
+            for (int i = left; i <= right; i++) {
+                matrix[top][i] = num++;
+            }
+            top++;
+            for (int i = top; i <= bottom; i++) {
+                matrix[i][right] = num++;
+            }
+            right--;
+            for (int i = right; i >= left; i--) {
+                matrix[bottom][i] = num++;
+            }
+            bottom--;
+            for (int i = bottom; i >= top; i--) {
+                matrix[i][left] = num++;
+            }
+            left++;
+        }
+        return matrix;
+    }
+
+    public String getPermutation_v2(int n, int k) {
+        List<String> res = new ArrayList<>();
+        getAllPermutation(n, new int[n], res, new StringBuilder());
+        return res.get(k-1);
+    }
+
+    private void getAllPermutation(int n, int[] used, List<String> res, StringBuilder sb){
+        if (sb.length() == n){
+            res.add(sb.toString());
+            return;
+        }
+        for (int i = 1; i <= n; i++) {
+            if (used[i-1] != 1){
+                sb.append(i);
+                used[i-1] = 1;
+                getAllPermutation(n, used, res, sb);
+                used[i-1] = 0;
+                sb.deleteCharAt(sb.length()-1);
+            }
+        }
+    }
+
+    public String getPermutation_v3(int n, int k) {
+        ArrayList<Integer> st = new ArrayList<>();
+        for (int i = 1; i <= n; i++) {
+            st.add(i);
+        }
+        StringBuilder sb = new StringBuilder();
+        setNumber(n, k, sb, st);
+        return sb.toString();
+    }
+
+    private void setNumber(int n, int k, StringBuilder sb, ArrayList<Integer> arrayList){
+        if (n == 0)return;
+        int count = 1;
+        for (int i = 1; i < n ; i++) {
+            count *= i;
+        }
+        int index = k/count;
+        int remainder = k%count;
+        if (remainder > 0){
+            index++;
+        }
+        sb.append(arrayList.get(index));
+        arrayList.remove(index);
+        setNumber(n-1, remainder == 0 ? count : remainder, sb, arrayList);
+    }
+
+    public ListNode rotateRight_v1(ListNode head, int k) {
+        if (head == null)return head;
+        ListNode tail = head, cur = head;
+        int len = 1;
+        for (; tail.next != null ; tail = tail.next) {
+            len++;
+        }
+        k = k % len;
+        if(k == 0)return head;
+        for (int i = 0;i < len - k ; i++) {
+            head = head.next;
+            tail.next = cur;
+            cur.next = null;
+            tail = tail.next;
+            cur = head;
+        }
+        return head;
+    }
+
+    public ListNode rotateRight_v2(ListNode head, int k) {
+        if (head == null)return head;
+        ListNode tail = head, cur = head;
+        int len = 1;
+        for (; tail.next != null ; tail = tail.next) {
+            len++;
+        }
+        k = k % len;
+        if(k == 0)return head;
+        for (int i = 0; i < len-k-1; i++) {
+            cur = cur.next;
+        }
+        tail.next = head;
+        head = cur.next;
+        cur.next = null;
+        return head;
+    }
+
+    public int uniquePaths(int m, int n) {
+        if (m <= 0 || n <= 0)return 0;
+        int[][] res = new int[m+1][n+1];
+        res[1][1] = 1;
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                res[i][j] += res[i-1][j] + res[i][j-1];
+            }
+        }
+        return res[m][n];
+    }
+
+    public int uniquePaths_v1(int m, int n) {
+        if (m <= 0 || n <= 0)return 0;
+        int[] cur = new int[n+1], pre = new int[n+1];
+        Arrays.fill(pre, 1);
+        pre[0] = 0;
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j <= n; j++) {
+                cur[j] = cur[j-1] + pre[j];
+            }
+            int[] tmp = cur;
+            cur = pre;
+            pre = tmp;
+        }
+        return cur[n];
+    }
+
+    public int uniquePaths_v2(int m, int n) {
+        if (m <= 0 || n <= 0)return 0;
+        int[] cur = new int[n+1];
+        Arrays.fill(cur, 1);
+        cur[0] = 0;
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j <= n; j++) {
+                cur[j] += cur[j-1];
+            }
+        }
+        return cur[n];
+    }
+
+    public int uniquePaths_v3(int m, int n) {
+        if (m <= 0 || n <= 0)return 0;
+        double divisor = 1, dividend = 1;
+        for (int i = 1; i <= n-1; i++) {
+            divisor *= i;
+        }
+        for (int i = m-1; i <= m+n-2; i++) {
+            dividend *= i;
+        }
+        return (int) (dividend/divisor);
+    }
+
+    public int uniquePathsWithObstacles_v1(int[][] obstacleGrid) {
+        if (obstacleGrid.length == 0
+                || obstacleGrid[0].length == 0
+                || obstacleGrid[0][0] == 1
+                || obstacleGrid[obstacleGrid.length-1][obstacleGrid[0].length-1] == 1)return 0;
+        int row = obstacleGrid.length, col = obstacleGrid[0].length;
+        int[][] res = new int[row][col];
+        if (obstacleGrid[0][0] != 1)res[0][0] = 1;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (obstacleGrid[i][j] == 1)continue;
+                int m = i-1 < 0 || obstacleGrid[i-1][j] == 1?0 : res[i-1][j];
+                int n = j-1 < 0 || obstacleGrid[i][j-1] == 1?0 : res[i][j-1];
+                res[i][j] += m+n;
+            }
+        }
+        return res[row-1][col-1];
+    }
+
+    public int uniquePathsWithObstacles_v2(int[][] obstacleGrid) {
+        if (obstacleGrid == null || obstacleGrid.length == 0
+                || obstacleGrid[0].length == 0
+                || obstacleGrid[0][0] == 1
+                || obstacleGrid[obstacleGrid.length-1][obstacleGrid[0].length-1] == 1)return 0;
+        int row = obstacleGrid.length, col = obstacleGrid[0].length;
+        int[] res = new int[col];
+        res[0] = 1;
+        for (int[] ints : obstacleGrid) {
+            for (int j = 0; j < col; j++) {
+                res[j] = ints[j] == 1 ? 0 : ((j > 0 ? res[j - 1] : 0) + res[j]);
+            }
+        }
+        return res[col-1];
+    }
+
+    public int minPathSum_v1(int[][] grid) {
+        if (grid == null || grid.length == 0)return 0;
+        int row = grid.length, col = grid[0].length;
+        for (int i = 1; i < row; i++) {
+            grid[i][0] += grid[i-1][0];
+        }
+        for (int i = 1; i < col; i++) {
+            grid[0][i] += grid[0][i-1];
+        }
+        for (int i = 1; i < row; i++) {
+            for (int j = 1; j < col; j++) {
+                grid[i][j] += Math.min(grid[i-1][j], grid[i][j-1]);
+            }
+        }
+        return grid[row-1][col-1];
+    }
+
+    public int[] plusOne_v1(int[] digits) {
+        if (digits == null || digits.length == 0)return digits;
+        for (int i = digits.length-1, carry = 1; i >= 0; i--) {
+            int tmp = digits[i] + carry;
+            carry = tmp / 10;
+            digits[i] = tmp % 10;
+            if (carry == 0)return digits;
+        }
+        int[] arr = new int[digits.length+1];
+        arr[0] = 1;
+        //System.arraycopy(digits, 0, arr, 1, digits.length);
+        return arr;
+    }
+
+    public String addBinary_v1(String a, String b) {
+        if (a == null || a.length() == 0)return b;
+        if (b == null || b.length() == 0)return a;
+        StringBuilder sb = new StringBuilder(a.length() + b.length());
+        int carry = 0;
+        for (int i = a.length()-1, j = b.length()-1; i >= 0 || j>= 0 ; i--, j--) {
+            int n = (i < 0? 0 : a.charAt(i)-'0') + (j < 0 ? 0 :b.charAt(j)-'0') + carry;
+            carry = n >> 1;
+            sb.append(n & 1);
+        }
+        if (carry == 1)sb.append(1);
+        for (int i = sb.length()-1; i >= 0; i--) {
+            if (sb.charAt(i) == '1' || i == 0)break;
+            sb.deleteCharAt(i);
+        }
+        return sb.reverse().toString();
+    }
+
+    public int mySqrt_v1(int x) {
+        int l = 0, r = x, res = -1;
+        while(l <= r){
+            int mid = l + (r - l) / 2;
+            if ((long)mid*mid <= x){
+                res = mid;
+                l = mid+1;
+            }else {
+                r = mid -1;
+            }
+        }
+        return res;
+    }
+
+    public int mySqrt_v2(int x) {    //Xi+1 = (Xi + C/Xi)/2;
+        double res = x, pre = x;
+        while(res*res > x){
+            res = (res + x/res)/2;
+            if (Math.abs(pre - res) < 1e-7){
+                break;
+            }
+            pre = res;
+        }
+        return (int)res;
+    }
+
+    public int climbStairs_v1(int n) {
+        if (n <= 0)return 0;
+        int res = 1, pre = 1;
+        for (int i = 0; i < n; i++) {
+            int tmp = res;
+            res = res + pre;
+            pre = tmp;
+        }
+        return res;
+    }
+
+
+    public String simplifyPath(String path) {
+        if (path == null || path.equals(""))return path;
+        String[] arr = path.split("/");
+        StringBuilder sb = new StringBuilder(path.length());
+        for (String s : arr) {
+            if (!s.equals("")){
+                if (s.equals("..")){
+                     if (sb.length() > 0) sb.delete(sb.lastIndexOf("/"), sb.length());
+                }else if (!s.equals(".")){
+                    sb.append('/');
+                    sb.append(s);
+                }
+            }
+        }
+        if (sb.length() == 0)sb.append('/');
+        return sb.toString();
+    }
+
+
+    public String simplifyPath_v2(String path) {
+        if (path == null || path.equals(""))return path;
+        Stack<String> st = new Stack<>();
+        String[] list = path.split("/");
+        for (String s : list) {
+            if ("..".equals(s)){
+                if (!st.empty())st.pop();
+            }else if (!"".equals(s) && !".".equals(s)){
+                st.push(s);
+            }
+        }
+        if (st.empty())return "/";
+        StringBuilder sb = new StringBuilder(path.length());
+        for (String s : st) {
+            sb.append('/');
+            sb.append(s);
+        }
+        return sb.toString();
+    }
+
+    public void setZeroes_v2(int[][] matrix) {
+        if (matrix.length == 0)return;
+        int []col = new int[matrix[0].length];
+        int []row = new int[matrix.length];
+        for (int i = 0; i < row.length; i++) {
+            for (int j = 0; j < col.length; j++) {
+                if (matrix[i][j] == 0){
+                    col[j] = 1;
+                    row[i] = 1;
+                }
+            }
+        }
+        for (int i = 0; i < row.length; i++) {
+            for (int j = 0; j < col.length; j++) {
+                if (row[i] == 1 || col[j] == 1){
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+    }
+
+    public void setZeroes_v3(int[][] matrix) {
+        if (matrix.length == 0)return;
+        boolean col = false;
+        for (int i = 0; i < matrix.length; i++) {
+            if (matrix[i][0] == 0) col = true;
+            for (int j = 1; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0){
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+        for (int i = 1; i < matrix.length; i++) {
+            for (int j = 1; j < matrix[0].length; j++) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0){
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        if (matrix[0][0] == 0){
+            Arrays.fill(matrix[0], 0);
+        }
+        if (col){
+            for (int i = 0; i < matrix.length; i++) {
+                matrix[i][0] = 0;
+            }
+        }
+    }
+
+    public void setZeroes_v4(int[][] matrix) {
+        if (matrix.length == 0)return;
+        boolean col = false;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0){
+                    if (j == 0)col = true;
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+        for (int i = 1; i < matrix.length; i++) {
+            for (int j = 1; j < matrix[0].length; j++) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0){
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        if (matrix[0][0] == 0){
+            if (col){
+                Arrays.fill(matrix[0], 0);
+            }else {
+                for (int i = 0; i < matrix.length; i++) {
+                    matrix[i][0] = 0;
+                }
+            }
+        }
+    }
+
+    public boolean searchMatrix_v2(int[][] matrix, int target) {
+        if (matrix == null || matrix.length == 0)return false;
+        int row = matrix.length, col = matrix[0].length;
+        int left = 0, right = row * col - 1;
+        while (left <= right){
+            int mid = (left + right)/2; //left + (right - left)/2
+            int i = mid / col, j = mid % col;
+            if (matrix[i][j] > target){
+                right = mid-1;
+            }else if (matrix[i][j] < target){
+                left = mid+1;
+            }else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void sortColors_v2(int[] nums) {
+        if (nums == null || nums.length == 0)return;
+        int _1 = 0, _2 = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0){
+                if (i >= _1){
+                    nums[i] = nums[_1];
+                    nums[_1] = 0;
+                    _1++;
+                }
+                if (_2 < _1)_2 = _1;
+            }
+            if (nums[i] == 1 && i >= _2){
+                nums[i] = nums[_2];
+                nums[_2] = 1;
+                _2++;
+            }
+        }
+    }
+
+    public void sortColors_v3(int[] nums) {
+        if (nums == null || nums.length == 0)return;
+        int l = 0, r = nums.length-1;
+        for (int i = 0; i <= r;) {
+            if (nums[i] == 2){
+                nums[i] = nums[r];
+                nums[r] = 2;
+                r--;
+            }else if (nums[i] == 0){
+                nums[i++] = nums[l];
+                nums[l] = 0;
+                l++;
+            }else {
+                i++;
+            }
+        }
+    }
+
+
+    public List<List<Integer>> combine_v1(int n, int k) {
+        List<List<Integer>> res = new ArrayList<>();
+        combine_helper_v1(n, k, res, new ArrayList<>());
+        return res;
+    }
+    public void combine_helper_v1(int n, int k, List<List<Integer>> res, List<Integer> tmp) {
+        if (k == 0){
+            res.add(new ArrayList<>(tmp));
+            return;
+        }
+        for (int i = n; i > 0; i--) {
+            tmp.add(i);
+            combine_helper_v1(i-1, k-1, res, tmp);
+            tmp.remove(tmp.size()-1);
+        }
+    }
+
+    public List<List<Integer>> subsets_v1(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i = 0; i <= nums.length; i++) {
+            subsets_v1_helper(nums, 0, i, res, new ArrayList<>());
+        }
+        return res;
+    }
+    public void subsets_v1_helper(int[] nums, int index, int k,List<List<Integer>> res, List<Integer> tmp) {
+        if (k == 0){
+            res.add(new ArrayList<>(tmp));
+            return;
+        }
+        for (int i = index; i < nums.length; i++) {
+            tmp.add(nums[i]);
+            subsets_v1_helper(nums, i+1, k-1, res, tmp);
+            tmp.remove(tmp.size()-1);
+        }
+    }
+
+    public boolean exist_v2(char[][] board, String word) {
+        if (board == null || board.length == 0 || word == null|| word.length() == 0) {
+            return false;
+        }
+        char[] arr = word.toCharArray();
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j] == arr[0] && exist_v2_helper(board, arr, 1, i, j)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean exist_v2_helper(char[][] board, char[] word, int index, int i, int j){
+        if (index == word.length){
+            return true;
+        }
+        if (j < board[0].length-1 && board[i][j+1] == word[index]){
+            char c = board[i][j];
+            board[i][j] = 0;
+            if (exist_v2_helper(board, word, index+1, i, j+1)){
+                return true;
+            }
+            board[i][j] = c;
+        }
+        if (j > 0 && board[i][j-1] == word[index]){
+            char c = board[i][j];
+            board[i][j] = 0;
+            if (exist_v2_helper(board, word, index+1, i, j-1)){
+                return true;
+            }
+            board[i][j] = c;
+        }
+        if (i < board.length-1 && board[i+1][j] == word[index]){
+            char c = board[i][j];
+            board[i][j] = 0;
+            if (exist_v2_helper(board, word, index+1, i+1, j)){
+                return true;
+            }
+            board[i][j] = c;
+        }
+        if (i > 0 && board[i-1][j] == word[index]){
+            char c = board[i][j];
+            board[i][j] = 0;
+            if (exist_v2_helper(board, word, index+1, i-1, j)){
+                return true;
+            }
+            board[i][j] = c;
+        }
+        return false;
+    }
+
+    public int removeDuplicates_v2(int[] nums) {
+        if (nums == null || nums.length == 0)return 0;
+        int tail = nums.length;
+        for (int i = 1, count = 1; i < tail; i++) {
+            if (nums[i] == nums[i-1]){
+                count++;
+            }else {
+                count = 1;
+            }
+            if (count > 2){
+                for (int j = i+1; j < tail; j++) {
+                    int tmp = nums[j];
+                    nums[j] = nums[j-1];
+                    nums[j-1] = tmp;
+                }
+                tail--;
+                i--;
+            }
+        }
+        return tail;
+    }
+
+    public int removeDuplicates_v3(int[] nums) {
+        if (nums == null || nums.length == 0)return 0;
+        int tail = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i < 2 || nums[i] > nums[i-2]){
+                nums[tail++] = nums[i];
+            }
+        }
+        return tail;
+    }
+
+    public boolean search_v2(int[] nums, int target) {
+        int left = 0, right = nums.length-1;
+        while (left <= right){
+            int mid = (left + right)>>1;  // lefe + (right - left)/2
+            if (nums[mid] == target) {
+                return true;
+            }
+            if (nums[mid] == nums[left] && nums[mid] == nums[right]){
+                left++;
+                right--;
+            } else if (nums[mid] >= nums[left]){
+                if (target < nums[mid] && target >= nums[left]){
+                    right = mid -1;
+                }else {
+                    left = mid + 1;
+                }
+            }else{
+                if (target > nums[mid] && target <= nums[right]){
+                    left = mid + 1;
+                }else {
+                    right = mid - 1;;
+                }
+            }
+        }
+        return false;
+    }
+
+    public ListNode deleteDuplicates_v1(ListNode head) {
+        for (ListNode cur = head; cur!= null && cur.next != null ;) {
+            if (cur.val == cur.next.val){
+                cur.next = cur.next.next;
+            }else {
+                cur = cur.next;
+            }
+        }
+        return head;
+    }
+
+    public ListNode deleteDuplicates_v2(ListNode head) {
+        if (head == null)return head;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode pre = dummy, cur = head;
+        boolean f = false;
+        while(cur != null){
+            while(cur.next != null && cur.val == cur.next.val){
+                cur = cur.next;
+                f = true;
+            }
+            cur = cur.next;
+            if (f) {
+                pre.next = cur;
+            }else {
+                pre = pre.next;
+            }
+            f = false;
+        }
+        return dummy.next;
+    }
+
+    public ListNode partition_v2(ListNode head, int x) {
+        if (head == null)return null;
+        ListNode dummy = new ListNode(0), part = dummy, cur;
+        dummy.next = head;
+        while(part.next != null && part.next.val < x){
+            part = part.next;
+        }
+        cur = part;
+        while (cur != null && cur.next != null){
+            if (cur.next.val < x){
+                ListNode tmp = cur.next;
+                cur.next = tmp.next;
+                tmp.next = part.next;
+                part.next = tmp;
+                part = part.next;
+                cur = cur.next;
+            }else {
+                cur = cur.next;
+            }
+        }
+        return dummy.next;
+    }
+
+
+    public void merge_v2(int[] nums1, int m, int[] nums2, int n) {
+        if (n == 0)return;
+        System.arraycopy(nums1, 0, nums1, n, m);
+        for (int i = n, j = 0, cur = 0; i < m + n || j < n; cur++) {
+            if (i < m + n && nums1[i] <= nums2[j]){
+                nums1[cur] = nums1[i++];
+            }else {
+                nums1[cur] = nums2[j++];
+            }
+        }
+    }
+
+    public void merge_v3(int[] nums1, int m, int[] nums2, int n) {
+        if (n == 0)return;
+        int i = m-1, j = n-1;
+        while (i >= 0 && j >= 0){
+            if (nums1[i] <= nums2[j]){
+                nums1[i+j+1] = nums1[i++];
+            }else {
+                nums1[i+j+1] = nums2[j++];
+            }
+        }
+        while (j != 0){
+            nums1[j] = nums2[j--];
+        }
+    }
+
+    public List<Integer> grayCode_v2(int n) {
+        List<Integer> res = new ArrayList<Integer>(){{add(0);}};
+        for (int i = 0; i < n; i++) {
+            for (int m = res.size(), j = m - 1 ; j >= 0 ; j--) {
+                res.add(m + res.get(j));
+            }
+        }
+        return res;
+    }
+
+    public int numDecodings_v2(String s) {
+        if (s == null || s.length() == 0)return 0;
+        int cur = 1, pre = 1;
+        if (s.charAt(0) == '0')return 0;
+        for (int i = 1, len = s.length(), prec = s.charAt(0), c; i < len; i++) {
+            c = s.charAt(i);
+            if (c == '0' && (prec > '2' || prec =='0')){
+                return 0;
+            }
+            if ((prec == '1' || prec == '2' && c <= '6')
+                    && c > '0' && (i == len-1 ||i < len -1 && s.charAt(i+1) != '0')){
+                int tmp = cur;
+                cur = cur + pre;
+                pre = tmp;
+            }else {
+                pre = cur;
+            }
+            prec = c;
+        }
+        return cur;
+    }
+
+    public int numDecodings_v3(String s) {
+        if (s == null || s.length() == 0)return 0;
+        int cur = 1, pre = 1;
+        if (s.charAt(0) == '0')return 0;
+        for (int i = 1, len = s.length(), prechar = s.charAt(0), curchar; i < len; i++) {
+            curchar = s.charAt(i);
+            int tmp = 0;
+            if (curchar == '0' && (prechar > '2' || prechar =='0')){
+                return 0;
+            }
+            if (curchar >= '1' && curchar <= '9'){
+                tmp += cur;
+            }
+            if (prechar == '1' || prechar == '2' && curchar <= '6'){
+                tmp += pre;
+            }
+            pre = cur;
+            cur = tmp;
+            prechar = curchar;
+        }
+        return cur;
+    }
+
+
+    public ListNode reverseBetween_v1(ListNode head, int m, int n) {
+        if (head == null)return null;
+        ListNode dummy = new ListNode(0), dummy1 = new ListNode(0);
+        dummy.next = head;
+        ListNode pre = dummy, cur;
+        for (int i = 0; i < m-1; i++) {
+            pre = pre.next;
+        }
+        cur = pre.next; head = cur;
+        for (int i = m; i <= n; i++) {
+            ListNode tmp = cur.next;
+            cur.next = dummy1.next;
+            dummy1.next = cur;
+            cur = tmp;
+        }
+        pre.next = dummy1.next;
+        head.next = cur;
+        return dummy.next;
+    }
+
+    public ListNode reverseBetween_v2(ListNode head, int m, int n) {
+        if (head == null)return null;
+        ListNode dummy = new ListNode(0), tail;
+        dummy.next = head;
+        ListNode pre = dummy, cur;
+        for (int i = 0; i < m-1; i++) {
+            pre = pre.next;
+        }
+        cur = pre.next; head = cur.next; tail = cur;
+        for (int i = m; i < n; i++) {
+            ListNode tmp = head.next;
+            head.next = cur;
+            cur = head;
+            head = tmp;
+        }
+        pre.next = cur;
+        tail.next = head;
+        return dummy.next;
+    }
+
+    public List<String> restoreIpAddresses(String s) {
+        List<String> res = new ArrayList<>();
+        if (s == null || s.length() == 0 || s.length() > 12)return res;
+        int len = s.length();
+        for (int i = 1; i <= 3 && i < len - 2; i++) {
+            if (len - i > 9)continue;
+            String s1 = s.substring(0, i);
+            if (!restoreIpAddresses_isValid(s1)){
+                continue;
+            }
+            for (int j = i+1; j <= i+3 && j < len - 1; j++) {
+                if (len - j > 6)continue;
+                String s2 = s.substring(i, j);
+                if (!restoreIpAddresses_isValid(s2)){
+                    continue;
+                }
+                for (int k = j+1; k <= j+3 && k < len; k++) {
+                    if(len - k > 3)continue;
+                    String s3 = s.substring(j, k), s4 =s.substring(k);
+                    if (restoreIpAddresses_isValid(s3, s4)){
+                        res.add(s1+"."+s2+"."+s3+"."+s4);
+                    }
+                }
+            }
+        }
+        return res;
+    }
+    private boolean restoreIpAddresses_isValid(String ... arg){
+        for (String s: arg) {
+            if(s.length() <= 0 || s.length() > 3 || (s.charAt(0) == '0' && s.length() > 1)|| Integer.parseInt(s) > 255){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    public List<String> restoreIpAddresses_v1(String s) {
+        List<String> res = new ArrayList<>();
+        if (s == null || s.length() == 0 || s.length() > 12 || s.length() < 4)return res;
+        List<String> tmp = new ArrayList<>(0);
+
+        return res;
+    }
+    private void restoreIpAddresses_v1_hepler(int index, String s, List<String> res, List<String> tmp){
+        if (index == s.length() && tmp.size() == 4){
+            res.add(String.join(".", tmp));
+            return;
+        }
+        for (int i = index, len = s.length(); i < index + 4 && i < len ; i++) {
+            if (i > len - 3 + tmp.size()){
+                break;
+            }
+            if (len - i > (3 - tmp.size())*3){
+                continue;
+            }
+            String s1 = s.substring(index, i);
+            if (restoreIpAddresses_isValid(s1)){
+                tmp.add(s1);
+                restoreIpAddresses_v1_hepler(index+1, s, res, tmp);
+                tmp.remove(tmp.size()-1);
+            }
+        }
+    }
+
+
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        inorderTraversal_hepler(root, res);
+        return res;
+    }
+    private void inorderTraversal_hepler(TreeNode root, List<Integer> res){
+        if (root == null){
+            return;
+        }
+        inorderTraversal_hepler(root.left, res);
+        res.add(root.val);
+        inorderTraversal_hepler(root.right, res);
+    }
+
+    public List<Integer> inorderTraversal_v1(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null)return res;
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode node = root;
+        while(!stack.empty() || node != null){
+            while(node != null){
+                stack.push(node);
+                node = node.left;
+            }
+            node = stack.pop();
+            res.add(node.val);
+            node = node.right;
+        }
+        return res;
+    }
+
+    public void quickSort_v1(int[] nums, int start, int end){
+        if (start >= end)return;
+        int left = start, right = end, key = nums[left];
+        while(left < right){
+            while(left < right && key <= nums[right]){
+                right--;
+            }
+            while(left < right && key >= nums[left]){
+                left++;
+            }
+            int tmp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = tmp;
+        }
+        nums[start] = nums[left];
+        nums[left] = key;
+        quickSort_v1(nums, start, left - 1);
+        quickSort_v1(nums, left + 1, end);
+    }
+
+    public List<TreeNode> generateTrees(int n) {
+        List<TreeNode> res = new ArrayList<>();
+        int[] nodes = new int[n];
+        for (int i = 0; i < n; i++) {
+            TreeNode root = new TreeNode(i+1);
+            nodes[i] = 1;
+            generateTrees_helper(nodes, root, root, res, 1);
+            nodes[i] = 0;
+        }
+        return res;
+    }
+    private void generateTrees_helper(int[] nodes, TreeNode node, TreeNode root, List<TreeNode> res, int len){
+        if(len == nodes.length){
+            TreeNode clone = cloneTree(root, new TreeNode(root.val));
+            res.add(clone);
+            return;
+        }
+        boolean f = true;
+        for (int i = 0; i < node.val; i++) {
+            if (nodes[i] == 0){
+                f = false;
+                nodes[i] = 1;
+                TreeNode left = new TreeNode(i+1);
+                node.left = left;
+                generateTrees_helper(nodes, left, root, res, len+1);
+                for (int j = node.val + 1; j < nodes.length; j++) {
+                    nodes[j] = 1;
+                    TreeNode right = new TreeNode(j+1);
+                    node.right = right;
+                    generateTrees_helper(nodes, right, root, res, len+1);
+                    node.right = null;
+                    nodes[j] = 0;
+                }
+                node.left = null;
+                nodes[i] = 0;
+            }
+        }
+        if (f){
+            for (int j = node.val + 1; j < nodes.length; j++) {
+                nodes[j] = 1;
+                TreeNode right = new TreeNode(j+1);
+                node.right = right;
+                generateTrees_helper(nodes, right, root, res, len+1);
+                node.right = null;
+                nodes[j] = 0;
+            }
+        }
+    }
+    private TreeNode cloneTree(TreeNode root, TreeNode clone){
+        if (root == null){
+            return null;
+        }
+        if (root.left != null){
+            clone.left = new TreeNode(root.left.val);
+            cloneTree(root.left, clone.left);
+        }
+        if (root.right != null){
+            clone.right = new TreeNode(root.right.val);
+            cloneTree(root.right, clone.right);
+        }
+        return clone;
+    }
+
+
+    public List<TreeNode> generateTrees_v1(int n) {
+        if (n == 0)return new ArrayList<>();
+        return generateTrees_v1_helper(1, n);
+    }
+
+    private List<TreeNode> generateTrees_v1_helper(int start, int end){
+        List<TreeNode> res = new ArrayList<>();
+        if (start > end){
+            res.add(null);
+        }
+        for (int i = start; i <= end; i++) {
+            List<TreeNode> left = generateTrees_v1_helper(start, i-1);
+            List<TreeNode> right = generateTrees_v1_helper(i+1, end);
+            for (TreeNode l: left) {
+                for (TreeNode r: right) {
+                    TreeNode root = new TreeNode(i);
+                    root.left = l;
+                    root.right = r;
+                    res.add(root);
+                }
+            }
+        }
+        return res;
+    }
+
+
+    public int numTrees(int n) {
+        return numTrees_helper(1, n);
+    }
+    private int numTrees_helper(int start, int end){
+        if (start >= end){
+            return 1;
+        }
+        int res = 0;
+        for (int i = start; i <= end; i++) {
+            res += numTrees_helper(start, i-1) *
+            numTrees_helper(i+1, end);
+        }
+        return res;
+    }
+
+    public int numTrees_v1(int n) {
+        int[] nums = new int[n+1];
+        nums[0] = 1;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                nums[i] += nums[j-1] * nums[i-j];
+            }
+        }
+        return nums[n];
+    }
+
+
+    public boolean isValidBST_v3(TreeNode root) {
+        return isValidBST_v3_helper(root, (long) Integer.MAX_VALUE+1, (long) Integer.MIN_VALUE-1);
+    }
+    private boolean isValidBST_v3_helper(TreeNode root, long max, long min){
+        if (root == null){
+            return true;
+        }
+        if (root.val <= min || root.val >= max){
+            return false;
+        }
+        return isValidBST_v3_helper(root.left, root.val, min) && isValidBST_v3_helper(root.right, max, root.val);
+    }
+
+
+
+
+
+
+
 
 
 

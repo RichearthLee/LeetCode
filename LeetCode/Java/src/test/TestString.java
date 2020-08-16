@@ -11,6 +11,11 @@ public class TestString {
         String str3 = new String(new byte[]{});
         String str = "abc";
         String str4 = "abc";
+        System.out.println(str.substring(2));
+        String s = str.substring(3);
+
+        String[] arr = "/a//b////c/d//././/.".split("/");
+        System.out.println(s);
 
         System.out.println(str == str4);
         System.out.println(str == str2);
