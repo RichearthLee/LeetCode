@@ -1,6 +1,7 @@
 package solutions;
 
 import com.sun.javafx.binding.StringFormatter;
+import sun.plugin.javascript.navig.AnchorArray;
 import utility.ListNode;
 import utility.TreeNode;
 
@@ -2208,6 +2209,375 @@ public class Solution1 {
             tmp.remove(tmp.size()-1);
         }
     }
+
+    public List<List<Integer>> combinationSum2_v1(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(candidates);
+        combinationSum2_v1_helper(res, new ArrayList<>(), 0, candidates, target);
+        return res;
+    }
+    private void combinationSum2_v1_helper(List<List<Integer>> list, List<Integer> tmp, int index, int[] candidates, int target){
+        if (target < 0)return;
+        if (target == 0){
+            list.add(new ArrayList<>(tmp));
+            return;
+        }
+        for (int i = index; i < candidates.length; i++) {
+            if (i != index && candidates[i] == candidates[i-1])continue;
+            tmp.add(candidates[i]);
+            combinationSum2_v1_helper(list, tmp, i+1, candidates, target-candidates[i]);
+            tmp.remove(tmp.size()-1);
+        }
+    }
+
+    public void solveSudoku(char[][] board) {
+        solveSudoku_helper(board, 0, 0);
+    }
+    private boolean solveSudoku_helper(char[][] board, int row, int col){
+        if (row > 8 || col > 8)return true;
+        for (int i = row; i < 9; i++) {
+            for (int j = col; j < 9; j++) {
+                if (board[i][j] != '.')continue;
+                Set<Character> set = getCandidates(board, i, j);
+                if (set.size() == 0)return false;
+                for (char c : set) {
+                    board[i][j] = c;
+                    if (solveSudoku_helper(board, j == 8? i+1 : i, j==8?0:j+1))return true;
+                }
+                board[i][j] = '.';
+                return false;
+            }
+        }
+        return false;
+    }
+    private Set<Character> getCandidates(char[][] board, int row, int col){
+        Set<Character> set = new HashSet<>(Arrays.asList('1','2','3','4','5','6','7','8','9'));
+        for (int i = 0; i < 9; i++) {
+            if (board[row][i] != '.'){
+                if (set.size() == 0)return set;
+                set.remove(board[row][i]);
+            }
+        }
+        for (int i = 0; i < 9; i++) {
+            if (board[i][col] != '.'){
+                if (set.size() == 0)return set;
+                set.remove(board[i][col]);
+            }
+        }
+        for (int i = (row/3)*3; i < (row/3+1)*3; i++) {
+            for (int j = (col/3)*3; j <(col/3+1)*3 ; j++) {
+                if (board[i][j] != '.'){
+                    if (set.size() == 0)return set;
+                    set.remove(board[i][j]);
+                }
+            }
+        }
+        return set;
+    }
+
+
+    public int firstMissingPositive(int[] nums) {
+        TreeSet<Integer> set = new TreeSet<>();
+        for (int n : nums) {
+            set.add(n);
+        }
+        int res = 1;
+        for (int n: set){
+            if (n <= 0)continue;
+            if (n >= res)res = n+1;
+            else break;
+        }
+        return res;
+    }
+
+    public int firstMissingPositive_v1(int[] nums) {
+        int res = 1;
+        for (int n : nums) {
+            if (n <= 0)continue;
+            if (n == res)res++;
+        }
+        for (int i = nums.length-1; i >= 0; i--) {
+            if (nums[i] <= 0)continue;
+            if (nums[i] == res)res++;
+        }
+        return res;
+    }
+
+    public int firstMissingPositive_v2(int[] nums) {
+        int[] map = new int[nums.length];
+        for (int n : nums) {
+            if (n <= 0 || n > nums.length)continue;
+            map[n-1]++;
+        }
+        for (int i = 0; i < map.length; i++) {
+            if (map[i] == 0)return i+1;
+        }
+        return nums.length+1;
+    }
+
+    public int firstMissingPositive_v3(int[] nums) {
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 1)res = 1;
+            if (nums[i] < 1 || nums[i] > nums.length)nums[i] = 1;
+        }
+        if (res == 0)return 1;
+        for (int i = 0; i < nums.length; i++) {
+//            if (nums[i] > 0 && nums[nums[i]-1] > 0){
+//                nums[nums[i]-1] = -nums[nums[i]-1];
+//            }else if (nums[i] < 0 && nums[-nums[i]-1] > 0){
+//                nums[-nums[i]-1] = -nums[-nums[i]-1];
+//            }
+            int tmp = Math.abs(nums[i])-1;
+            nums[tmp] = -Math.abs(nums[tmp]);
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > 0)return i+1;
+        }
+        return nums.length+1;
+    }
+
+
+    private int len = 0;
+    public int diameterOfBinaryTree_v1(TreeNode root) {
+        if (root == null)return 0;
+        diameterOfBinaryTree_hepler(root);
+        return len;
+    }
+    private int diameterOfBinaryTree_hepler(TreeNode root){
+        if (root == null)return 0;
+        int left = diameterOfBinaryTree_hepler(root.left);
+        int right = diameterOfBinaryTree_hepler(root.right);
+        len = Math.max(len, right + right);
+        return Math.max(left, right)+1;
+    }
+
+    public int trap(int[] height) {
+        int res = 0;
+        int tmp = 0;
+        while(true){
+            for (int i = 0, j = -1; i < height.length; i++) {
+                if (height[i] != 0){
+                    if (j >= 0){
+                        tmp += i-j-1;
+                    }
+                    j = i;
+                }
+            }
+            res += tmp;
+            int max = 0;
+            for (int i = 0; i < height.length; i++) {
+                if (height[i] > 0){
+                    height[i]--;
+                    max = 1;
+                }
+            }
+            if (max == 0)break;
+            tmp = 0;
+        }
+        return res;
+    }
+
+    public int trap_V1(int[] height) {
+        int res = 0;
+        for (int i = 0; i < height.length; i++) {
+            int left = -1, right = -1;
+            for (int j = 0; j < i; j++) {
+                left = Math.max(left, height[j]);
+            }
+            for (int j = i+1; j < height.length; j++) {
+                right = Math.max(right, height[j]);
+            }
+            left = Math.min(left, right);
+            if (left < height[i])continue;
+            res += left - height[i];
+        }
+        return res;
+    }
+
+    public int trap_V2(int[] height) {
+        int res = 0;
+        int[] dp_left = new int[height.length], dp_right = new int[height.length];
+        for (int j = 0; j < height.length; j++) {
+            dp_left[j] = Math.max(height[j], j > 0 ? dp_left[j-1]:0);
+        }
+        for (int j = height.length-1; j >= 0; j--) {
+            dp_right[j] = Math.max(height[j], j < height.length-1? dp_right[j+1]:0);
+        }
+        for (int i = 0; i < height.length; i++) {
+            int tmp = Math.min(i > 0?dp_left[i-1]:0, i<height.length-1?dp_right[i+1]:0);
+            if (tmp < height[i])continue;
+            res += tmp - height[i];
+        }
+        return res;
+    }
+
+    public int trap_V3(int[] height) {
+        int left = height.length > 0?height[0]:0, right = height.length > 0?height[height.length-1]:0, res = 0;
+        for (int i = 0, j = height.length-1; i < j;) {
+            if (left <= right){
+                left = Math.max(left, height[i]);
+                res += left - height[i++];
+            }else {
+                right = Math.max(right, height[j]);
+                res += right - height[j--];
+            }
+        }
+        return res;
+    }
+
+
+    public String multiply_v1(String num1, String num2) {
+        int len = num1.length()+ num2.length();
+        StringBuilder sb = new StringBuilder(len);
+        int carry = 0;
+        for (int i = 0; i < len-1; i++) {
+            int tmp = 0;
+            for (int j = 0; j < i && j < num1.length()-1; j++) {
+                for (int k = 0; k < i && k < num2.length()-1; k++) {
+                    if (j + k == i-1){
+                        int n1 = num1.charAt(num1.length()-j-1) ,n2 = num2.charAt(num2.length()-k-1);
+                        n1 = n1 - '0'; n2 = n2 - '0';
+                        tmp  += n1 * n2;
+                    }
+                }
+            }
+            tmp += carry;
+            carry = tmp / 10;
+            sb.append(tmp % 10);
+        }
+        if (carry != 0){
+            sb.append(carry);
+        }
+        int index = sb.length() - 1;
+        while(sb.charAt(index) == '0')index--;
+        sb.delete(index+1,sb.length());
+        return sb.reverse().toString();
+    }
+
+    public String multiply_v2(String num1, String num2) {
+        int len1 = num1.length(), len2 = num2.length();
+        int[] res = new int[len1 + len2];
+        for (int i = 0; i < len1; i++) {
+            for (int j = 0; j < len2; j++) {
+                res[i+j] += (num1.charAt(len1 - i - 1)-'0') * (num2.charAt(len2 - j -1)-'0');
+                res[i+j+1] += res[i+j] / 10;
+                res[i+j] %= 10;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = len1 + len2 - 1, f = 0; i >= 0 ; i--) {
+            if (f != 0 || res[i] != 0) {
+                f = 1;
+                sb.append(res[i]);
+            }
+        }
+        if (sb.length() == 0)sb.append(0);
+        return sb.toString();
+    }
+
+    public int jump(int[] nums) {
+        int res = 0, next = 0, cur = 0;
+        for (int i = 0, len = nums.length; i < len -1 ; i++) {
+            if (i == cur){
+                cur = next;
+                res++;
+            }
+            next = Math.max(next, i + nums[i]);
+        }
+        return res;
+    }
+
+    public List<List<Integer>> permute_v1(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        permute_v1_helper(res, new ArrayList<>(), nums, new boolean[nums.length]);
+        return res;
+    }
+    private void permute_v1_helper(List<List<Integer>> res, ArrayList<Integer> tmp, int[] nums, boolean[] flag){
+        if (tmp.size() == nums.length){
+            res.add(new ArrayList<>(tmp));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (!flag[i]){
+                tmp.add(nums[i]);
+                flag[i] = true;
+                permute_v1_helper(res, tmp, nums, flag);
+                tmp.remove(tmp.size()-1);
+                flag[i] = false;
+            }
+        }
+    }
+
+
+    public List<List<Integer>> permuteUnique_v1(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(nums);
+        permuteUnique_v1_helper(res, new ArrayList<>(), nums, new boolean[nums.length]);
+        return res;
+    }
+    private void permuteUnique_v1_helper(List<List<Integer>> res, ArrayList<Integer> tmp, int[] nums, boolean[] flag){
+        if (tmp.size() == nums.length){
+            res.add(new ArrayList<>(tmp));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (flag[i] || i != 0 && nums[i] == nums[i-1] && !flag[i-1])continue;
+            tmp.add(nums[i]);
+            flag[i] = true;
+            permuteUnique_v1_helper(res, tmp, nums, flag);
+            tmp.remove(tmp.size()-1);
+            flag[i] = false;
+        }
+    }
+
+
+    public void rotate_v2(int[][] matrix) {
+        int len = matrix.length;
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < i; j++) {
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = tmp;
+            }
+        }
+        for (int j = 0; j < len/2; j++) {
+            for (int i = 0; i < len; i++) {
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[i][len - j - 1];
+                matrix[i][len - j - 1] = tmp;
+            }
+        }
+    }
+
+
+    public List<List<String>> groupAnagrams_v1(String[] strs) {
+        if (strs.length == 0)return new ArrayList<>();
+        Map<String, List<String>> map = new HashMap<>();
+        int[] count = new int[26];
+        for (String s : strs) {
+            Arrays.fill(count, 0);
+            for (char c : s.toCharArray()) {
+                count[c - 'a']++;
+            }
+            StringBuilder sb = new StringBuilder(s.length()*2);
+            for (int i = 0; i < 26; i++) {
+                sb.append('#');
+                sb.append(count[i]);
+            }
+            String key = sb.toString();
+            map.get(key);
+            if (!map.containsKey(key))map.put(key, new ArrayList<>());
+            map.get(key).add(s);
+        }
+        return new ArrayList<>(map.values());
+    }
+
+
+
+
+
+
 
 
 
