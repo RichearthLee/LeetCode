@@ -21,6 +21,7 @@ public class MainAPP {
         Solution3 s3 = new Solution3();
 //        TestMethod tm = new TestMethod();
         Solution4 s4 = new Solution4();
+        Exam1 e1 = new Exam1();
 
 
 //        String[] str = {"flower","flow","flight"};
@@ -253,13 +254,19 @@ public class MainAPP {
 //        ListNode l5 = new ListNode(9);l4.next = l5;
 //        s3.sortedListToBST_v2(l1);
 
-        Node n1 = new Node(1);
-        Node n2 = new Node(2);n1.left = n2;
-        Node n3 = new Node(3);n1.right = n3;
-        Node n4 = new Node(4);n2.left = n4;
-        Node n5 = new Node(5);n2.right = n5;
-        Node n7 = new Node(7);n3.right = n7;
-        s3.connect_v7(n1);
+//        Node n1 = new Node(1);
+//        Node n2 = new Node(2);n1.left = n2;
+//        Node n3 = new Node(3);n1.right = n3;
+//        Node n4 = new Node(4);n2.left = n4;
+//        Node n5 = new Node(5);n2.right = n5;
+//        Node n7 = new Node(7);n3.right = n7;
+//        s3.connect_v7(n1);
+
+//        System.out.printf("res:"+s3.isPalindrome_v1("0P"));
+//        e1.star1();
+//        e1.minTree1();
+//        e1.noTwo_v1();
+        e1.structQeue();
 
     }
 

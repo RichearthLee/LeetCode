@@ -1170,6 +1170,329 @@ public class Exam1 {
 
     }
 
+    public void star(){
+        Scanner sc = new Scanner(System.in);
+        long h = sc.nextLong();
+        long left = 0, right = h;
+        while(left <= right){
+            long mid = left + (right - left)/2;
+            double tmp = mid + mid * mid;
+            if(tmp > h){
+                right = mid-1;
+            }else if(tmp < h){
+                left = mid+1;
+            }else{
+                System.out.println(mid);
+                return;
+            }
+        }
+        System.out.println(left-1);
+    }
+
+    public void star1(){
+        Scanner sc = new Scanner(System.in);
+        long h = sc.nextLong();
+        long cur = 1;
+        while(cur + cur * cur < h){
+            cur = cur << 1;
+        }
+        long left = cur >> 1, right = cur;
+        while(left <= right){
+            long mid = left + ((right - left) >> 1);
+            double tmp = mid + mid * mid;
+            if(tmp > h){
+                right = mid-1;
+            }else if(tmp < h){
+                left = mid+1;
+            }else{
+                System.out.println(mid);
+                return;
+            }
+        }
+        System.out.println(left-1);
+    }
+
+    public void sushu(){
+        Scanner in = new Scanner(System.in);
+        int len = in.nextInt();
+        int[] arr = new int[len];
+        for (int i = 0; i < len; i++) {
+            arr[i] = in.nextInt();
+        }
+        int res = 0;
+        for (int i = 0; i < len; i++) {
+
+        }
+    }
+
+    public void pailie(){
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt(), m = in.nextInt();
+        ArrayList<Integer> marr = new ArrayList<>(n);
+        int[] nums = new int[n+1];
+        for (int i = 0; i < m; i++) {
+            int tmp = in.nextInt();
+            marr.add(tmp);
+            nums[tmp] = 1;
+        }
+        for (int i = 0, j = 1; j < nums.length; j++) {
+            if (nums[j] == 1)continue;
+            while(i < marr.size() && j > marr.get(i)){
+                i++;
+            }
+            marr.add(i, j);
+        }
+        for (int i = 0, len = marr.size(); i < len; i++) {
+            if (i != len - 1){
+                System.out.print(marr.get(i) + " ");
+            }else {
+                System.out.print(marr.get(i));
+            }
+        }
+    }
+
+    public void pingfenwuping(){
+        Scanner in = new Scanner(System.in);
+        int group = in.nextInt();
+        for (; group > 0; group--) {
+            int len = in.nextInt();
+            int[] arr = new int[len];
+            for (int i = 0; i < len; i++) {
+                arr[i] = in.nextInt();
+            }
+            Arrays.sort(arr);
+            int max = 0;
+            for (int n : arr) {
+                max += n;
+            }
+            for (int i = 1; i <= len; i++) {
+                ArrayList<Integer> list = new ArrayList<>();
+                pingfenwuping1(arr, new int[arr.length], i, list, 0);
+            }
+        }
+
+    }
+    private void pingfenwuping1(int[] arr, int[] used, int size, ArrayList<Integer> list, int num){
+        if (size == 0){
+            int left = 0;
+            for (int i = 0; i < arr.length; i++) {
+                if (used[i] != 1){
+                    left += arr[i];
+                }
+            }
+            list.add(num);
+            return;
+        }
+        for (int i = 0; i < arr.length; i++) {
+            if (used[i] != 1){
+                used[i] = 1;
+                pingfenwuping1(arr, used, size-1, list, num + arr[i]);
+                used[i] = 0;
+            }
+        }
+    }
+
+    public void minTree(){
+        Scanner in = new Scanner(System.in);
+        int nodes = in.nextInt(), lines = in.nextInt();
+        int[][] matrix = new int[nodes][nodes];
+        for (int i = 0; i < lines; i++) {
+            int s = in.nextInt();
+            int e = in.nextInt();
+            int num = in.nextInt();
+            matrix[s][e] = num;
+        }
+
+    }
+    public void minTree1(){
+        Scanner in = new Scanner(System.in);
+        int nodes = in.nextInt(), lines = in.nextInt();
+        int[][] list = new int[lines][3];
+        for (int i = 0; i < lines; i++) {
+            for (int j = 0; j < 3; j++) {
+                list[i][j] = in.nextInt();
+            }
+        }
+        Arrays.sort(list, (o1, o2) -> o1[2] - o2[2]);
+        int min = 0, max = 0;
+        for (int i = 0, j = list.length-1, f = 0, l = 0; i < j;) {
+            if (f == 0){
+                int node1 = list[i][0], node2 = list[i][1];
+                for (int k = i+1; k <= j; k++) {
+                    if (list[k][0] == node1 || list[k][1] == node2){
+                        node1 = -1;
+                    }
+                    if (list[k][0] == node2 || list[k][1] == node2){
+                        node2 = -1;
+                    }
+                }
+                if (node1 == -1 && node2 == -1){
+                    min = list[i][2];
+                    i++;
+                }else {
+                    if (l == 1)break;
+                    l = 1;
+                }
+                if (l == 0)f = 1;
+            }else {
+                int node1 = list[j][0], node2 = list[j][1];
+                for (int k = j-1; k >= i; k--) {
+                    if (list[k][0] == node1 || list[k][1] == node2){
+                        node1 = -1;
+                    }
+                    if (list[k][0] == node2 || list[k][1] == node2){
+                        node2 = -1;
+                    }
+                }
+                if (node1 == -1 && node2 == -1){
+                    max = list[j][2];
+                    j--;
+                }else {
+                    if (l == 1)break;
+                    l = 1;
+                }
+                if (l == 0)f = 0;
+            }
+
+        }
+        System.out.println(max - min);
+    }
+
+    public void noTwo(){
+        Scanner sc = new Scanner(System.in);
+        int row = sc.nextInt(), col = sc.nextInt();
+        int res = (row /4)  * (col /4) * 8;
+        row = row % 4;
+        col = col % 4;
+        if (row == 3 && col == 3){
+            res += 5;
+        }else {
+            res += (Math.min(row, 2)) * (Math.min(col, 2));
+        }
+        System.out.println(res);
+    }
+
+    public void noTwo_v1(){
+        Scanner sc = new Scanner(System.in);
+        int row = sc.nextInt(), col = sc.nextInt();
+        int colnum1 = (col / 4)*2 + Math.min(2, col%4);
+        int colnum2 = (col / 4)*2 + Math.max(0, col%4-2);
+        int res = (row / 4) * (colnum1 + colnum2) * 2;
+        row = row % 4;
+        if (row >= 1){
+            res += colnum1;
+        }
+        if (row >= 2){
+            res += colnum1;
+        }
+        if (row == 3){
+            res += colnum2;
+        }
+        System.out.println(res);
+    }
+
+    public void saveEasy(){
+        Scanner sc = new Scanner(System.in);
+        int len = sc.nextInt();
+        int[][] indexs = new int[len][2];
+        for (int i = 0; i < len; i++) {
+            indexs[i][0] = sc.nextInt();
+        }
+        for (int i = 0; i < len; i++) {
+            indexs[i][1] = sc.nextInt();
+        }
+        int res = Integer.MAX_VALUE;
+        for (int i = 0; i < len; i++) {
+            res = Math.min(res, indexs[i][0] + indexs[i][1]-2);
+        }
+        System.out.println(res);
+
+    }
+
+    public void huiwen(){
+        Scanner sc = new Scanner(System.in);
+        String target = sc.nextLine();
+        String source = sc.nextLine();
+        String[] arr = new String[10];
+        int res = 0;
+        for (int i = 0, len = target.length(); i <= len; i++) {
+            String tmp = target.substring(0, i) + source + target.substring(i);
+            int f = 0;
+            for (int j = 0, k = tmp.length()-1; j < k; j++, k--) {
+                if (tmp.charAt(j) != tmp.charAt(k)) {
+                    f = 1;
+                    break;
+                }
+            }
+            if (f == 0)res++;
+        }
+        System.out.println(res);
+    }
+
+
+    public void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int len = sc.nextInt();
+        String[] arr = new String[len];
+        for (int i = 0; i < len; i++) {
+            arr[i] = sc.next();
+        }
+        boolean lengths = true, lexicographically = true;
+        for(int i = 1; i < len ; i++){
+            if(arr[i-1].length() > arr[i].length()){
+                lengths = false;
+                break;
+            }
+        }
+        for(int i = 1; i < len ;i++){
+            if(!helper(arr[i-1], arr[i])){
+                lexicographically = false;
+                break;
+            }
+        }
+        if(lengths && lexicographically){
+            System.out.println("both");
+        }else if(lengths){
+            System.out.println("lengths");
+        }else if(lexicographically){
+            System.out.println("lexicographically");
+        }else{
+            System.out.println("none");
+        }
+    }
+    private static boolean helper(String s1, String s2){
+        for(int j = 0; j < s1.length() ;j++){
+            if(j == s2.length())return false;
+            if(s1.charAt(j) > s2.charAt(j)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void structQeue(){
+        Scanner in = new Scanner(System.in);
+        int N = in.nextInt();
+        for (int i = 0; i < N; i++) {
+            int input = in.nextInt();
+            int[] arr = new int[input];
+            for (int j = 0, num = 1, tmp = 0, left = arr.length; left > 0; ) {
+                if (arr[j] == 0 && (tmp == 1 || left == 1)){
+                    arr[j] = num++;
+                    tmp = 0; left--;
+                }else if(arr[j] == 0){
+                    tmp++;
+                }
+                if (j == arr.length -1)j = 0;
+                else j++;
+            }
+            for (int n : arr) {
+                System.out.print(n + " ");
+            }
+            System.out.println();
+        }
+    }
+
 
 
 
