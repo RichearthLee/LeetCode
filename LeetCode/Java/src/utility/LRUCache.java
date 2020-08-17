@@ -4,7 +4,7 @@ import java.util.*;
 
 public class LRUCache{
 
-    class LRUCacheV1 {
+    public class LRUCacheV1 {
 
         private int capacity;
         private HashMap<Integer, Integer> map;
