@@ -1494,12 +1494,195 @@ public class Exam1 {
     }
 
 
+    public void upgrad(){
+        Scanner in = new Scanner(System.in);
+        while(in.hasNext()){
+            int N = in.nextInt(), power = in.nextInt();
+            for (int i = 0; i < N; i++) {
+                int cur = in.nextInt();
+                if (power < cur){
+                    int tmp = 1;
+                    for (int j = 1; j < power; j++) {
+                        if (power % j == 0 && cur % j == 0){
+                            tmp = j;
+                        }
+                    }
+                    power += tmp;
+                }else {
+                    power += cur;
+                }
+            }
+            System.out.println(power);
+        }
+
+    }
+
+    public void attack(){
+        Scanner in = new Scanner(System.in);
+        while(in.hasNext()){
+            long range = in.nextInt();
+            long[][] index = new long[4][2];
+            for (int i = 0; i < 4; i++) {
+                index[i][0] = in.nextInt();
+                index[i][1] = in.nextInt();
+            }
+            int demage = 0;
+            for (int i = 0; i < 3; i++) {
+                long len1 = (index[i][0] - index[3][0]);
+                len1 *= len1;
+                long len2 = (index[i][1] - index[3][1]);
+                len2 *= len2;
+                if ((len1 + len2) <= range*range){
+                    demage++;
+                }
+            }
+            System.out.println(demage+"x");
+        }
+        in.close();
+    }
 
 
+    public void shuffle(){
+        Scanner in = new Scanner(System.in);
+        int group = in.nextInt();
+        for (; group > 0 ; group--) {
+            int n = in.nextInt(), k = in.nextInt();
+            int[] arr = new int[2*n];
+            for (int i = 0, len = 2*n; i < len; i++) {
+                arr[i] = in.nextInt();
+            }
+            for (; k > 0; k--) {
+                int[] tmp = new int[arr.length];
+                for (int i = n-1, j = arr.length-1, cur = 2*n-1; i >= 0 && j >= n;) {
+                    tmp[cur--] = arr[j--];
+                    tmp[cur--] = arr[i--];
+                }
+                arr = tmp;
+            }
+            for (int i = 0; i < arr.length-1; i++) {
+                System.out.print(arr[i] + " ");
+            }
+            System.out.println(arr[arr.length-1]);
+        }
+    }
+
+    public void splitGrid(){
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt(), m = in.nextInt();
+        if (n < 4 || m < 4){
+            System.out.println(0);
+            return;
+        }
+
+    }
 
 
+    public void StringSplit(){
+        Scanner in = new Scanner(System.in);
+        while(in.hasNext()){
+            String s = in.nextLine();
+            if (s == null || "".equals(s))continue;
+            for (int i = 0, len = s.length(); i < len; i = i+8) {
+                if (i + 8 > len){
+                    StringBuilder sb = new StringBuilder();
+                    for (int j = 0, re = i + 8 - len; j < re; j++) {
+                        sb.append('0');
+                    }
+                    System.out.println(String.format("%s", s.substring(i))+sb.toString());
+                }else {
+                    System.out.println(s.substring(i, i+8));
+                }
+            }
+        }
+    }
 
+    public void reverseString(){
+        Scanner in = new Scanner(System.in);
+        while(in.hasNext()){
+            String s = in.nextLine();
+            StringBuilder sb = new StringBuilder(s.length());
+            for (int len = s.length(), i = len; i >= 0 ;) {
+                int tmp = s.lastIndexOf(" ", i-1);
+                sb.append(s.substring(tmp+1, i));
+                if (tmp != -1) sb.append(" ");
+                i = tmp;
+            }
+            System.out.println(sb.toString());
+        }
+    }
 
+    public void round(){
+        Scanner in = new Scanner(System.in);
+        while(in.hasNext()){
+            double d = in.nextDouble();
+            System.out.println(Math.round(d));
+        }
+    }
+
+    public void movdIndex(){
+        Scanner in = new Scanner(System.in);
+        while(in.hasNext()){
+            String[] arr = in.nextLine().split(";");
+            int x = 0, y = 0;
+            for (String s : arr) {
+                if (s == null || "".equals(s)) continue;
+                char letter = s.charAt(0);
+                int number = 0;
+                try {
+                    number = Integer.parseInt(s.substring(1));
+                } catch (Exception e) {
+                    continue;
+                }
+                if (number < 0 || number > 99) continue;
+                switch (letter) {
+                    case 'A':
+                        x -= number;
+                        break;
+                    case 'D':
+                        x += number;
+                        break;
+                    case 'S':
+                        y -= number;
+                        break;
+                    case 'W':
+                        y += number;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            System.out.println(x+","+y);
+        }
+    }
+
+    public void checkPassword(){
+        Scanner in = new Scanner(System.in);
+        while(in.hasNext()){
+            String pw = in.nextLine();
+            if (pw.length() <= 8 || !checkVarible(pw) || !checkDup(pw)){
+                System.out.println("NG");
+            }else {
+                System.out.println("OK");
+            }
+        }
+    }
+
+    public static boolean checkVarible(String s){
+        int variaty = 0;
+        if (s.matches(".*[0-9]+.*"))variaty++;
+        if (s.matches(".*[a-z]+.*"))variaty++;
+        if (s.matches(".*[A-Z]+.*"))variaty++;
+        if (s.matches(".*[^A-Za-z0-9]+.*"))variaty++;
+        return variaty >= 3;
+    }
+
+    public static boolean checkDup(String s){
+        for (int i = 0, len = s.length(); i < len-2; i++) {
+            int tmp = s.lastIndexOf(s.substring(i, i+3));
+            if (tmp >= i+1) return false;
+        }
+        return true;
+    }
 
 
 

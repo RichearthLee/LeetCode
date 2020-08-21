@@ -266,7 +266,10 @@ public class MainAPP {
 //        e1.star1();
 //        e1.minTree1();
 //        e1.noTwo_v1();
-        e1.structQeue();
+
+//        e1.reverseString();
+//        e1.round();
+        e1.checkPassword();
 
     }
 
