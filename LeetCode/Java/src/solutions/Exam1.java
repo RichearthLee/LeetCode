@@ -1,10 +1,12 @@
 package solutions;
 
 import jdk.internal.org.objectweb.asm.tree.MethodInsnNode;
+import utility.ListNode;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.function.DoubleToIntFunction;
 
 public class Exam1 {
 
@@ -1683,6 +1685,448 @@ public class Exam1 {
         }
         return true;
     }
+
+    public int floor(int num, int step){
+        int[] dp = new int[num];
+        if (num == 1)return 1;
+        if (num == 2)return 2;
+        dp[0] = 1;
+        dp[1] = 2;
+        for (int i = 2; i < num; i++) {
+            int tmp = 0;
+            for (int j = i-1; j >= 0  && j >= i - step; j--) {
+                tmp += dp[j];
+            }
+            dp[i] = tmp;
+        }
+        return dp[num-1];
+    }
+
+    public void deleteLetter(){
+        Scanner in = new Scanner(System.in);
+        while(in.hasNext()){
+            String s = in.nextLine();
+            int[] map = new int[26];
+            int min = s.length();
+            for (int i = 0, len = s.length(); i < len; i++) {
+                map[s.charAt(i) - 'a']++;
+            }
+            for (int node : map) {
+                min = node > 0? Math.min(node, min) : min;
+            }
+            StringBuilder sb = new StringBuilder(s.length());
+            for (int i = 0, len = s.length(); i < len; i++) {
+                char c = s.charAt(i);
+                if (map[c - 'a'] > min){
+                    sb.append(c);
+                }
+            }
+            System.out.println(sb.toString());
+        }
+    }
+
+
+    public void circleTree(){
+        Scanner in = new Scanner(System.in);
+        while(in.hasNext()){
+            int num = in.nextInt();
+            if (num == 0)return;
+            int[] arr = new int[num];
+            for (int i = 0; i < num; i++) {
+                arr[i] = in.nextInt();
+            }
+            if (num == 1) {
+                System.out.print(arr[0]);
+                return;
+            }
+            ArrayList<Integer> list = new ArrayList<>();
+            for (int i = 0, step = 0; i < num;) {
+                list.add(arr[i]);
+                i += Math.pow(2, step++);
+            }
+            for (int i = 1, step = 1; i <= num;) {
+                int tmp = i + (int)Math.pow(2, step++);
+                if (tmp  >= num){
+                    for (int j = i+2; j <= num; j++) {
+                        list.add(arr[j-1]);
+                    }
+                }
+                i = tmp;
+            }
+            for (int i = 2, step = 2, index = list.size(); i < num-1;) {
+                list.add(index, arr[i]);
+                i += Math.pow(2, step++);
+            }
+            for (int i = 0, len = list.size(); i < len; i++) {
+                if (i != len - 1){
+                    System.out.print(list.get(i) + " ");
+                }else {
+                    System.out.print(list.get(i));
+                }
+            }
+        }
+    }
+
+    public void guessNum(){
+        Scanner in = new Scanner(System.in);
+        while (in.hasNextInt()) {// 注意，如果输入是多个测试用例，请通过while循环处理多个测试用例
+            int n = in.nextInt();
+            int k = in.nextInt();
+            LinkedList<Integer> guss = new LinkedList<>();
+            for (int left = 1, right = n ; left < right;){
+                int tmp = (left + right)/2;
+                left = tmp + 1;
+                guss.add(tmp);
+            }
+            //guss.remove(guss.size()-1);
+            for (int i = 0; i < k; i++) {
+                if (!guss.isEmpty()){
+                    guss.pollLast();
+                }else {
+                    break;
+                }
+            }
+            int res = 0;
+            for (int i : guss) {
+                res += i;
+            }
+            System.out.println(res);
+        }
+    }
+
+    public static void sumList(){
+        Scanner in = new Scanner(System.in);
+        while(in.hasNext()){
+            int n = in.nextInt();
+            int m = in.nextInt();
+            double res = n;
+            double tmp = n;
+            for (int i = 1; i < m; i++) {
+                tmp = Math.sqrt(tmp);
+                res += tmp;
+            }
+            System.out.println(String.format("%.2f", res));
+        }
+    }
+
+    public void chorus(){
+        Scanner in = new Scanner(System.in);
+        while(in.hasNext()){
+            int num = in.nextInt();
+            if (num <= 2){
+                System.out.println(0);
+                return;
+            }
+            int[] arr = new int[num];
+            int[] inc_dp = new int[num];
+            int[] desc_dp = new int[num];
+            for (int i = 0; i < num; i++) {
+                arr[i] = in.nextInt();
+                inc_dp[i] = 1;
+                desc_dp[i] = 1;
+            }
+            inc_dp[0] = 1; desc_dp[num-1] = 1;
+            for (int i = 1; i < num; i++) {
+                for (int j = 0; j < i; j++) {
+                    if (arr[i] > arr[j] && inc_dp[j]+1 > inc_dp[i]){
+                        inc_dp[i] = inc_dp[j]+1;
+                    }
+                }
+            }
+            for (int i = num-1; i >= 0; i--) {
+                for (int j = num-1; j > i; j--) {
+                    if (arr[i] > arr[j] && desc_dp[j]+1 > desc_dp[i]){
+                        desc_dp[i] = desc_dp[j]+1;
+                    }
+                }
+            }
+            int max = 0;
+            for (int i = 0; i < num; i++) {
+                max = Math.max(max, inc_dp[i] + desc_dp[i]);
+            }
+            System.out.println(num - max + 1);
+        }
+    }
+
+
+    public int CountZero_1(int n){
+        double res = 1;
+        for (int i = 1; i <= n; i++) {
+            res *= i;
+        }
+        int count = 0;
+        while (res != 0) {
+            if (res % 10 == 0){
+                res /= 10;
+                count++;
+            }else {
+                break;
+            }
+        }
+        return count;
+    }
+
+    public static int CountZero(int n){
+        if(n == 0)return 1;
+        int res = 0;
+        for (int i = 1; i <= n; i++) {
+            if (i % 5 == 0){
+                res++;
+            }
+        }
+        if (n > 100)return res+2;
+        if (n > 10)return res+1;
+        return res;
+    }
+
+    public void xiangjiao(){
+        Scanner in = new Scanner(System.in);
+        while(in.hasNext()){
+            char[] arr = in.next().toCharArray();
+            Set<String> set = new HashSet<>();
+            set.add("0,0");
+            int x = 0, y = 0;
+            for (char s : arr) {
+                switch (s) {
+                    case 'W':
+                        x -= 1;
+                        break;
+                    case 'E':
+                        x += 1;
+                        break;
+                    case 'S':
+                        y -= 1;
+                        break;
+                    case 'N':
+                        y += 1;
+                        break;
+                    default:
+                        break;
+                }
+                String tmp = x+","+y;
+                if (set.contains(tmp)){
+                    System.out.println("True");
+                    return;
+                }else {
+                    set.add(tmp);
+                }
+            }
+            System.out.println("False");
+        }
+    }
+
+    public void removeNode(){
+        Scanner in = new Scanner(System.in);
+        while (in.hasNextInt()) {// 注意，如果输入是多个测试用例，请通过while循环处理多个测试用例
+            int n = in.nextInt();
+            int k = in.nextInt();
+            int[] arr = new int[n];
+            for (int i = 0; i < n; i++) {
+                arr[i] = in.nextInt();
+            }
+            for (int i = 0; i < n; i++) {
+                if (i != k-1) {
+                    if (i != n - 1){
+                        System.out.print(arr[i] + " ");
+                    }else {
+                        System.out.println(arr[i]);
+                    }
+                }
+            }
+            System.out.println();
+        }
+    }
+    public void removeNode1(){
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt();
+        int k = in.nextInt();
+        int[] arr = new int[n-1];
+        for (int i = 0; i < n-1; i++) {
+            if (i == k-1){
+                in.nextInt();
+            }
+            arr[i] = in.nextInt();
+        }
+        for (int node : arr) {
+            System.out.print(node + " ");
+        }
+        System.out.println();
+    }
+
+    public void removeNode2(){
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt();
+        int k = in.nextInt();
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy;
+        for (int i = 0; i < n-1; i++) {
+            if (i == k-1){
+                in.nextInt();
+            }
+            cur.next = new ListNode(in.nextInt());
+        }
+        cur = dummy.next;
+        for (;cur != null; cur = cur.next) {
+            System.out.print(cur.val);
+        }
+        System.out.println();
+    }
+
+    public void kSubString(String str, int k){
+        int count = 0;
+        for (int i = 0, len = str.length(); i < len; i++) {
+            
+        }
+    }
+    public void numberSum(){
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt();
+        for (int i = 0; i < n; i++) {
+            long num = in.nextLong();
+            long a = 1;
+            for (;; a = a * 10) {
+                if (num / a < 10){
+                    a = (num / a) * a;
+                    break;
+                }
+            }
+            a = a - 1;
+            long b = num - a;
+            int res = 0;
+            while(a != 0){
+                res += a % 10;
+                a /= 10;
+            }
+            while(b != 0){
+                res += b % 10;
+                b /= 10;
+            }
+            System.out.println(res);
+        }
+    }
+
+    private static  int res_huiwen = 0;
+    private static Map<String, Integer> map = new HashMap<>();
+    public void huiwenzichuan(){
+        Scanner in = new Scanner(System.in);
+        String str = in.next();
+        int group = in.nextInt();
+        for (int i = 0; i < group; i++) {
+            int left = in.nextInt(), right = in.nextInt();
+            String sub = str.substring(left-1 ,right);
+            Exam1.huiwenzichuan1(sub);
+            System.out.println(res_huiwen);
+            res_huiwen = 0;
+        }
+    }
+
+    public static void huiwenzichuan1(String s){
+        if (s == null || "".equals(s))return;
+        int k = s.length()-1;
+        for (int i = 0, j = k; i <= j; ) {
+            if (s.charAt(i) == s.charAt(j)){
+                i++; j--;
+            }else {
+                i = 0;
+                j = --k;
+            }
+        }
+
+        if (k+1 != s.length()){
+            huiwenzichuan1(s.substring(k+1));
+        }
+        res_huiwen++;
+    }
+
+    public static void huiwenzichuan2(String s){
+        if (s == null || "".equals(s))return;
+        if (map.containsKey(s)){
+            res++;return;
+        }
+        int k = s.length()-1;
+        for (int i = 0, j = k; i <= j; ) {
+            if (s.charAt(i) == s.charAt(j)){
+                i++; j--;
+            }else {
+                i = 0;
+                j = --k;
+            }
+        }
+        map.put(s.substring(0, k+1) ,1);
+        if (k+1 != s.length()){
+            huiwenzichuan2(s.substring(k+1));
+        }
+        res_huiwen++;
+    }
+
+    public void kMinSub(){
+        Scanner in = new Scanner(System.in);
+        String str = in.next();
+        int k = in.nextInt();
+        if (k == 0 || "".equals(str)){
+            return;
+        }
+        int min = 0;
+        for (int i = 0, c = str.charAt(0), len = str.length()-1; i < len; i++) {
+            if (c < str.charAt(i)){
+                c = str.charAt(i);
+                min = i;
+            }
+        }
+        System.out.println(str.substring(min, k));
+    }
+
+    public void bush(){
+        Scanner in = new Scanner(System.in);
+        int num = in.nextInt();
+        int[] arr = new int[num];
+        for (int i = 0; i < num; i++) {
+            arr[i] = in.nextInt();
+        }
+        int min = 0;
+        for (int i = 0; i < num; i++) {
+            min = Math.max(min, arr[i]);
+        }
+        int res = Math.min(min, num);
+        System.out.println(res);
+    }
+
+    public void bush1(){
+        Scanner in = new Scanner(System.in);
+        int num = in.nextInt();
+        int[] arr = new int[num];
+        for (int i = 0; i < num; i++) {
+            arr[i] = in.nextInt();
+        }
+        int flag = 0, res = 0;
+        while(flag == 0){
+            int min = Integer.MAX_VALUE;
+            for (int k = 0; k < num; k++) {
+                if (arr[k] == 0)continue;
+                min = Math.min(min, arr[k]);
+            }
+            flag = 1;
+            for (int i = 0, tmp = 0; i < num; i++) {
+                if (arr[i] == 0 || i == num - 1){
+                    if (tmp == 1) {
+                        res += min;tmp = 0;
+                    }
+                }else {
+                    arr[i] -= min;
+                    tmp = 1;flag = 0;
+                }
+            }
+        }
+        res = Math.min(res, num);
+        System.out.println(res);
+    }
+
+
+
+
+
+
+
 
 
 

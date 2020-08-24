@@ -269,7 +269,16 @@ public class MainAPP {
 
 //        e1.reverseString();
 //        e1.round();
-        e1.checkPassword();
+//        e1.checkPassword();
+//        System.out.println(e1.floor(3, 2));
+
+//        int[][] items = {{3,2},{4,3},{5,4},{6,5}};
+//        ip.bag_01(items, 8);
+//        s4.change(5, new int[]{1,2,5});
+//        e1.circleTree();
+//        System.out.println(e1.CountZero_1(16));
+//        e1.chorus();
+        e1.huiwenzichuan();
 
     }
 
