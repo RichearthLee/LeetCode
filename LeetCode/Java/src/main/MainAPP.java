@@ -22,6 +22,7 @@ public class MainAPP {
 //        TestMethod tm = new TestMethod();
         Solution4 s4 = new Solution4();
         Exam1 e1 = new Exam1();
+        Exam2 e2 = new Exam2();
 
 
 //        String[] str = {"flower","flow","flight"};
@@ -278,7 +279,11 @@ public class MainAPP {
 //        e1.circleTree();
 //        System.out.println(e1.CountZero_1(16));
 //        e1.chorus();
-        e1.huiwenzichuan();
+//        e1.huiwenzichuan();
+//        System.out.println(e2.checkNetSegment("255.255.255.0",
+//        "192.168.224.256","192.168.10.4"));
+//        e2.getMinK();
+        e2.isTrainOut(new int[]{1,2,3}, new int[]{1,2,3});
 
     }
 
