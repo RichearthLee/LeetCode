@@ -54,22 +54,20 @@ public class TestProxy {
 
 
     public static class DynamicProxy{
-
-        private Object obj;
-
+        private Object obj;     //声明Object类型
         DynamicProxy(Object obj){
-            this.obj = obj;
+            this.obj = obj;     //构造函数传入需要代理的目标对象
         }
         @SuppressWarnings(value = "all")
         public Object getProxy(){
-            ClassLoader classLoader = this.getClass().getClassLoader();
-            Class[] interfaces = obj.getClass().getInterfaces();
-            return Proxy.newProxyInstance(classLoader, interfaces, new InvocationHandler() {
-                @Override
+            ClassLoader classLoader = this.getClass().getClassLoader();     //获取本类的类加载器
+            Class[] interfaces = obj.getClass().getInterfaces();        //通过反射获取接口信息
+            return Proxy.newProxyInstance(classLoader, interfaces, new InvocationHandler() {    //动态创建实例
+                @Override   //重写InvocationHandler中的invoke方法
                 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                    System.out.println(method.getName() + Arrays.toString(args));
-                    Object object =  method.invoke(obj, args);
-                    System.out.println(method.getName() + object);
+                    System.out.println(method.getName() + Arrays.toString(args));   //前置增强
+                    Object object =  method.invoke(obj, args);      //执行目标方法
+                    System.out.println(method.getName() + object);  //后置增强
                     return object;
                 }
             });

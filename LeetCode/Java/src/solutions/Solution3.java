@@ -1,6 +1,7 @@
 package solutions;
 
 
+import com.sun.org.apache.xerces.internal.xs.StringList;
 import utility.TreeLinkNode;
 import utility.ListNode;
 import utility.Node;
@@ -2943,12 +2944,185 @@ public class Solution3 {
         res.add(new ArrayList<Integer>(){{add(1);}});
         for (int i = 1; i < numRows; i++) {
             List<Integer> tmp = new ArrayList<>(), pre = res.get(i-1);
-            for (int j = 0, len = pre.size(); j < len; j++) {
-                tmp.add((i > 0 ? pre.get(i-1):0) + pre.get(i));
+            for (int j = 0, len = pre.size(); j <= len; j++) {
+                if(j ==0 || j == len){
+                    tmp.add(1);
+                }else{
+                    tmp.add(pre.get(j-1) + pre.get(j));
+                }
             }
-
+            res.add(tmp);
         }
         return res;
+    }
+
+    public List<Integer> getRow_v1(int rowIndex) {
+        List<Integer> res = new ArrayList<>(rowIndex);
+        if (rowIndex < 1)return res;
+        for (int i = 0; i <= rowIndex; i++) {
+            res.add(getRow_v1_helper(rowIndex, i));
+        }
+        return res;
+    }
+    private int getRow_v1_helper(int n, int k){
+        long res = 1;
+        for (int i = 1; i <= k; i++) {
+            res = res * (n - i + 1) / i;
+        }
+        return (int) res;
+    }
+
+    private int minimumTotal_v4_res = Integer.MAX_VALUE;
+    public int minimumTotal_v4(List<List<Integer>> triangle) {
+        minimumTotal_v4_helper(triangle, 0, 0, 0);
+        return minimumTotal_v4_res;
+    }
+    private void minimumTotal_v4_helper(List<List<Integer>> triangle, int depth, int index, int num){
+        if (depth == triangle.size()-1){
+            minimumTotal_v4_res = Math.min(num, minimumTotal_v4_res);
+        }
+        num = triangle.get(depth).get(index) + num;
+        minimumTotal_v4_helper(triangle, depth+1, index, num);
+        minimumTotal_v4_helper(triangle, depth+1, index+1, num);
+    }
+
+
+    public int minimumTotal_v5(List<List<Integer>> triangle) {
+        int[] cur = new int[triangle.size()];
+        int[] pre = new int[cur.length];
+        for (int i = 0, depth = triangle.size(); i < depth; i++) {
+            for (int j = 0, tmp; j <= i; j++) {
+                tmp = triangle.get(i).get(j);
+                if (j == 0){
+                    cur[j] = tmp + pre[j];
+                }else if (j == i){
+                    cur[j] = pre[j-1] + tmp;
+                }else {
+                    cur[j] = tmp + Math.min(pre[j-1], pre[j]);
+                }
+            }
+            int[] swap = pre;
+            pre = cur;
+            cur = swap;
+        }
+        int res = pre[0];
+        for (int n : cur) {
+            res = Math.min(res, n);
+        }
+        return res;
+    }
+
+    public int minimumTotal_v6(List<List<Integer>> triangle) {
+        int[] dp = new int[triangle.size()+1];
+        for (int i = triangle.size()-1; i >= 0; i--) {
+            for (int j = 0; j <= i; j++) {
+                dp[j] = triangle.get(i).get(j) + Math.min(dp[j], dp[j+1]);
+            }
+        }
+        return dp[0];
+    }
+
+    public int maxProfit_v2(int[] prices) {
+        int res = 0;
+        for (int in = 0, out = 0; out < prices.length; out++) {
+            if (prices[in] > prices[out]){
+                in = out;
+            }else {
+                res = Math.max(res, prices[in] - prices[out]);
+            }
+        }
+        return res;
+    }
+
+    public int maxProfit_v9(int[] prices) {
+        int res = 0;
+        for (int i = 1; i < prices.length; i++) {
+            res += Math.max(0, prices[i]-prices[i-1]);
+        }
+        return res;
+    }
+
+    public int maxProfit_v10(int[] prices) {
+        if (prices.length < 1)return 0;
+        int one_in = -prices[0], one_out = Integer.MIN_VALUE, two_in = Integer.MIN_VALUE, two_out = Integer.MIN_VALUE;
+        for (int i = 1; i < prices.length; i++) {
+            one_in = Math.max( one_in, -prices[i]);
+            one_out = Math.max(one_out, one_in + prices[i]);
+            two_in = Math.max(two_in, one_out - prices[i]);
+            two_out = Math.max(two_out, two_in + prices[i]);
+        }
+        return Math.max(0, two_out);
+    }
+
+    private int maxPathSum_res = Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+        if (root == null)return 0;
+        maxPathSum_helper(root);
+        return maxPathSum_res;
+    }
+    private int maxPathSum_helper(TreeNode root){
+        if (root == null)return 0;
+        int left = maxPathSum_helper(root.left);
+        int right = maxPathSum_helper(root.right);
+        int val = 0;
+        if (left > 0){
+            val += left;
+        }
+        if (right > 0){
+            val += right;
+        }
+        val += root.val;
+        maxPathSum_res = Math.max(maxPathSum_res, val);
+        if (left > 0 && right >0){
+            val -= Math.min(left, right);
+        }
+        return val;
+    }
+
+    public boolean isPalindrome_v1(String s) {
+        for (int i = 0, j = s.length()-1; i < j; i++, j--) {
+            while(i < j && !Character.isLetterOrDigit(s.charAt(i)))i++;
+            while(i <j && !Character.isLetterOrDigit(s.charAt(j)))j--;
+            if (Character.toLowerCase(s.charAt(i)) != Character.toLowerCase(s.charAt(j)))return false;
+        }
+        return true;
+    }
+
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        if(!wordList.contains(endWord)){
+            return 0;
+        }
+        int res = 0, cur = 1, pre = 0;
+        Queue<String> queue = new LinkedList<String>(){{add(beginWord);}};
+        while(!queue.isEmpty()){
+            pre = cur;
+            cur = 0;
+            for (; pre > 0; pre--) {
+                String tmp = queue.poll();
+                for (int i = 0, len = wordList.size(); i < len; i++) {
+                    if (ladderLength_hepler(tmp, wordList.get(i))){
+                        if (endWord.equals(wordList.get(i))){
+                            return res;
+                        }
+                        queue.add(wordList.get(i));
+                        wordList.remove(i--);
+                        len--;
+                        cur++;
+                    }
+                }
+            }
+            res++;
+        }
+        return res;
+    }
+    private boolean ladderLength_hepler(String source, String target){
+        int f = 0;
+        for (int i = 0, j = 0, len = source.length(); i < len && j < len; i++, j++) {
+            if (source.charAt(i) != target.charAt(i)){
+                if (++f > 1)return false;
+            }
+        }
+        return f == 1;
     }
 
 

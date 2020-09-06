@@ -22,6 +22,8 @@ public class MainAPP {
 //        TestMethod tm = new TestMethod();
         Solution4 s4 = new Solution4();
         Exam1 e1 = new Exam1();
+        Exam2 e2 = new Exam2();
+
 
 //        String[] str = {"flower","flow","flight"};
 //        String[] str1 = {"dog","racecar","car"};
@@ -253,7 +255,36 @@ public class MainAPP {
 //        ListNode l5 = new ListNode(9);l4.next = l5;
 //        s3.sortedListToBST_v2(l1);
 
-        e1.primeNum();
+//        Node n1 = new Node(1);
+//        Node n2 = new Node(2);n1.left = n2;
+//        Node n3 = new Node(3);n1.right = n3;
+//        Node n4 = new Node(4);n2.left = n4;
+//        Node n5 = new Node(5);n2.right = n5;
+//        Node n7 = new Node(7);n3.right = n7;
+//        s3.connect_v7(n1);
+
+//        System.out.printf("res:"+s3.isPalindrome_v1("0P"));
+//        e1.star1();
+//        e1.minTree1();
+//        e1.noTwo_v1();
+
+//        e1.reverseString();
+//        e1.round();
+//        e1.checkPassword();
+//        System.out.println(e1.floor(3, 2));
+
+//        int[][] items = {{3,2},{4,3},{5,4},{6,5}};
+//        ip.bag_01(items, 8);
+//        s4.change(5, new int[]{1,2,5});
+//        e1.circleTree();
+//        System.out.println(e1.CountZero_1(16));
+//        e1.chorus();
+//        e1.huiwenzichuan();
+//        System.out.println(e2.checkNetSegment("255.255.255.0",
+//        "192.168.224.256","192.168.10.4"));
+//        e2.getMinK();
+        e2.isTrainOut(new int[]{1,2,3}, new int[]{1,2,3});
+
     }
 
 

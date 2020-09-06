@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public  class  TestThread implements Runnable {
+public  class TestLock implements Runnable {
 	private volatile static boolean n=true;
 	private volatile static boolean flag=false;
 	private volatile static boolean A = true;
@@ -32,7 +32,7 @@ public  class  TestThread implements Runnable {
 			}
 		}
 
-	private TestThread(){
+	private TestLock(){
 		spA = new Semaphore(1);
 		spB = new Semaphore(0);
 	}
@@ -140,7 +140,7 @@ public  class  TestThread implements Runnable {
 		int ss=System.in.read();
 		System.out.println(ss);
 		sc.close();*/
-		TestThread b=new TestThread();
+		TestLock b=new TestLock();
 		Thread b1=new Thread(b);
 		Thread b2=new Thread(b);
 		

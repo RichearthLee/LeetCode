@@ -4,6 +4,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TestRegex {
+    public static void main(String[] args) {
+
+    }
 
     public void test(){
         // 按指定模式在字符串查找

@@ -323,6 +323,33 @@ public class Important {
         }
     }
 
+    /**
+     * 01背包问题，动态规划
+     * @return
+     */
+    public int bag_01(int[][] items, int cap){
+        if (cap <= 0)return 0;
+        int[][] dp = new int[items.length+1][cap+1];
+        for (int i = 1; i <= items.length; i++) {
+            for (int j = 1; j <= cap; j++) {
+                if (items[i-1][1] > j){
+                    dp[i][j] = dp[i-1][j];
+                }else {
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i-1][j-items[i-1][1]] + items[i-1][0]);
+                }
+            }
+        }
+        //打印二维表
+        for (int[] ints : dp) {
+            for (int i : ints) {
+                System.out.print(i + "\t");
+            }
+            System.out.println();
+        }
+        return dp[items.length][cap];
+    }
+
+
 
 
 
