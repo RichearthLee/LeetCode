@@ -1170,6 +1170,113 @@ public class Exam1 {
 
     }
 
+    public void D2X(){
+        Scanner in = new Scanner(System.in);
+        while(in.hasNext()){
+            String s = in.next();
+            int res = 0;
+            int resa = Integer.parseInt(s, 16);
+            for (int len = s.length()-1, i = len; i >= 0; i--) {
+                char c = s.charAt(i);
+                if (c == 'x'){
+                    break;
+                }
+                switch (c){
+                    case 'A':
+                        res += 10 * Math.pow(16, len - i);
+                        break;
+                    case 'B':
+                        res += 11 * Math.pow(16, len - i);
+                        break;
+                    case 'C':
+                        res += 12 * Math.pow(16, len - i);
+                        break;
+                    case 'D':
+                        res += 13 * Math.pow(16, len - i);
+                        break;
+                    case 'E':
+                        res += 14 * Math.pow(16, len - i);
+                        break;
+                    case 'F':
+                        res += 15 * Math.pow(16, len - i);
+                        break;
+                    default:
+                        res += (c - '0') * Math.pow(16, len - i);
+
+                }
+            }
+            System.out.println(res);
+        }
+
+    }
+
+    public void primeNum(){
+        Scanner in = new Scanner(System.in);
+        long num = in.nextLong();
+        long prime = 2;
+        while(num != 0){
+            if (num % prime != 0){
+                prime = nextPrime(prime);
+            }else {
+                num = num / prime;
+                System.out.print(prime + " ");
+            }
+        }
+    }
+
+    private long nextPrime(long n){
+        n++;
+        for (int f = 0; ; n++) {
+            f = 1;
+            for (int i = 2; i < n/2; i++) {
+                if ((n % i) == 0){
+                    f = 0;
+                    break;
+                }
+            }
+            if (f == 1){
+                break;
+            }
+        }
+        return n;
+    }
+
+    public void lastWordLength(){
+        Scanner in = new Scanner(System.in);
+        String s = in.nextLine();
+        System.out.println(s.length() - s.lastIndexOf(" ")-1);
+    }
+
+    public void countNumber(){
+        Scanner in = new Scanner(System.in);
+        char[] arr = in.nextLine().toCharArray();
+        char c = Character.toLowerCase(in.next().charAt(0));
+        int res = 0;
+        for (char value : arr) {
+            if (Character.toLowerCase(value) == c) {
+                res++;
+            }
+        }
+        System.out.println(res);
+    }
+
+
+    public void RandomNumber(){
+        Scanner in = new Scanner(System.in);
+        while(in.hasNext()){
+            int len = in.nextInt();
+            int[] arr = new int[1000];
+            for (int i = 0; i < len; i++) {
+                arr[in.nextInt()-1]++;
+            }
+            for (int i = 0; i < 1000; i++) {
+                if (arr[i] != 0){
+                    System.out.println(i+1);
+                }
+            }
+        }
+    }
+
 
 
 

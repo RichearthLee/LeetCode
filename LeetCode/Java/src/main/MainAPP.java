@@ -21,7 +21,7 @@ public class MainAPP {
         Solution3 s3 = new Solution3();
 //        TestMethod tm = new TestMethod();
         Solution4 s4 = new Solution4();
-
+        Exam1 e1 = new Exam1();
 
 //        String[] str = {"flower","flow","flight"};
 //        String[] str1 = {"dog","racecar","car"};
@@ -253,7 +253,7 @@ public class MainAPP {
 //        ListNode l5 = new ListNode(9);l4.next = l5;
 //        s3.sortedListToBST_v2(l1);
 
-
+        e1.primeNum();
     }
 
 
